@@ -230,16 +230,7 @@ typings/
 # Serverless directories
 .serverless
 
-
-Pipfile
-Pipfile.lock
 .directory
-
-# static backend
-backend/app/static
-
-# Virtual Enviroment
-venv
 
 # databases
 *.sqlite
