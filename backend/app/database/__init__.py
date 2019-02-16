@@ -60,6 +60,55 @@ def get_notification_table(metadata):
                  Column('datetime', DateTime, nullable=False))
 
 
+def get_group_table(metadata):
+    return Table('group', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('name', Unicode(64), unique=True, nullable=False))
+
+
+def get_course_table(metadata):
+    return Table('course', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('name', Unicode(64), unique=True, nullable=False),
+                 Column('hours_class', Integer, nullable=False),
+                 Column('year', Integer, nullable=False),
+                 Column('semester', Integer, nullable=False))
+
+
+def get_event_table(metadata):
+    return Table('event', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('title', Unicode(64), nullable=False),
+                 Column('description', Unicode(256), nullable=False),
+                 Column('start', DateTime, nullable=False),
+                 Column('end', DateTime, nullable=False))
+
+
+def get_tag_table(metadata):
+    return Table('tag', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('text', Unicode(64), unique=True, nullable=False))
+
+
+def get_local_table(metadata):
+    return Table('local', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('name', Unicode(64), unique=True, nullable=False),
+                 Column('size', Integer, nullable=False))
+
+
+def get_resource_table(metadata):
+    return Table('resource', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('name', Unicode(64), unique=True, nullable=False))
+
+
+def get_type_table(metadata):
+    return Table('type', metadata,
+                 Column('id', Integer, primary_key=True),
+                 Column('name', Unicode(64), unique=True, nullable=False))                 
+
+
 class Database:
     def __init__(self, metadata=None, session=None):
         self.session = session
@@ -77,6 +126,13 @@ class Database:
         option_table = get_option_table(self.metadata)
         vote_table = get_vote_table(self.metadata)
         notification_table = get_notification_table(self.metadata)
+        group_table = get_group_table(self.metadata) 
+        course_table = get_course_table(self.metadata)
+        event_table = get_event_table(self.metadata)
+        tag_table = get_tag_table(self.metadata)
+        local_table = get_local_table(self.metadata)
+        resource_table = get_resource_table(self.metadata)
+        type_table = get_type_table(self.metadata)
 
         self.metadata.create_all()
 
