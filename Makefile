@@ -22,3 +22,11 @@ backend_install:
 
 pipenv_run:
 	pipenv shell
+
+frontend_run:
+	cd frontend &&\
+	npm run serve
+
+frontend_install:
+	cd frontend &&\
+	npm install
