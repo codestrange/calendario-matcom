@@ -9,7 +9,7 @@ from .tables import get_course_table, get_event_table, get_group_table, get_loca
     get_vote_table, get_event_course_table, get_event_group_table, get_event_local_table, \
     get_event_resource_table, get_event_tag_table, get_role_permission_table, \
     get_user_group_table, get_user_group_notification_table, get_user_option_table, \
-    get_user_role_table
+    get_user_role_table, get_teacher_course_table
 
 
 class Database:
@@ -48,9 +48,11 @@ class Database:
         user_group_notification_table = get_user_group_notification_table(self.metadata)
         user_option_table = get_user_option_table(self.metadata)
         user_role_table = get_user_role_table(self.metadata)
+        teacher_course_table = get_teacher_course_table(self.metadata)
 
         mapper(CourseEntity, course_table, properties=dict(
-            events=relation(EventEntity, secondary=event_course_table)
+            events=relation(EventEntity, secondary=event_course_table),
+            teachers=relation(TeacherEntity, secondary=teacher_course_table)
         ))
 
         mapper(EventEntity, event_table, properties=dict(
@@ -102,7 +104,8 @@ class Database:
         ))
 
         mapper(TeacherEntity, teacher_table, properties=dict(
-            user=relation(UserEntity, uselist=False)
+            user=relation(UserEntity, uselist=False),
+            courses=relation(CourseEntity, secondary=teacher_course_table)
         ))
 
         mapper(UserEntity, user_table, properties=dict(

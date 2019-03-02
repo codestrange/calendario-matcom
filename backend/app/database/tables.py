@@ -161,3 +161,9 @@ def get_user_group_notification_table(metadata):
                  Column('user_id', None, ForeignKey('user.id'), primary_key=True),
                  Column('group_id', None, ForeignKey('group.id'), primary_key=True),
                  Column('notification_id', None, ForeignKey('notification.id'), primary_key=True))
+
+
+def get_teacher_course_table(metadata):
+    return Table('teacher_course', metadata,
+                 Column('teacher_id', None, ForeignKey('teacher.id'), primary_key=True),
+                 Column('course_id', None, ForeignKey('course.id'), primary_key=True))
