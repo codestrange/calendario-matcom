@@ -84,11 +84,25 @@ class RoleEntity:
         self.permissions = []
 
 
+class StudentEntity:
+    def __init__(self, career, user=None, id=None):
+        self.id = id
+        self.career = career
+        self.user = user
+
+
 class TagEntity:
     def __init__(self, text, id=None):
         self.id = id
         self.text = text
         self.events = []
+
+
+class TeacherEntity:
+    def __init__(self, department, user=None, id=None):
+        self.id = id
+        self.department = department
+        self.user = user
 
 
 class UserEntity:

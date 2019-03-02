@@ -1,6 +1,7 @@
 from .sqlalchemy_repository import SQLAlchemyRepository
 from ..entities import CourseEntity, EventEntity, GroupEntity, LocalEntity, NotificationEntity, \
-    OptionEntity, PermissionEntity, ResourceEntity, RoleEntity, TagEntity, UserEntity, VoteEntity
+    OptionEntity, PermissionEntity, ResourceEntity, RoleEntity, StudentEntity, TagEntity, \
+    TeacherEntity, UserEntity, VoteEntity
 
 
 class CourseRepository(SQLAlchemyRepository):
@@ -48,9 +49,19 @@ class RoleRepository(SQLAlchemyRepository):
         return RoleEntity
 
 
+class StudentRepository(SQLAlchemyRepository):
+    def entity(self):
+        return StudentEntity
+
+
 class TagRepository(SQLAlchemyRepository):
     def entity(self):
         return TagEntity
+
+
+class TeacherRepository(SQLAlchemyRepository):
+    def entity(self):
+        return TeacherEntity
 
 
 class UserRepository(SQLAlchemyRepository):

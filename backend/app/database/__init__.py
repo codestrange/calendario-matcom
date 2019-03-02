@@ -1,13 +1,15 @@
 from sqlalchemy import MetaData
 from sqlalchemy.orm import sessionmaker, mapper, relation
 from .entities import CourseEntity, EventEntity, GroupEntity, LocalEntity, NotificationEntity, \
-    OptionEntity, PermissionEntity, ResourceEntity, RoleEntity, TagEntity, UserEntity, VoteEntity
+    OptionEntity, PermissionEntity, ResourceEntity, RoleEntity, StudentEntity, TagEntity, \
+    TeacherEntity, UserEntity, VoteEntity
 from .tables import get_course_table, get_event_table, get_group_table, get_local_table, \
     get_notification_table, get_option_table, get_permission_table, get_resource_table, \
-    get_role_table, get_tag_table, get_user_table, get_vote_table, get_event_course_table, \
-    get_event_group_table, get_event_local_table, get_event_resource_table, get_event_tag_table, \
-    get_role_permission_table, get_user_group_table, get_user_group_notification_table, \
-    get_user_option_table, get_user_role_table
+    get_role_table, get_student_table, get_tag_table, get_teacher_table, get_user_table, \
+    get_vote_table, get_event_course_table, get_event_group_table, get_event_local_table, \
+    get_event_resource_table, get_event_tag_table, get_role_permission_table, \
+    get_user_group_table, get_user_group_notification_table, get_user_option_table, \
+    get_user_role_table
 
 
 class Database:
@@ -29,7 +31,9 @@ class Database:
         permission_table = get_permission_table(self.metadata)
         resource_table = get_resource_table(self.metadata)
         role_table = get_role_table(self.metadata)
+        student_table = get_student_table(self.metadata)
         tag_table = get_tag_table(self.metadata)
+        teacher_table = get_teacher_table(self.metadata)
         user_table = get_user_table(self.metadata)
         vote_table = get_vote_table(self.metadata)
 
@@ -89,8 +93,16 @@ class Database:
             permissions=relation(PermissionEntity, secondary=role_permission_table)
         ))
 
+        mapper(StudentEntity, student_table, properties=dict(
+            user=relation(UserEntity, uselist=False)
+        ))
+
         mapper(TagEntity, tag_table, properties=dict(
             events=relation(EventEntity, secondary=event_tag_table)
+        ))
+
+        mapper(TeacherEntity, teacher_table, properties=dict(
+            user=relation(UserEntity, uselist=False)
         ))
 
         mapper(UserEntity, user_table, properties=dict(

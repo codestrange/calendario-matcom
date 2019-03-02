@@ -6,7 +6,8 @@ from .database import Database
 from .database.unitofwork.sqlalchemy_unitofwork import UnitOfWorkSQLAlchemy
 from .database.repositories.all import CourseRepository, EventRepository, GroupRepository, \
     LocalRepository, NotificationRepository, OptionRepository, PermissionRepository, \
-    ResourceRepository, RoleRepository, TagRepository, UserRepository, VoteRepository
+    ResourceRepository, RoleRepository, StudentRepository, TagRepository, TeacherRepository, \
+    UserRepository, VoteRepository
 
 db = Database()
 unitofwork = UnitOfWorkSQLAlchemy()
@@ -25,8 +26,8 @@ def create_app(config_name):
 
     repositories = [CourseRepository, EventRepository, GroupRepository, LocalRepository,
                     NotificationRepository, OptionRepository, PermissionRepository,
-                    ResourceRepository, RoleRepository, TagRepository, UserRepository,
-                    VoteRepository]
+                    ResourceRepository, RoleRepository, StudentRepository, TagRepository,
+                    TeacherRepository, UserRepository, VoteRepository]
     for repository in repositories:
         unitofwork.add_repository(repository)
 
