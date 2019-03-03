@@ -2,10 +2,16 @@ from flask import Flask
 from flask_cors import CORS
 from .config import config
 from .container import Container
+from .database import Database
 from .database.unitofwork.sqlalchemy_unitofwork import UnitOfWorkSQLAlchemy
+from .database.repositories.all import CourseRepository, EventRepository, GroupRepository, \
+    LocalRepository, NotificationRepository, OptionRepository, PermissionRepository, \
+    ResourceRepository, RoleRepository, StudentRepository, TagRepository, TeacherRepository, \
+    UserRepository, VoteRepository
 
+db = Database()
 unitofwork = UnitOfWorkSQLAlchemy()
-container = Container()
+container = Container.instance()
 
 
 def create_app(config_name):
@@ -15,9 +21,13 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     container.init_app(app)
+    db.init_app(app)
     unitofwork.init_app(app)
 
-    repositories = []
+    repositories = [CourseRepository, EventRepository, GroupRepository, LocalRepository,
+                    NotificationRepository, OptionRepository, PermissionRepository,
+                    ResourceRepository, RoleRepository, StudentRepository, TagRepository,
+                    TeacherRepository, UserRepository, VoteRepository]
     for repository in repositories:
         unitofwork.add_repository(repository)
 
