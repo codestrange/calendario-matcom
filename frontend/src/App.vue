@@ -1,6 +1,12 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+
+        <body class="bg-gradient-primary">
+
+            <router-view></router-view>
+
+        </body>
+
     </div>
 </template>
 

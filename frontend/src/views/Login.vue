@@ -1,24 +1,5 @@
 <template>
     <div id="login">
-        <head>
-
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <meta name="description" content="Login Page for Calendario-Matcom">
-            <meta name="author" content="CodeStrange Team">
-
-            <title>Iniciar Sesión</title>
-
-            <!-- Custom fonts for this template-->
-            <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-            <!-- Custom styles for this template-->
-            <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-        </head>
-
-        <body class="bg-gradient-primary" >
 
         <div class="container">
 
@@ -83,17 +64,6 @@
 
         </div>
 
-        <!--&lt;!&ndash;&lt;!&ndash;Bootstrap core JavaScript&ndash;&gt;&ndash;&gt;-->
-        <!--<script src="vendor/jquery/jquery.min.js"></script>-->
-        <!--<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
-
-        <!--&lt;!&ndash;&lt;!&ndash; Core plugin JavaScript&ndash;&gt;&ndash;&gt;-->
-        <!--<script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
-
-        <!--&lt;!&ndash;&lt;!&ndash; Custom scripts for all pages&ndash;&gt;&ndash;&gt;-->
-        <!--<script src="js/sb-admin-2.min.js"></script>-->
-
-        </body>
     </div>
 </template>
 
