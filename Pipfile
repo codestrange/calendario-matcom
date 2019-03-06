@@ -11,6 +11,7 @@ flask = "*"
 sqlalchemy = "*"
 flask-cors = "*"
 flask-shell-ipython = "*"
+flask-httpauth = "*"
 
 [requires]
 python_version = "3.6"
