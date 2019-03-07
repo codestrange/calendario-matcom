@@ -2,12 +2,11 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home';
 import Login from './views/Login';
-import UserController from './controllers/user';
-import RoutesController from './controllers/routes';
+import Store from './store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
@@ -21,26 +20,32 @@ export default new Router({
             path: '/home',
             name: 'homePage',
             component: Home,
-            beforeEnter(to, from, next) {
-                if (!UserController.isLogued()) {
-                    return next({name: 'loginPage'});
-                }
-                next();
+            meta: {
+                requiresAuth: true
             }
         },
         {
             path: '/login',
             name: 'loginPage',
             component: Login,
-            beforeEnter(to, from, next) {
-                RoutesController.updateLast(from.name);
-                next();
-            }
         }
         //Hollow Page
         // {
         //     path: '*',
         //     component:
         // }
-    ]
-})
+    ],
+    beforeEach(to, from, next) {
+        if (to.hasOwnProperty('requiresAuth')) {
+            if (to.meta.requiresAuth === true) {
+                Store.state.user.loadMinData();
+                if (Store.state.user.isLogued() === false) {
+                    next({name: 'loginPage'});
+                }
+            }
+            next();
+        }
+    }
+});
+
+export default router;

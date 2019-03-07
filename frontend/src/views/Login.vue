@@ -2,7 +2,6 @@
     <div id="login">
 
         <div class="container">
-
             <!-- Outer Row -->
             <div class="row justify-content-center">
 
@@ -23,7 +22,7 @@
                                                 <input type="email" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser()">
+                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" >
                                             </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
@@ -83,16 +82,18 @@
                 this.getToken(this.username, this.password, this.remember);
             },
             getToken(username, password, remember) {
+                this.$store.state.user.user_data.fullname = 'testing';
                 this.$store.state.user.authenticateUser(username, password, remember)
                     .then(result => {
                         if(result === false) {
-                            this.inputState = false;
+                            this.inputState = true;
                             setTimeout(() => {
                                 this.inputState = false;
                             }, 1000);
                         }
+                        console.log(JSON.stringify(this.$store.state.user));
                     });
-            }
+            },
         }
     }
 </script>

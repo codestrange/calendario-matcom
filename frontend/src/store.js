@@ -5,11 +5,13 @@ import RoutesController from './controllers/routes';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: {
         user: UserController,
         routes: RoutesController
     },
     mutations: {},
     actions: {}
-})
+});
+
+export default store;

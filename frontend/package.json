@@ -13,7 +13,8 @@
     "popper.js": "^1.14.7",
     "vue": "^2.5.22",
     "vue-router": "^3.0.2",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "vuex-persist": "^2.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",
