@@ -20,18 +20,18 @@
                                         </div>
                                         <form class="user">
                                             <div class="form-group">
-                                                <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su correo electrónico">
+                                                <input type="email" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Introduzca su contraseña">
+                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser()">
                                             </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck" v-model="remember">
                                                     <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                                 </div>
                                             </div>
-                                            <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                            <a @click="validateUser()" class="btn btn-primary btn-user btn-block">
                                                 Iniciar Sesión
                                             </a>
                                         </form>
@@ -70,6 +70,30 @@
 <script>
     export default {
         name: "Login",
+        data() {
+            return {
+                username: '',
+                password: '',
+                remember: false,
+                inputState: false
+            };
+        },
+        methods: {
+            validateUser() {
+                this.getToken(this.username, this.password, this.remember);
+            },
+            getToken(username, password, remember) {
+                this.$store.state.user.authenticateUser(username, password, remember)
+                    .then(result => {
+                        if(result === false) {
+                            this.inputState = false;
+                            setTimeout(() => {
+                                this.inputState = false;
+                            }, 1000);
+                        }
+                    });
+            }
+        }
     }
 </script>
 

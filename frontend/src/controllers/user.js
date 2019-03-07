@@ -10,16 +10,19 @@ export default {
         email:'',
         year:'',
         token:'',
+        remember:''
     },
     getMinData() {
         return JSON.stringify({
             id: Number(this.user_data.id),
-            token: String(this.user_data.token)
+            token: String(this.user_data.token),
+            remember: String(this.user_data.remember)
         });
     },
     reloadMinData(data) {
         this.updateId(data.id);
         this.updateToken(data.token);
+        this.updateToken(data.remember);
     },
     isLogued() {
         return this.user_data.token !== '';
@@ -37,6 +40,9 @@ export default {
     },
     updateId(id) {
         this.user_data.id = Number(id);
+    },
+    updateRemember(remember) {
+        this.user_data.remember = Boolean(remember);
     },
     getAuthJson(username, password) {
         Resources.clearHeaders();
@@ -56,12 +62,13 @@ export default {
         ]);
         return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => console.log('Error getting the response.'));
     },
-    authenticateUser(username, password) {
+    authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
             .then(json => {
                 if (json.token != null && json.id != null) {
                     this.updateToken(json.token);
                     this.updateId(json.id);
+                    this.updateRemember(remember);
                     return true;
                 }
                 console.log(json.error + ':' + json.message);
