@@ -66,6 +66,7 @@ export default {
         return this.getAuthJson(username, password)
             .then(json => {
                 if (json.token != null && json.id != null) {
+                    console.log('Logged');
                     this.updateToken(json.token);
                     this.updateId(json.id);
                     this.updateRemember(remember);
