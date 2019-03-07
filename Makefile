@@ -1,16 +1,19 @@
+backend_host = 0.0.0.0
+backend_port = 5000
+
 backend_run:
 	export FLASK_APP=run.py &&\
 	export FLASK_ENV=development &&\
 	export FLASK_DEBUG=1 &&\
 	cd backend &&\
-	flask run
+	flask run --host=${backend_host} --port=${backend_port}
 
 backend_run_pro:
 	export FLASK_APP=run.py &&\
 	export FLASK_ENV=production &&\
 	export FLASK_DEBUG=0
 	cd backend &&\
-	flask run
+	flask run --host=${backend_host} --port=${backend_port}
 
 backend_shell:
 	export FLASK_APP=run.py &&\
@@ -29,4 +32,4 @@ frontend_run:
 
 frontend_install:
 	cd frontend &&\
-	npm install
+	sudo npm install

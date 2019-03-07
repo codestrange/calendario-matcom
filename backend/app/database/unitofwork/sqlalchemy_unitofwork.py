@@ -1,3 +1,4 @@
+from logging import exception
 from . import UnitOfWork
 from ...container import Container
 
@@ -5,4 +6,8 @@ from ...container import Container
 class UnitOfWorkSQLAlchemy(UnitOfWork):
 
     def commit(self):
-        Container.instance().current_app.db.session.commit()
+        try:
+            Container.instance().current_app.db.session.commit()
+        except Exception as e:
+            Container.instance().current_app.db.session.rollback()
+            exception(e)

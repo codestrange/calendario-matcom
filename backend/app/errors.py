@@ -1,10 +1,10 @@
 from flask import jsonify
 from .controllers import api
-from .exceptions import ValidationError
+from .exceptions import ValidationResponseError
 
 
-def bad_request(message):
-    response = jsonify({'error': 'bad request', 'message': message})
+def bad_request(errors):
+    response = jsonify(errors)
     return response, 400
 
 
@@ -18,6 +18,6 @@ def forbidden(message):
     return response, 403
 
 
-@api.errorhandler(ValidationError)
+@api.errorhandler(ValidationResponseError)
 def validation_error(e):
     return bad_request(e.args[0])

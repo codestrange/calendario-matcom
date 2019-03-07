@@ -2,4 +2,4 @@ from flask import Blueprint
 
 api = Blueprint('api', __name__)
 
-from . import auth_controller
+from . import auth_controller, user_controller
