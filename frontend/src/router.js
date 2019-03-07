@@ -34,6 +34,7 @@ export default new Router({
             component: Login,
             beforeEnter(to, from, next) {
                 RoutesController.updateLast(from.name);
+                next();
             }
         }
         //Hollow Page
