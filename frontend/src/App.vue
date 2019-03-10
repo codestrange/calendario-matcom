@@ -1,28 +1,34 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <body class="bg-gradient-primary">
+            <router-view></router-view>
+        </body>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        data() {
+            return {
+            };
+        },
+        methods: {
+            beforeUnload() {
+                this.$store.state.user.loadMinData();
+                if (this.$store.state.user.isLogued() === true && this.$store.state.user.user_data.remember === true) {
+                    this.$store.state.user.saveMinData();
+                }
+                else {
+                    this.$store.state.user.removeMinData();
+                }
+            }
+        },
+        created() {
+            document.addEventListener('beforeunload', this.beforeUnload);
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
