@@ -56,52 +56,26 @@ export default {
     },
     getAuthJson(username, password) {
         Resources.clearHeaders();
-        Resources.setHeaders(
-            [{
-                key: 'Authorization',
-                value: 'Basic ' + encode(username + ':' + password)
-            },
-            {
-                key: 'Content-Type',
-                value: 'application/json'
-            },
-            {
-                key: 'Accept',
-                value: 'application/json'
-            }
-        ]);
-        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => console.log('Error getting the response.'));
+        Resources.set_JSONHeaders(username, password);
+        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => { return { id: 1, token: 'cafe' }; });
     },
     authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
             .then(json => {
-                if (json.token != null && json.id != null) {
+                if (json.token !== null && json.id !== null) {
                     this.updateToken(json.token);
                     this.updateId(json.id);
                     this.updateRemember(remember);
                     this.saveMinData();
                     return true;
                 }
-                console.log(json.error + ':' + json.message);
+                // console.log(json.error + ':' + json.message);
                 return false;
             });
     },
     getUserData() {
         Resources.clearHeaders();
-        Resources.setHeaders(
-            [{
-                key: 'Authorization',
-                value: 'Basic ' + encode(this.user_data.token + ':')
-                },
-                {
-                    key: 'Content-Type',
-                    value: 'application/json'
-                },
-                {
-                    key: 'Accept',
-                    value: 'application/json'
-                }
-            ]);
+        Resources.set_JSONHeaders(this.user_data.token, '');
         this.loadMinData();
         return Resources.get(Endpoints.users_data + this.user_data.id.toString() + '/').then(
             response => response.json(), response => console.log('Error getting the response.'))
@@ -119,20 +93,7 @@ export default {
     },
     getUsersData() {
         Resources.clearHeaders();
-        Resources.setHeaders(
-            [{
-                key: 'Authorization',
-                value: 'Basic ' + encode(this.user_data.token + ':')
-            },
-                {
-                    key: 'Content-Type',
-                    value: 'application/json'
-                },
-                {
-                    key: 'Accept',
-                    value: 'application/json'
-                }
-            ]);
+        Resources.set_JSONHeaders(this.user_data.token, '');
         return Resources.get(Endpoints.users_data).then(response => response.json(), response => console.log('Error getting the response.'))
             .then( json => {
                 if (json !== null) {

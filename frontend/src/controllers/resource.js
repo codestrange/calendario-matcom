@@ -1,3 +1,5 @@
+import {encode} from "../utils/base64";
+
 export default {
     headers: {},
     get(url) {
@@ -14,6 +16,26 @@ export default {
     },
     delete(url, headers) {
         console.log('Not implemented exception!!!');
+    },
+    set_JSONHeaders(username, password) {
+        let headers =
+        [
+            {
+                key: 'Content-Type',
+                value: 'application/json'
+            },
+            {
+                key: 'Accept',
+                value: 'application/json'
+            }
+        ];
+        if (username !== null && password !== null) {
+            headers.push({
+                key: 'Authorization',
+                value: 'Basic ' + encode(username + ':' + password)
+            });
+        }
+        this.setHeaders(headers);
     },
     setHeaders(headers) {
         headers.forEach(header => {

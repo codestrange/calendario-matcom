@@ -37,6 +37,13 @@ const router = new Router({
             path: '/login',
             name: 'loginPage',
             component: Login,
+            beforeEnter(to, from, next) {
+                Store.state.user.loadMinData();
+                if (Store.state.user.isLogued() === true) {
+                    next({ name: Store.state.routes.getLast() });
+                }
+                next();
+            }
         }
         //Hollow Page
         // {
@@ -49,6 +56,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     checkforAuth(to, from, next);
     next();
+});
+
+router.afterEach((to, from) => {
+   Store.state.routes.updateLast(from.name);
 });
 
 export default router;

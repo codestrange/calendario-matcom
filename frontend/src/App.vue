@@ -1,13 +1,17 @@
 <template>
-    <div id="app">
-
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="Calendario-Matcom">
+            <meta name="author" content="CodeStrange">
+            <title>Calendario Matcom</title>
+        </head>
         <body class="bg-gradient-primary">
-
             <router-view></router-view>
-
         </body>
-
-    </div>
+    </html>
 </template>
 
 <script>

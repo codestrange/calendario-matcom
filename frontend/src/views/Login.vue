@@ -19,10 +19,10 @@
                                         </div>
                                         <form class="user">
                                             <div class="form-group">
-                                                <input type="email" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
+                                                <input :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" >
+                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser" >
                                             </div>
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
@@ -30,9 +30,9 @@
                                                     <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                                 </div>
                                             </div>
-                                            <a @click="validateUser()" class="btn btn-primary btn-user btn-block">
+                                            <button @click="validateUser" class="btn btn-primary btn-user btn-block">
                                                 Iniciar Sesión
-                                            </a>
+                                            </button>
                                         </form>
                                         <hr>
                                         <div class="text-center">
@@ -82,7 +82,6 @@
                 this.getToken(this.username, this.password, this.remember);
             },
             getToken(username, password, remember) {
-                this.$store.state.user.user_data.fullname = 'testing';
                 this.$store.state.user.authenticateUser(username, password, remember)
                     .then(result => {
                         if(result === false) {
@@ -91,13 +90,8 @@
                                 this.inputState = false;
                             }, 1000);
                         }
-                        console.log(JSON.stringify(this.$store.state.user));
                     });
             },
         }
     }
 </script>
-
-<style scoped>
-
-</style>
