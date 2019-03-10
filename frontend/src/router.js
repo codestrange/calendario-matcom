@@ -6,6 +6,15 @@ import Store from './store';
 
 Vue.use(Router);
 
+const checkforAuth = (to, from, next) => {
+    if (to.matched.some(route => route.meta.requiresAuth)) {
+        Store.state.user.loadMinData();
+        if (Store.state.user.isLogued() === false) {
+            next({name: 'loginPage'});
+        }
+    }
+};
+
 const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
@@ -34,18 +43,12 @@ const router = new Router({
         //     path: '*',
         //     component:
         // }
-    ],
-    beforeEach(to, from, next) {
-        if (to.hasOwnProperty('requiresAuth')) {
-            if (to.meta.requiresAuth === true) {
-                Store.state.user.loadMinData();
-                if (Store.state.user.isLogued() === false) {
-                    next({name: 'loginPage'});
-                }
-            }
-            next();
-        }
-    }
+    ]
+});
+
+router.beforeEach((to, from, next) => {
+    checkforAuth(to, from, next);
+    next();
 });
 
 export default router;
