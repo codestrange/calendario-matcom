@@ -42,11 +42,9 @@
                             <h6 class="collapse-header">Sitios Matcom:</h6>
                             <a class="collapse-item" href="http://foros.matcom.uh.cu">Foros Matcom</a>
                             <a class="collapse-item" href="http://correo.estudiantes.matcom.uh.cu">Correo</a>
-                            <!--<a class="collapse-item" href="forgot-password.html">Forgot Password</a>-->
                             <div class="collapse-divider"></div>
                             <h6 class="collapse-header">Sitios UH:</h6>
                             <a class="collapse-item" href="http://www.uh.cu">UH</a>
-                            <!--<a class="collapse-item active" href="blank.html">Blank Page</a>-->
                         </div>
                     </div>
                 </li>

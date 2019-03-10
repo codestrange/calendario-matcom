@@ -69,7 +69,7 @@ export default {
                     this.saveMinData();
                     return true;
                 }
-                // console.log(json.error + ':' + json.message);
+                console.log(json.error + ':' + json.message);
                 return false;
             });
     },
