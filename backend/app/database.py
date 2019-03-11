@@ -1,16 +1,8 @@
-from flask_sqlalchemy import Model, SQLAlchemy
-from sqlalchemy import Column, Integer
-from sqlalchemy.ext.declarative import declared_attr
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-class IdModel(Model):
-    @declared_attr
-    def id(self):
-        return Column(Integer, primary_key=True)
-
-
-db = SQLAlchemy(model_class=IdModel)
+db = SQLAlchemy()
 
 user_role = db.Table('user_role',
                      db.Column('user_id',
@@ -73,93 +65,149 @@ teacher_course = db.Table('teacher_course',
                                     db.Integer, db.ForeignKey('course.id'), primary_key=True))
 
 
+class UserGroupNotification(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
+    notification_id = db.Column(db.Integer, db.ForeignKey('notification.id'), primary_key=True)
+
+    def __repr__(self):
+        return f'{self.user.username, self.group.name, self.notification.title}'
+
+
 class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     hour_class = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     semester = db.Column(db.Integer, nullable=False)
-    events = db.relationship('Event', secondary=event_course,
-                             lazy=True, backref=db.backref('courses', lazy=True))
+    events = db.relationship('Event', secondary=event_course, backref='courses')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), unique=True, nullable=False)
     description = db.Column(db.Text)
     start = db.Column(db.DateTime, nullable=False)
     end = db.Column(db.DateTime, nullable=False)
 
+    def __repr__(self):
+        return f'{self.title}'
+
 
 class Group(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    users = db.relationship('User', secondary=user_group,
-                            lazy=True, backref=db.backref('groups', lazy=True))
-    events = db.relationship('Event', secondary=event_group,
-                             lazy=True, backref=db.backref('groups', lazy=True))
+    users = db.relationship('User', secondary=user_group, backref=db.backref('groups'))
+    events = db.relationship('Event', secondary=event_group, backref=db.backref('groups'))
+    notifications = db.relationship('UserGroupNotification',
+                                    foreign_keys=[UserGroupNotification.group_id], backref='group')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Local(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     size = db.Column(db.Integer, nullable=False)
-    events = db.relationship('Event', secondary=event_local,
-                             lazy=True, backref=db.backref('locals', lazy=True))
+    events = db.relationship('Event', secondary=event_local, backref='locals')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), nullable=False)
     body = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+    notifications = db.relationship('UserGroupNotification',
+                                    foreign_keys=[UserGroupNotification.notification_id],
+                                    backref='notification')
+
+    def __repr__(self):
+        return f'{self.title}'
 
 
 class Option(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(256), nullable=False)
     vote_id = db.Column(db.Integer, db.ForeignKey('vote.id'), nullable=False)
-    users = db.relationship('User', secondary=user_option,
-                            lazy=True, backref=db.backref('options', lazy=True))
+    users = db.relationship('User', secondary=user_option, backref='options')
+
+    def __repr__(self):
+        return f'{self.text}'
 
 
 class Permission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    roles = db.relationship('Role', secondary=role_permission,
-                            lazy=True, backref=db.backref('permissions', lazy=True))
+    roles = db.relationship('Role', secondary=role_permission, backref='permissions')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Resource(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
     kind = db.Column(db.String(64), nullable=False)
-    events = db.relationship('Event', secondary=event_resource,
-                             lazy=True, backref=db.backref('resources', lazy=True))
+    events = db.relationship('Event', secondary=event_resource, backref='resources')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    users = db.relationship('User', secondary=user_role,
-                            lazy=True, backref=db.backref('roles', lazy=True))
+    users = db.relationship('User', secondary=user_role, backref='roles')
+
+    def __repr__(self):
+        return f'{self.name}'
 
 
 class Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     carrer = db.Column(db.String(128), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    def __repr__(self):
+        return f'{self.user.username}'
+
 
 class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(64), unique=True, nullable=False)
-    events = db.relationship('Event', secondary=event_tag,
-                             lazy=True, backref=db.backref('tags', lazy=True))
+    events = db.relationship('Event', secondary=event_tag, backref='tags')
+
+    def __repr__(self):
+        return f'{self.text}'
 
 
 class Teacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     department = db.Column(db.String(128), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    courses = db.relationship('Course', secondary=teacher_course,
-                              lazy=True, backref=db.backref('teachers', lazy=True))
+    courses = db.relationship('Course', secondary=teacher_course, backref='teachers')
+
+    def __repr__(self):
+        return f'{self.user.username}'
 
 
 class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    student = db.relationship('Student', backref='user', lazy=True, uselist=False)
-    teacher = db.relationship('Teacher', backref='user', lazy=True, uselist=False)
+    student = db.relationship('Student', backref='user', uselist=False)
+    teacher = db.relationship('Teacher', backref='user', uselist=False)
+    notifications = db.relationship('UserGroupNotification',
+                                    foreign_keys=[UserGroupNotification.user_id], backref='user')
+
 
     @property
     def password(self):
@@ -172,8 +220,15 @@ class User(db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def __repr__(self):
+        return f'{self.username}'
+
 
 class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    options = db.relationship('Option', backref='vote', lazy=True)
+    options = db.relationship('Option', backref='vote')
+
+    def __repr__(self):
+        return f'{self.title}'

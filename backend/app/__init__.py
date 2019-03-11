@@ -3,7 +3,7 @@ from flask_cors import CORS
 from .admin import admin, ModelView, UserModelView
 from .config import config
 from .database import db, Course, Event, Group, Local, Notification, Option, Permission, Resource, \
-    Role, Student, Tag, Teacher, User, Vote
+    Role, Student, Tag, Teacher, User, Vote, UserGroupNotification
 
 
 def create_app(config_name):
@@ -29,6 +29,7 @@ def create_app(config_name):
     admin.add_view(ModelView(Teacher, db.session))
     admin.add_view(UserModelView(User, db.session))
     admin.add_view(ModelView(Vote, db.session))
+    admin.add_view(ModelView(UserGroupNotification, db.session))
 
     from .controllers import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/api')

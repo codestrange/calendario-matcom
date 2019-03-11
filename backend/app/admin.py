@@ -13,9 +13,7 @@ class ModelView(_ModelView):
 
 
 class UserModelView(ModelView):
-    column_exclude_list = ['password_hash', 'teacher', 'student']
-    form_excluded_columns = ['password_hash', 'teacher', 'student']
-    column_details_exclude_list = ['password_hash', 'teacher', 'student']
+    column_exclude_list = form_excluded_columns = column_details_exclude_list = ['password_hash']
     form_extra_fields = {
         'password': PasswordField('Password', validators=[DataRequired()])
     }
