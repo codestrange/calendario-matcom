@@ -57,7 +57,7 @@ export default {
     getAuthJson(username, password) {
         Resources.clearHeaders();
         Resources.set_JSONHeaders(username, password);
-        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => { return { id: 1, token: 'cafe' }; });
+        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => console.log('Error getting the response.'));
     },
     authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
