@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home';
 import Login from './views/Login';
 import Store from './store';
+import Register from './views/Register';
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ const router = new Router({
                 }
                 next();
             }
+        },
+        {
+            path: '/register',
+            name: 'registerPage',
+            component: Register
         }
         //Hollow Page
         // {

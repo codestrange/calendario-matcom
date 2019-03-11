@@ -1,12 +1,9 @@
 <template>
     <div id="login">
-
         <div class="container">
             <!-- Outer Row -->
             <div class="row justify-content-center">
-
                 <div class="col-xl-10 col-lg-12 col-md-9">
-
                     <div class="card o-hidden border-0 shadow-lg my-5">
                         <div class="card-body p-0">
                             <!-- Nested Row within Card Body -->
@@ -30,27 +27,24 @@
                                                     <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                                 </div>
                                             </div>
-                                            <button @click="validateUser" class="btn btn-primary btn-user btn-block">
+                                            <router-link :to="{name: 'homePage'}" @click.native="validateUser" class="btn btn-primary btn-user btn-block text-dark">
                                                 Iniciar Sesión
-                                            </button>
+                                            </router-link>
                                         </form>
                                         <hr>
                                         <div class="text-center">
                                             <a class="small" href="forgot-password.html">Recuperar Contraseña</a>
                                         </div>
                                         <div class="text-center">
-                                            <a class="small" href="register.html">Registrarse</a>
+                                            <router-link :to="{name: 'registerPage'}" class="small">Registrarse</router-link>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
             <!-- Footer -->
             <footer class="sticky-footer">
                 <div class="container my-auto">
@@ -60,9 +54,7 @@
                 </div>
             </footer>
             <!-- End of Footer -->
-
         </div>
-
     </div>
 </template>
 

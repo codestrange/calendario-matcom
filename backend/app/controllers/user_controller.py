@@ -53,7 +53,7 @@ def get_user(id):
 
 
 @api.route('/users/', methods=['POST'])
-@auth_token.login_required
+# @auth_token.login_required
 def post_user():
     repo = Container.instance().current_app.unitofwork.get_repository('UserRepository')
     json = loads(request.json) if isinstance(request.json, str) else request.json

@@ -3,5 +3,6 @@ export default {
     token_endpoint: 'http://localhost:5000/api/token/',
     users_data: 'http://localhost:5000/api/users/',
     roles_data: 'http://localhost:5000/api/roles/',
-    permissions_data: 'http://localhost:5000/api/permissions/'
+    permissions_data: 'http://localhost:5000/api/permissions/',
+    create_user: 'http://localhost:5000/api/users/'
 }
