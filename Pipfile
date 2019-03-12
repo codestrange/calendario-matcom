@@ -13,6 +13,8 @@ flask-cors = "*"
 flask-shell-ipython = "*"
 flask-httpauth = "*"
 marshmallow = "*"
+flask-sqlalchemy = "*"
+flask-admin = "*"
 
 [requires]
 python_version = "3.6"
