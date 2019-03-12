@@ -4,6 +4,7 @@ import Nav from './views/Nav';
 import Login from './views/Login';
 import Store from './store';
 import Register from './views/Register';
+import NotFound from './views/NotFound';
 import Home from './components/Home';
 import UserProfile from './components/UserProfile';
 
@@ -70,12 +71,12 @@ const router = new Router({
             path: '/register',
             name: 'registerPage',
             component: Register
+        },
+        {
+            path: '*',
+            name: 'notFoundPage',
+            component: NotFound
         }
-        //Hollow Page
-        // {
-        //     path: '*',
-        //     component:
-        // }
     ]
 });
 

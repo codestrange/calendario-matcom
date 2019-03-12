@@ -77,8 +77,8 @@ export default {
         this.loadMinData();
         Resources.clearHeaders();
         Resources.set_JSONHeaders(this.user_data.token, '');
-        console.log('Headers seted');
-        console.log(this.user_data.id);
+        // console.log('Headers seted');
+        // console.log(this.user_data.id);
         return Resources.get(Endpoints.users_data + this.user_data.id.toString() + '/').then(
             response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
