@@ -4,23 +4,23 @@
             <!-- Sidebar -->
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <router-link :to="{name: 'homePage'}" class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                     <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-table"></i>
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
                     <!--<div class="sidebar-brand-text mx-3"></div>-->
-                </a>
+                </router-link>
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
                 <!-- Nav Item - Inicio -->
                 <li class="nav-item">
-                    <a class="nav-link" href="blank.html">
+                    <router-link :to="{name: 'homePage'}" class="nav-link" href="">
                         <i class="fas fa-fw fa-home"></i>
-                        <span>Inicio</span></a>
+                        <span>Inicio</span></router-link>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="blank.html">
-                        <i class="fas fa-fw fa-table"></i>
+                        <i class="fas fa-fw fa-calendar"></i>
                         <span>Mi Calendario</span></a>
                 </li>
                 <!-- Divider -->
@@ -40,11 +40,11 @@
                          data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Sitios Matcom:</h6>
-                            <a class="collapse-item" href="http://foros.matcom.uh.cu">Foros Matcom</a>
-                            <a class="collapse-item" href="http://correo.estudiantes.matcom.uh.cu">Correo</a>
+                            <a class="collapse-item" href="http://foros.matcom.uh.cu" @click.prevent="openNewTab('http://foros.matcom.uh.cu')">Foros Matcom</a>
+                            <a class="collapse-item" href="http://correo.estudiantes.matcom.uh.cu" @click.prevent="openNewTab('http://correo.estudiantes.matcom.uh.cu')">Correo</a>
                             <div class="collapse-divider"></div>
                             <h6 class="collapse-header">Sitios UH:</h6>
-                            <a class="collapse-item" href="http://www.uh.cu">UH</a>
+                            <a class="collapse-item" href="http://www.uh.cu" @click.prevent="openNewTab('http://www.uh.cu')">UH</a>
                         </div>
                     </div>
                 </li>
@@ -197,6 +197,9 @@
             logoutUser() {
                 this.$store.state.user.logOut();
                 this.$router.push({ name: 'loginPage' });
+            },
+            openNewTab(url) {
+                window.open(url, '_blank');
             }
         },
         created() {
