@@ -5,6 +5,7 @@ import Login from './views/Login';
 import Store from './store';
 import Register from './views/Register';
 import Home from './components/Home';
+import UserProfile from './components/UserProfile';
 
 Vue.use(Router);
 
@@ -39,6 +40,14 @@ const router = new Router({
                     path: '/home',
                     name: 'homePage',
                     component: Home,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/user',
+                    name: 'userPage',
+                    component: UserProfile,
                     meta: {
                         requiresAuth: true
                     }
