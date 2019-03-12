@@ -57,12 +57,12 @@ export default {
     getAuthJson(username, password) {
         Resources.clearHeaders();
         Resources.set_JSONHeaders(username, password);
-        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => { return { id: 1, token: 'cafe' }; });
+        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => console.log('Error getting the response.'));
     },
     authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
             .then(json => {
-                if (json.token !== null && json.id !== null) {
+                if (json.hasOwnProperty('id') && json.hasOwnProperty('token')) {
                     this.updateToken(json.token);
                     this.updateId(json.id);
                     this.updateRemember(remember);
@@ -74,6 +74,7 @@ export default {
             });
     },
     getUserData() {
+        this.loadMinData();
         Resources.clearHeaders();
         Resources.set_JSONHeaders(this.user_data.token, '');
         this.loadMinData();
@@ -100,6 +101,23 @@ export default {
                     return json;
                 }
                 console.log('Error getting JSON.');
+            });
+    },
+    createUser(username, email, password) {
+        Resources.clearHeaders();
+        Resources.set_JSONHeaders();
+        return Resources.post(Endpoints.create_user, {
+            username: username,
+            email: email,
+            password: password
+        }).then(response => response.json(), response => console.log('Error getting the response.'))
+            .then( json => {
+                if (json !== null && json.hasOwnProperty('error') === false) {
+                    console.log(json.message);
+                    return true;
+                }
+                console.log(json.error + ':' + json.message);
+                return false;
             });
     }
 }

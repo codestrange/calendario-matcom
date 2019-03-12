@@ -193,7 +193,6 @@
         },
         methods: {
             logoutUser() {
-                console.log('Loged Out');
                 this.$store.state.user.logOut();
                 this.$router.push({ name: 'loginPage' });
             }

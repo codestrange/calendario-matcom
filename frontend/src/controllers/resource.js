@@ -4,14 +4,18 @@ export default {
     headers: {},
     get(url) {
         return fetch(url,{
-            method:'get',
+            method: 'get',
             headers: this.headers
         });
     },
-    post(url, headers, body) {
-        console.log('Not implemented exception!!!');
+    post(url, body) {
+        return fetch(url,{
+            method: 'post',
+            headers: this.headers,
+            body: JSON.stringify(body)
+        });
     },
-    put(url, headers, body) {
+    put(url, body) {
         console.log('Not implemented exception!!!');
     },
     delete(url, headers) {

@@ -48,7 +48,7 @@ def get_user(id):
 
 
 @api.route('/users/', methods=['POST'])
-@auth_token.login_required
+# @auth_token.login_required
 def post_user():
     json = loads(request.json) if isinstance(request.json, str) else request.json
     errors = UserValidatorSchema().validate(json)
