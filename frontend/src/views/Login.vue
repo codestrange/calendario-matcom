@@ -27,9 +27,9 @@
                                                     <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                                 </div>
                                             </div>
-                                            <router-link :to="{name: 'homePage'}" @click.native="validateUser" class="btn btn-primary btn-user btn-block text-dark">
+                                            <a @click="validateUser" class="btn btn-primary btn-user btn-block text-dark">
                                                 Iniciar Sesión
-                                            </router-link>
+                                            </a>
                                         </form>
                                         <hr>
                                         <div class="text-center">
@@ -81,6 +81,9 @@
                             setTimeout(() => {
                                 this.inputState = false;
                             }, 1000);
+                        }
+                        else {
+                            this.$router.push({name: 'homePage'});
                         }
                     });
             },
