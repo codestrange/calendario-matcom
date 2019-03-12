@@ -22,6 +22,7 @@ export default {
         console.log('Not implemented exception!!!');
     },
     set_JSONHeaders(username, password) {
+        console.log(username + ':' + password);
         let headers =
         [
             {

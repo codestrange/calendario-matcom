@@ -114,8 +114,8 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario</span>
-                                    <img class="img-profile rounded-circle" src="img/uh_front.jpg">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{username}}</span>
+                                    <img class="img-profile rounded-circle" :src="user_pic_location">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -141,7 +141,7 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
                         <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">Página en Blanco</h1>
+                        <router-view></router-view>
                     </div>
                     <!-- /.container-fluid -->
                 </div>
@@ -188,7 +188,9 @@
         name: "Home",
         data() {
             return {
-                loginOut: false
+                loginOut: false,
+                user_pic_location: './img/default_user_image.jpeg',
+                username: 'Usuario'
             };
         },
         methods: {
@@ -196,6 +198,13 @@
                 this.$store.state.user.logOut();
                 this.$router.push({ name: 'loginPage' });
             }
+        },
+        created() {
+            this.$store.state.user.getUserData().then(user_info => {
+                if (user_info.hasOwnProperty('username')) {
+                    this.username = user_info.username;
+                }
+            });
         }
     }
 </script>

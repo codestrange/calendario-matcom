@@ -26,7 +26,7 @@ export default {
             let data = JSON.parse(localStorage.getItem(data_key));
             this.updateId(data.id);
             this.updateToken(data.token);
-            this.updateToken(data.remember);
+            this.updateRemember(data.remember);
         }
 
     },
@@ -77,11 +77,12 @@ export default {
         this.loadMinData();
         Resources.clearHeaders();
         Resources.set_JSONHeaders(this.user_data.token, '');
-        this.loadMinData();
+        console.log('Headers seted');
+        console.log(this.user_data.id);
         return Resources.get(Endpoints.users_data + this.user_data.id.toString() + '/').then(
             response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
-                if(json.email !== null && json.username !== null) {
+                if(json.hasOwnProperty('email') && json.hasOwnProperty('username')) {
                     this.user_data.email = json.email;
                     this.user_data.username = json.username;
                     return {
@@ -90,6 +91,7 @@ export default {
                       fullname: 'No in DB',
                     };
                 }
+                return {};
             });
     },
     getUsersData() {

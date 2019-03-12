@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home';
+import Nav from './views/Nav';
 import Login from './views/Login';
 import Store from './store';
 import Register from './views/Register';
+import Home from './components/Home';
 
 Vue.use(Router);
 
@@ -27,12 +28,22 @@ const router = new Router({
         },
         //Redirections
         {
-            path: '/home',
-            name: 'homePage',
-            component: Home,
+            path: '/nav',
+            name: 'navPage',
+            component: Nav,
             meta: {
                 requiresAuth: true
-            }
+            },
+            children: [
+                {
+                    path: '/home',
+                    name: 'homePage',
+                    component: Home,
+                    meta: {
+                        requiresAuth: true
+                    }
+                }
+            ]
         },
         {
             path: '/login',
