@@ -1,5 +1,5 @@
 from json import loads
-from .errors import bad_request
+from .exceptions import ValidationError
 
 
 class AttributeDict(dict):
@@ -14,8 +14,7 @@ class AttributeDict(dict):
 def check_json(json, required):
     for item in required:
         if item not in json:
-            return bad_request({'message': f'{item} is required'})
-    return None
+            raise ValidationError(f'{item} is required')
 
 
 def json_load(json):

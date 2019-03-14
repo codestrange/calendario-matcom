@@ -210,14 +210,6 @@ class User(db.Model):
     notifications = db.relationship('UserGroupNotification',
                                     foreign_keys=[UserGroupNotification.user_id], backref='user')
 
-    def __init__(self, username, email, password):
-        if username:
-            self.username = username
-        if email:
-            self.email = email
-        if password:
-            self.password = password
-
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute.')

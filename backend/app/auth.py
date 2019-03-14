@@ -6,6 +6,7 @@ from .database import User
 
 auth = HTTPBasicAuth()
 auth_token = HTTPBasicAuth()
+auth_simple = HTTPBasicAuth()
 
 
 def generate_auth_token(user, expires_in=3600):
@@ -15,6 +16,20 @@ def generate_auth_token(user, expires_in=3600):
 
 def verify_auth_token(token):
     s = Serializer(current_app.config['SECRET_KEY'])
+    try:
+        data = s.loads(token)
+    except:
+        return None
+    return User.query.get(data['id'])
+
+
+def generate_confirmation_token(user, expires_in=3600):
+    s = Serializer(current_app.config['CONFIRMATION_KEY'], expires_in=expires_in)
+    return s.dumps({'id': user.id}).decode('utf-8')
+
+
+def verify_confirmation_token(token):
+    s = Serializer(current_app.config['CONFIRMATION_KEY'])
     try:
         data = s.loads(token)
     except:
@@ -38,6 +53,21 @@ def auth_error_handler():
         error_message = 'user unconfirmed'
     elif not user.activated:
         error_message = 'user deactivated'
+    return response_unauthorized(error_message)
+
+
+@auth_simple.verify_password
+def auth_simple_verify_password(username, password):
+    g.current_user = user = User.query.filter_by(username=username).first()
+    return user and user.verify_password(password)
+
+
+@auth_simple.error_handler
+def auth_simple_error_handler():
+    user = g.current_user
+    error_message = 'invalid password'
+    if user is None:
+        error_message = 'user don\'t exist'
     return response_unauthorized(error_message)
 
 
