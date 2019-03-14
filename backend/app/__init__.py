@@ -1,9 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
 from .admin import admin, ModelView, UserModelView
 from .config import config
 from .database import db, Course, Event, Group, Local, Notification, Option, Permission, Resource, \
     Role, Student, Tag, Teacher, User, Vote, UserGroupNotification
+
+migrate = Migrate()
 
 
 def create_app(config_name):
@@ -14,6 +17,7 @@ def create_app(config_name):
 
     admin.init_app(app)
     db.init_app(app)
+    migrate.init_app(app, db)
 
     admin.add_view(ModelView(Course, db.session))
     admin.add_view(ModelView(Event, db.session))

@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 db = SQLAlchemy()
@@ -203,11 +203,20 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    confirmed = db.Column(db.Boolean, default=False)
+    activated = db.Column(db.Boolean, default=True)
     student = db.relationship('Student', backref='user', uselist=False)
     teacher = db.relationship('Teacher', backref='user', uselist=False)
     notifications = db.relationship('UserGroupNotification',
                                     foreign_keys=[UserGroupNotification.user_id], backref='user')
 
+    def __init__(self, username, email, password):
+        if username:
+            self.username = username
+        if email:
+            self.email = email
+        if password:
+            self.password = password
 
     @property
     def password(self):

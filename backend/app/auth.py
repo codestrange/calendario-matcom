@@ -24,17 +24,20 @@ def verify_auth_token(token):
 
 @auth.verify_password
 def auth_verify_password(username, password):
-    g.current_user = User.query.filter_by(username=username).first()
-    if g.current_user is None:
-        return False
-    return g.current_user.verify_password(password)
+    g.current_user = user = User.query.filter_by(username=username).first()
+    return user and user.verify_password(password) and user.confirmed and user.activated
 
 
 @auth.error_handler
 def auth_error_handler():
+    user = g.current_user
     error_message = 'invalid password'
-    if g.current_user is None:
+    if user is None:
         error_message = 'user don\'t exist'
+    elif not user.confirmed:
+        error_message = 'user unconfirmed'
+    elif not user.activated:
+        error_message = 'user deactivated'
     return response_unauthorized(error_message)
 
 
