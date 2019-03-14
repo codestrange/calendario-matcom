@@ -203,10 +203,8 @@
             }
         },
         created() {
-            this.$store.state.user.getUserData().then(user_info => {
-                if (user_info.hasOwnProperty('username')) {
-                    this.username = user_info.username;
-                }
+            this.$store.state.user.getUserData().then(() => {
+                this.username = this.$store.state.user.user_data.username;
             });
         }
     }
