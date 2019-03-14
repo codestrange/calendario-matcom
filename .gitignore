@@ -233,4 +233,4 @@ typings/
 .directory
 
 # databases
-*.sqlite
+#*.sqlite
