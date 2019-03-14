@@ -6,6 +6,7 @@ basedir = abspath(dirname(__file__))
 
 class Config(object):
     SECRET_KEY = getenv('SECRET_KEY') or 'secret_key'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
     def init_app(app):
@@ -14,17 +15,17 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    DATABASE_URL = getenv('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = getenv('DEV_DATABASE_URL') or \
         'sqlite:///' + join(basedir, 'data_dev.sqlite')
 
 
 class TestingConfig(Config):
     TESTING = True
-    DATABASE_URL = getenv('TEST_DATABASE_URL') or 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = getenv('TEST_DATABASE_URL') or 'sqlite://'
 
 
 class ProductionConfig(Config):
-    DATABASE_URL = getenv('DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = getenv('DATABASE_URL') or \
         'sqlite:///' + join(basedir, 'data.sqlite')
 
 
