@@ -3,7 +3,7 @@ from . import api
 from ..auth import auth, generate_auth_token
 
 
-@api.route('/token/')
+@api.route('/token')
 @auth.login_required
 def get_token():
     return jsonify({
