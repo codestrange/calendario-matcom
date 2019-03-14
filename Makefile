@@ -23,6 +23,21 @@ backend_shell:
 backend_install:
 	pipenv install
 
+backend_db_init:
+	export FLASK_APP=run.py &&\
+	cd backend &&\
+	flask db init
+
+backend_db_migrate:
+	export FLASK_APP=run.py &&\
+	cd backend &&\
+	flask db migrate
+
+backend_db_upgrade:
+	export FLASK_APP=run.py &&\
+	cd backend &&\
+	flask db upgrade
+
 pipenv_run:
 	pipenv shell
 
