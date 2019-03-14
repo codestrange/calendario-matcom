@@ -3,9 +3,8 @@ from .controllers import api
 from .exceptions import ValidationError
 
 
-def bad_request(errors):
-    errors['error'] = 'bad request'
-    response = jsonify(errors)
+def bad_request(message):
+    response = jsonify({'error': 'bad request', 'message': message})
     return response, 400
 
 

@@ -6,6 +6,7 @@ basedir = abspath(dirname(__file__))
 
 class Config(object):
     SECRET_KEY = getenv('SECRET_KEY') or 'secret_key'
+    CONFIRMATION_KEY = getenv('CONFIRMATION_KEY') or 'confirmation_key'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
