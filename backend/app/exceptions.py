@@ -1,2 +1,2 @@
-class ValidationResponseError(ValueError):
+class ValidationError(ValueError):
     pass

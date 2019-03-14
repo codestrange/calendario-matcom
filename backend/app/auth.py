@@ -1,7 +1,6 @@
 from flask import g, current_app
 from flask_httpauth import HTTPBasicAuth
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from werkzeug.security import check_password_hash
 from .errors import unauthorized as response_unauthorized
 from .database import User
 
