@@ -13,7 +13,9 @@ def get_profile():
     return jsonify({
         'id': user.id,
         'username': user.username,
-        'email': user.email
+        'email': user.email,
+        'confirmed': user.confirmed,
+        'activated': user.activated
     })
 
 
