@@ -1,9 +1,14 @@
 <template>
-    <div id="user-profile" class="row">
-        <div class="col-lg-5">
-            <img class="img-profile rounded-circle" :src="user_img">
+    <div id="user-profile" class="row align-items-center justify-content-center">
+        <div class="col-lg-3 offset-lg-1">
+            <img class="img-profile ml-3 rounded-circle mb-3" :src="user_img">
+            <button class="btn btn-danger btn-user btn-block">Confirmar Cambios</button>
+            <hr>
+            <div class="form-group">
+                <textarea type="text" class="form-control form-control-user" id="username" v-model="username"></textarea>
+            </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             <div class="p-5">
                 <div class="text-center">
                     <h1 class="h2 text-gray-900 mb-4">Perfil</h1>
@@ -31,13 +36,6 @@
                     </div>
                     <button class="btn btn-danger btn-user btn-block">Confirmar Cambios</button>
                 </form>
-                <hr>
-                <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
-                </div>
-                <div class="text-center">
-                    <a class="small" href="login.html">Already have an account? Login!</a>
-                </div>
             </div>
         </div>
     </div>
