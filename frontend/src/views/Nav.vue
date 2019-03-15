@@ -51,9 +51,9 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
                 <!-- Sidebar Toggler (Sidebar) -->
-                <div class="text-center d-none d-md-inline">
+                <!-- <div class="text-center d-none d-md-inline">
                     <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                </div>
+                </div> -->
             </ul>
             <!-- End of Sidebar -->
             <div id="content-wrapper" class="d-flex flex-column">
@@ -114,7 +114,7 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{username}}</span>
+                                    <span class="mr-3 d-none d-lg-inline text-gray-600 small">{{ username }}</span>
                                     <img class="img-profile rounded-circle" :src="user_pic_location">
                                 </a>
                                 <!-- Dropdown - User Information -->
@@ -124,10 +124,10 @@
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </router-link>
-                                    <a class="dropdown-item" href="#">
+                                    <!-- <a class="dropdown-item" href="#">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Configuración
-                                    </a>
+                                    </a> -->
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -146,11 +146,12 @@
                     <!-- /.container-fluid -->
                 </div>
                 <!-- End of Main Content -->
+                <hr>
                 <!-- Footer -->
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</span>
+                            <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</strong>
                         </div>
                     </div>
                 </footer>
@@ -159,9 +160,9 @@
             <!-- End of Content Wrapper -->
         </div>
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <!-- <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
-        </a>
+        </a> -->
         <!-- Logout Modal-->
         <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
