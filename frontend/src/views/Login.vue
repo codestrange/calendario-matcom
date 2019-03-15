@@ -21,39 +21,40 @@
                                             <div class="form-group">
                                                 <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser" >
                                             </div>
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck" v-model="remember">
                                                     <label class="custom-control-label" for="customCheck">Recuerdame</label>
                                                 </div>
-                                            </div>
-                                            <a @click="validateUser" class="btn btn-primary btn-user btn-block text-dark">
+                                            </div> -->
+                                            <a @click="validateUser" class="btn btn-primary btn-user btn-block text-white">
                                                 Iniciar Sesión
                                             </a>
                                         </form>
                                         <hr>
-                                        <div class="text-center">
+                                        <!-- <div class="text-center">
                                             <a class="small" href="forgot-password.html">Recuperar Contraseña</a>
-                                        </div>
+                                        </div> -->
                                         <div class="text-center">
-                                            <router-link :to="{name: 'registerPage'}" class="small">Registrarse</router-link>
+                                            <router-link :to="{name: 'registerPage'}" class="small text-dark"><strong>Registrarse</strong></router-link>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Footer -->
+                            <footer class="sticky-footer">
+                                <div class="container">
+                                    <div class="copyright text-center text-dark">
+                                        <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</strong>
+                                    </div>
+                                </div>
+                            </footer>
+                            <!-- End of Footer -->
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Footer -->
-            <footer class="sticky-footer">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto text-white">
-                        <span>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            
         </div>
     </div>
 </template>
