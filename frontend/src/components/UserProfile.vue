@@ -1,41 +1,42 @@
 <template>
     <div id="user-profile" class="row align-items-center justify-content-center">
         <div class="col-lg-3 offset-lg-1">
-            <img class="img-profile ml-3 rounded-circle mb-3" :src="user_img">
-            <button class="btn btn-danger btn-user btn-block">Confirmar Cambios</button>
-            <hr>
-            <div class="form-group">
-                <textarea type="text" class="form-control form-control-user" id="username" v-model="username"></textarea>
-            </div>
+            <img class="img-profile ml-3 rounded-circle mb-3" :src="user.user_img">
+            <button class="btn btn-primary btn-user btn-block" disabled>Cambiar</button>
         </div>
         <div class="col-lg-8">
             <div class="p-5">
-                <div class="text-center">
-                    <h1 class="h2 text-gray-900 mb-4">Perfil</h1>
-                </div>
-                <form class="user">
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="username" v-model="username">
+                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="username" placeholder="Usuario" v-model="user.username">
+                        <input v-else type="text" class="form-control form-control-user" id="username" placeholder="Usuario" v-model="user.username" disabled>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="firstName" v-model="name">
+                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="firstName" placeholder="Nombre" v-model="user.firstname">
+                        <input v-else type="text" class="form-control form-control-user" id="firstName" placeholder="Nombre" v-model="user.firstname" disabled>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="lastName" v-model="lastname">
+                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="lastName" placeholder="Apellidos" v-model="user.lastname">
+                        <input v-else type="text" class="form-control form-control-user" id="lastName" placeholder="Apellidos" v-model="user.lastname" disabled>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control form-control-user" id="email" v-model="email">
+                        <input v-if="is_edit" type="email" class="form-control form-control-user" id="email" placeholder="Correo" v-model="user.email">
+                        <input v-else type="email" class="form-control form-control-user" id="email" placeholder="Correo" v-model="user.email" disabled>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Nueva Contraseña" v-model="new_password1">
+                        <div v-if="is_edit" class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Contraseña Nueva" v-model="new_password1">
                         </div>
-                        <div class="col-sm-6">
+                        <div v-else class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Contraseña Nueva" v-model="new_password1" disabled>
+                        </div>
+                        <div v-if="is_edit" class="col-sm-6">
                             <input type="password" class="form-control form-control-user" id="repeatNewPassword" placeholder="Repita la Contraseña" v-model="new_password2">
                         </div>
+                        <div v-else class="col-sm-6">
+                            <input type="password" class="form-control form-control-user" id="repeatNewPassword" placeholder="Repita la Contraseña" v-model="new_password2" disabled>
+                        </div>
                     </div>
-                    <button class="btn btn-danger btn-user btn-block">Confirmar Cambios</button>
-                </form>
+                <button class="btn btn-primary btn-user btn-block" @click="toogleEdit">{{ text_button }}</button>
             </div>
         </div>
     </div>
@@ -46,20 +47,37 @@
         name: "UserProfile",
         data() {
             return {
-                username: '',
-                name: 'John',
-                lastname: 'Johnson',
-                email: '',
-                user_img: './img/default_user_image.jpeg',
+                user : {
+                    username: '',
+                    firstname: '',
+                    lastname: '',
+                    email: '',
+                    user_img: './img/default_user_image.jpeg',
+                    password: ''
+                },
                 new_password1: '',
                 new_password2: '',
-                password: ''
+                is_edit: false,
+                text_button: "Editar"
             };
+        },
+        methods: {
+            toogleEdit: function() {
+                if (this.is_edit) {
+                    // Hacer request
+                }
+                this.is_edit = !this.is_edit;
+                if (this.is_edit) {
+                    this.text_button = "Guardar";
+                } else {
+                    this.text_button = "Editar";
+                }
+            }
         },
         created() {
             this.$store.state.user.getUserData().then(() => {
-                this.username = this.$store.state.user.user_data.username;
-                this.email = this.$store.state.user.user_data.email;
+                this.user.username = this.$store.state.user.user_data.username;
+                this.user.email = this.$store.state.user.user_data.email;
             });
         }
     }
