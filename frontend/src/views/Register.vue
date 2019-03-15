@@ -20,44 +20,44 @@
                                     <!--</div>-->
                                 <!--</div>-->
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="InputUsername" placeholder="Usuario" v-model.trim="username">
+                                    <input type="text" class="form-control form-control-user" id="InputUsername" placeholder="Introduzca el nombre de usuario" v-model.trim="username">
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="InputEmail" placeholder="Correo" v-model="email">
+                                    <input type="email" class="form-control form-control-user" id="InputEmail" placeholder="Introduzca la dirección de correo" v-model="email">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Contraseña" v-model="password1">
+                                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Introduzca la contraseña" v-model="password1">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repita la Contraseña" v-model="password2">
                                     </div>
                                 </div>
-                                <a class="btn btn-primary btn-user btn-block" @click="registerUser">
+                                <a class="btn btn-primary btn-user btn-block text-white" @click="registerUser">
                                     Registrarse
                                 </a>
                             </form>
                             <hr>
-                            <div class="text-center">
+                            <!-- <div class="text-center">
                                 <a class="small" href="forgot-password.html">Recuperar Contraseña</a>
-                            </div>
+                            </div> -->
                             <div class="text-center">
-                                <router-link :to="{name: 'loginPage'}" class="small">¡Ya estoy registrado!</router-link>
+                                <router-link :to="{name: 'loginPage'}" class="small text-dark"><strong>¡Ya estoy registrado!</strong></router-link>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Footer -->
+                <footer class="sticky-footer">
+                    <div class="container">
+                        <div class="copyright text-center text-dark">
+                            <strong>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</strong>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
             </div>
         </div>
-        <!-- Footer -->
-        <footer class="sticky-footer">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto text-white">
-                    <span>Facultad de Matemática y Computación de la Universidad de La Habana &copy; 2019</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
     </div>
 </template>
 
