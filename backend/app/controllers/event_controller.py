@@ -47,7 +47,6 @@ def query_events():
         for group in user.groups:
             if not group.id in json.groups:
                 json.groups.append(group.id)
-    print(json.groups)
     events = query(json.courses, all_events, lambda x: x.courses)
     events = merge(events, query(json.groups, all_events, lambda x: x.groups))
     events = merge(events, query(json.locals, all_events, lambda x: x.locals))
