@@ -27,6 +27,15 @@ def merge(left, right):
     return result
 
 
+def check_date(event, json):
+    left = right = True
+    if 'start' in json:
+        left = json.start <= event.start
+    if 'end' in json:
+        right = event.end <= json.end
+    return left and right
+
+
 @api.route('/events')
 @auth_token.login_required
 def get_events():
@@ -50,4 +59,4 @@ def get_events():
         'description': event.description,
         'start': event.start,
         'end': event.end
-    } for event in events])
+    } for event in events if check_date(event, json)])
