@@ -34,6 +34,8 @@ def post_register():
         return bad_request('the username is already registered')
     if User.query.filter_by(email=user.email).first():
         return bad_request('the email is already registered')
+    # temporal
+    user.confirmed = True
     db.session.add(user)
     db.session.commit()
     token = generate_confirmation_token(user)

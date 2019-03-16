@@ -16,7 +16,6 @@ export default {
     },
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify({
-            id: Number(this.user_data.id),
             token: String(this.user_data.token),
             remember: String(this.user_data.remember)
         }));
@@ -24,7 +23,6 @@ export default {
     loadMinData() {
         if(localStorage.getItem(data_key) !== null) {
             let data = JSON.parse(localStorage.getItem(data_key));
-            this.updateId(data.id);
             this.updateToken(data.token);
             this.updateRemember(data.remember);
         }
@@ -62,9 +60,8 @@ export default {
     authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
             .then(json => {
-                if (json.hasOwnProperty('id') && json.hasOwnProperty('token')) {
+                if (json.hasOwnProperty('token')) {
                     this.updateToken(json.token);
-                    this.updateId(json.id);
                     this.updateRemember(remember);
                     this.saveMinData();
                     return true;
@@ -77,21 +74,14 @@ export default {
         this.loadMinData();
         Resources.clearHeaders();
         Resources.set_JSONHeaders(this.user_data.token, '');
-        // console.log('Headers seted');
-        // console.log(this.user_data.id);
-        return Resources.get(Endpoints.users_data + this.user_data.id.toString() + '/').then(
+        return Resources.get(Endpoints.profile_data).then(
             response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
-                if(json.hasOwnProperty('email') && json.hasOwnProperty('username')) {
+                if(json.hasOwnProperty('email') && json.hasOwnProperty('username') && json.hasOwnProperty('id')) {
                     this.user_data.email = json.email;
                     this.user_data.username = json.username;
-                    return {
-                      username: json.username,
-                      email: json.email,
-                      fullname: 'No in DB',
-                    };
+                    this.user_data.id = json.id;
                 }
-                return {};
             });
     },
     getUsersData() {
