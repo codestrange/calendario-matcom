@@ -19,7 +19,7 @@ export default {
     removeMinData() {
         localStorage.removeItem(data_key);
     },
-    getCourcesData(token) {
+    getResourcesData(token) {
         Resources.clearHeaders();
         Resources.set_JSONHeaders(token, '');
         return Petitions.get(Endpoints.resources_data).then(response => response.json(), response => console.log('Error getting the response.')).then(
