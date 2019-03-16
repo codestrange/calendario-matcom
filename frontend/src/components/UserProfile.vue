@@ -7,33 +7,23 @@
         <div class="col-lg-8">
             <div class="p-5">
                     <div class="form-group">
-                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="username" placeholder="Usuario" v-model="user.username">
-                        <input v-else type="text" class="form-control form-control-user" id="username" placeholder="Usuario" v-model="user.username" disabled>
+                        <input type="text" class="form-control form-control-user" id="username" placeholder="Usuario" v-model="user.username" :disabled="!is_edit">
                     </div>
                     <div class="form-group">
-                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="firstName" placeholder="Nombre" v-model="user.firstname">
-                        <input v-else type="text" class="form-control form-control-user" id="firstName" placeholder="Nombre" v-model="user.firstname" disabled>
+                        <input type="text" class="form-control form-control-user" id="firstName" placeholder="Nombre" v-model="user.firstname" :disabled="!is_edit">
                     </div>
                     <div class="form-group">
-                        <input v-if="is_edit" type="text" class="form-control form-control-user" id="lastName" placeholder="Apellidos" v-model="user.lastname">
-                        <input v-else type="text" class="form-control form-control-user" id="lastName" placeholder="Apellidos" v-model="user.lastname" disabled>
+                        <input type="text" class="form-control form-control-user" id="lastName" placeholder="Apellidos" v-model="user.lastname" :disabled="!is_edit">
                     </div>
                     <div class="form-group">
-                        <input v-if="is_edit" type="email" class="form-control form-control-user" id="email" placeholder="Correo" v-model="user.email">
-                        <input v-else type="email" class="form-control form-control-user" id="email" placeholder="Correo" v-model="user.email" disabled>
+                        <input type="email" class="form-control form-control-user" id="email" placeholder="Correo" v-model="user.email" :disabled="!is_edit">
                     </div>
                     <div class="form-group row">
-                        <div v-if="is_edit" class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Contraseña Nueva" v-model="new_password1">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Contraseña Nueva" v-model="new_password1" :disabled="!is_edit">
                         </div>
-                        <div v-else class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="password" class="form-control form-control-user" id="inputNewPassword" placeholder="Contraseña Nueva" v-model="new_password1" disabled>
-                        </div>
-                        <div v-if="is_edit" class="col-sm-6">
-                            <input type="password" class="form-control form-control-user" id="repeatNewPassword" placeholder="Repita la Contraseña" v-model="new_password2">
-                        </div>
-                        <div v-else class="col-sm-6">
-                            <input type="password" class="form-control form-control-user" id="repeatNewPassword" placeholder="Repita la Contraseña" v-model="new_password2" disabled>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control form-control-user" id="repeatNewPassword" placeholder="Repita la Contraseña" v-model="new_password2" :disabled="!is_edit">
                         </div>
                     </div>
                 <button class="btn btn-primary btn-user btn-block" @click="toogleEdit">{{ text_button }}</button>
