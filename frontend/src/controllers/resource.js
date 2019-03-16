@@ -16,10 +16,17 @@ export default {
         });
     },
     put(url, body) {
-        console.log('Not implemented exception!!!');
+        return fetch(url,{
+            method: 'put',
+            headers: this.headers,
+            body: JSON.stringify(body)
+        });
     },
-    delete(url, headers) {
-        console.log('Not implemented exception!!!');
+    delete(url) {
+        return fetch(url,{
+            method: 'post',
+            headers: this.headers
+        });
     },
     set_JSONHeaders(username, password) {
         let headers =

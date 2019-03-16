@@ -1,7 +1,7 @@
 <template>
     <div id="user-profile" class="row align-items-center justify-content-center">
         <div class="col-lg-3 offset-lg-1">
-            <img class="img-profile ml-3 rounded-circle mb-3" :src="user.user_img">
+            <img class="img-profile ml-3 rounded-circle mb-5" :src="user.user_img">
             <button class="btn btn-primary btn-user btn-block" disabled>Cambiar</button>
         </div>
         <div class="col-lg-8">
