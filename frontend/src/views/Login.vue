@@ -16,11 +16,16 @@
                                         </div>
                                         <form class="user">
                                             <div class="form-group">
-                                                <input :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
+                                                <input :class="{'form-control': true, 'form-control-user': true, 'border-danger': showError}" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Introduzca su usuario" v-model.trim="username">
                                             </div>
                                             <div class="form-group">
-                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'danger-alert': inputState}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser" >
+                                                <input type="password" :class="{'form-control': true, 'form-control-user': true, 'border-danger': showError}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser" >
                                             </div>
+                                            <!--<div v-if="showError" class="form-group">-->
+                                                <!--<div class="card bg-danger text-white small">-->
+                                                    <!--<div class="card-body">Usuario o Constraseña Invalidos</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                             <!-- <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck" v-model="remember">
@@ -67,7 +72,7 @@
                 username: '',
                 password: '',
                 remember: false,
-                inputState: false
+                showError: false
             };
         },
         methods: {
@@ -78,10 +83,10 @@
                 this.$store.state.user.authenticateUser(username, password, remember)
                     .then(result => {
                         if(result === false) {
-                            this.inputState = true;
+                            this.showError = true;
                             setTimeout(() => {
-                                this.inputState = false;
-                            }, 1000);
+                                this.showError = false;
+                            }, 1500);
                         }
                         else {
                             this.$router.push({name: 'homePage'});
