@@ -21,11 +21,11 @@
                                             <div class="form-group">
                                                 <input type="password" :class="{'form-control': true, 'form-control-user': true, 'border-danger': showError}" id="exampleInputPassword" placeholder="Introduzca su contraseña" v-model="password" @keypress.enter="validateUser" >
                                             </div>
-                                            <!--<div v-if="showError" class="form-group">-->
-                                                <!--<div class="card bg-danger text-white small">-->
-                                                    <!--<div class="card-body">Usuario o Constraseña Invalidos</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
+                                            <div v-if="showError" class="form-group">
+                                                <div class="card bg-gradient-danger text-white small animated--grow-in">
+                                                    <div class="card-body">Usuario o Constraseña Invalidos</div>
+                                                </div>
+                                            </div>
                                             <!-- <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck" v-model="remember">
@@ -86,7 +86,7 @@
                             this.showError = true;
                             setTimeout(() => {
                                 this.showError = false;
-                            }, 1500);
+                            }, 2000);
                         }
                         else {
                             this.$router.push({name: 'homePage'});

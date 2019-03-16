@@ -102,14 +102,6 @@ export default {
             username: username,
             email: email,
             password: password
-        }).then(response => response.json(), response => console.log('Error getting the response.'))
-            .then( json => {
-                if (json !== null && json.hasOwnProperty('error') === false) {
-                    console.log(json.message);
-                    return true;
-                }
-                console.log(json.error + ':' + json.message);
-                return false;
-            });
+        }).then(response => response.json(), response => console.log('Error getting the response.'));
     }
 }

@@ -20,17 +20,22 @@
                                     <!--</div>-->
                                 <!--</div>-->
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="InputUsername" placeholder="Introduzca el nombre de usuario" v-model.trim="username">
+                                    <input type="text" :class="{'form-control': true, 'form-control-user': true, 'border-danger': error.showError}" id="inputUsername" placeholder="Introduzca el nombre de usuario" v-model.trim="newUserInfo.username">
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="InputEmail" placeholder="Introduzca la dirección de correo" v-model="email">
+                                    <input type="email" :class="{'form-control': true, 'form-control-user': true, 'border-danger': error.showError}" placeholder="Introduzca la dirección de correo" v-model="newUserInfo.email">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Introduzca la contraseña" v-model="password1">
+                                        <input type="password" :class="{'form-control': true, 'form-control-user': true, 'border-danger': error.showError}" placeholder="Introduzca la contraseña" v-model="newUserInfo.password1">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repita la Contraseña" v-model="password2">
+                                        <input type="password" :class="{'form-control': true, 'form-control-user': true, 'border-danger': error.showError}" placeholder="Repita la Contraseña" v-model="newUserInfo.password2">
+                                    </div>
+                                </div>
+                                <div v-if="error.showError" class="form-group">
+                                    <div class="card bg-danger text-white small animated--grow-in">
+                                        <div class="card-body">{{error.message}}</div>
                                     </div>
                                 </div>
                                 <a class="btn btn-primary btn-user btn-block text-white" @click="registerUser">
@@ -66,25 +71,57 @@
         name: "Register",
         data() {
             return {
-                username: '',
-                email: '',
-                password1: '',
-                password2: ''
+                newUserInfo: {
+                    username: '',
+                    email: '',
+                    password1: '',
+                    password2: ''
+                },
+                error: {
+                    showError: false,
+                    message: 'Ha ocurrido un Error.',
+                }
             };
         },
         methods: {
+            checkEmail() {
+                // Check better if possible
+                let pos = this.newUserInfo.email.indexOf('@');
+                let len = this.newUserInfo.email.length;
+                return (pos !== -1 && pos < len);
+            },
             registerUser() {
-                if (this.password1 === this.password2) {
-                    //I should check if email is correctly writed
-                    this.$store.state.user.createUser(this.username, this.email, this.password1).then(result => {
-                        if (result === true) {
-                            this.$router.push({name: 'loginPage'});
-                        }
-                    });
+                if (this.newUserInfo.password1 === this.newUserInfo.password2) {
+                    if (this.checkEmail() === false) {
+                        this.error.message = 'La dirección de correo es invalida.';
+                        this.error.showError = true;
+                        setTimeout(() => {
+                            this.error.showError = false;
+                        }, 2000);
+                    }
+                    else {
+                        console.log('Handling the registration.');
+                        this.$store.state.user.createUser(this.newUserInfo.username, this.newUserInfo.email, this.newUserInfo.password1).then(result => {
+                            if (result.hasOwnProperty('error') === false) {
+                                this.$router.push({name: 'loginPage'});
+                            }
+                            else {
+                                console.log(result.error + ':' + result.message);
+                                this.error.message = result.message;
+                                this.error.showError = true;
+                                setTimeout(() => {
+                                    this.error.showError = false;
+                                }, 2000);
+                            }
+                        });
+                    }
                 }
                 else {
-                    //Show that the two passwords didnt match
-                    alert('Passwords are different.');
+                    this.error.message = 'Las contraseñas no coinciden.';
+                    this.error.showError = true;
+                    setTimeout(() => {
+                        this.error.showError = false;
+                    }, 2000);
                 }
             }
         }
