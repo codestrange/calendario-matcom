@@ -7,6 +7,7 @@ import TagsController from './controllers/tags';
 import LocalsController from './controllers/locals';
 import GroupsController from './controllers/groups';
 import CoursesController from './controllers/courses';
+import QueryController from './controllers/query';
 
 Vue.use(Vuex);
 
@@ -18,7 +19,8 @@ const store = new Vuex.Store({
         tags: TagsController,
         locals: LocalsController,
         groups: GroupsController,
-        courses: CoursesController
+        courses: CoursesController,
+        query: QueryController
     },
     mutations: {},
     actions: {}

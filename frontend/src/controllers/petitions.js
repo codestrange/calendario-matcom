@@ -2,13 +2,27 @@ import {encode} from "../utils/base64";
 
 export default {
     headers: {},
-    get(url) {
+    get(url, body) {
+        console.log(body);
+        if(body === null) {
+            return fetch(url,{
+                method: 'get',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
             method: 'get',
-            headers: this.headers
+            headers: this.headers,
+            json: JSON.stringify(body)
         });
     },
     post(url, body) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'post',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
             method: 'post',
             headers: this.headers,
@@ -16,6 +30,12 @@ export default {
         });
     },
     put(url, body) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'put',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
             method: 'put',
             headers: this.headers,
@@ -23,8 +43,14 @@ export default {
         });
     },
     delete(url) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'delete',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
-            method: 'post',
+            method: 'delete',
             headers: this.headers
         });
     },

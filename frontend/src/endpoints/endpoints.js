@@ -9,5 +9,6 @@ export default {
     resources_data: 'http://localhost:5000/api/resources',
     locals_data: 'http://localhost:5000/api/locals',
     groups_data: 'http://localhost:5000/api/groups',
-    tags_data: 'http://localhost:5000/api/tags'
+    tags_data: 'http://localhost:5000/api/tags',
+    query_events: 'http://localhost:5000/api/events'
 }

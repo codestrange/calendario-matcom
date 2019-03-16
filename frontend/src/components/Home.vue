@@ -77,6 +77,11 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <button class="btn btn-primary" @click="makeQuery">
+                Consultar Horario
+            </button>
+        </div>
     </div>
 </template>
 
@@ -85,15 +90,17 @@
         name: "Home",
         data () {
             return {
-                courses: ['DAA','Compilacion','BD2','IS'],
-                resources: ['Proyector1','Proyector2'],
-                locals: ['Aula1','Lab1'],
-                tags: ['Cp','Conf','JC'],
-                groups: ['C312','C311','C411']
+                courses: [],
+                resources: [],
+                locals: [],
+                tags: [],
+                groups: [],
+                query_results: {}
             }
         },
         methods: {
             loadCourses () {
+                this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.courses.loadMinData();
                 if (this.$store.state.courses.data.courses.length !== 0) {
@@ -106,6 +113,7 @@
                 }
             },
             loadResources () {
+                this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.resources.loadMinData();
                 if (this.$store.state.resources.data.resources.length !== 0) {
@@ -118,6 +126,7 @@
                 }
             },
             loadLocals () {
+                this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.locals.loadMinData();
                 if (this.$store.state.locals.data.locals.length !== 0) {
@@ -130,6 +139,7 @@
                 }
             },
             loadTags () {
+                this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.tags.loadMinData();
                 if (this.$store.state.tags.data.tags.length !== 0) {
@@ -142,6 +152,7 @@
                 }
             },
             loadGroups () {
+                this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.groups.loadMinData();
                 if (this.$store.state.groups.data.groups.length !== 0) {
@@ -160,6 +171,57 @@
                 else {
                     item.isMarked = true;
                 }
+            },
+            makeQuery() {
+                this.$store.state.user.loadMinData();
+                let token = this.$store.state.user.getToken();
+                let toSendTags = [];
+                let toSendCourses = [];
+                let toSendGroups = [];
+                let toSendLocals = [];
+                let toSendResources = [];
+                this.courses.forEach(course => {
+                    if (course.hasOwnProperty('isMarked') && course.isMarked) {
+                        toSendCourses.push({
+                            id: course.id
+                        });
+                    }
+                });
+                this.tags.forEach(tag => {
+                    if (tag.hasOwnProperty('isMarked') && tag.isMarked) {
+                        toSendTags.push({
+                            id: tag.id
+                        });
+                    }
+                });
+                this.groups.forEach(group => {
+                    if (group.hasOwnProperty('isMarked') && group.isMarked) {
+                        toSendGroups.push({
+                            id: group.id
+                        });
+                    }
+                });
+                this.locals.forEach(local => {
+                    if (local.hasOwnProperty('isMarked') && local.isMarked) {
+                        toSendLocals.push({
+                            id: local.id
+                        });
+                    }
+                });
+                this.resources.forEach(resource => {
+                    if (resource.hasOwnProperty('isMarked') && resource.isMarked) {
+                        toSendResources.push({
+                            id: resource.id
+                        });
+                    }
+                });
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
+                    .then( result => {
+                        if (result === true) {
+                            this.query_results = this.$store.state.query.query_data;
+                            console.log(this.query_results);
+                        }
+                    });
             }
         }
     }
