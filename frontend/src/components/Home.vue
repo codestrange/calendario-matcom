@@ -102,7 +102,6 @@
                 locals: [],
                 tags: [],
                 groups: [],
-                query_results: {},
                 events: [
                     {
                         title  : 'event1',
@@ -241,8 +240,8 @@
                 this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
                     .then( result => {
                         if (result === true) {
-                            this.query_results = this.$store.state.query.query_data;
-                            console.log(this.query_results);
+                            // this.events = [];
+                            this.events = this.$store.state.query.query_data;
                         }
                     });
             }
