@@ -59,7 +59,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </template>
@@ -92,7 +91,7 @@
                             this.$router.push({name: 'homePage'});
                         }
                     });
-            },
+            }
         }
     }
 </script>
