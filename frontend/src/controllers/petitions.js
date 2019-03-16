@@ -2,18 +2,10 @@ import {encode} from "../utils/base64";
 
 export default {
     headers: {},
-    get(url, body) {
-        console.log(body);
-        if(body === null) {
-            return fetch(url,{
-                method: 'get',
-                headers: this.headers
-            });
-        }
+    get(url) {
         return fetch(url,{
             method: 'get',
-            headers: this.headers,
-            json: JSON.stringify(body)
+            headers: this.headers
         });
     },
     post(url, body) {

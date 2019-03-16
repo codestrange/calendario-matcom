@@ -7,7 +7,7 @@
                         Asignaturas
                     </button>
                     <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="input-group m-2 " v-for="it in courses">
+                        <div class="input-group m-2 " v-for="it in courses" :key="it.id">
                             <div class="input-group-text bg-white">
                                 <input type="checkbox" aria-label="Checkbox for following text input" @click="markItem(it)">
                                 <span class="ml-2" id="basic-">{{it.name}}</span>
@@ -22,7 +22,7 @@
                         Recursos
                     </button>
                     <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="input-group m-2 " v-for="it in resources">
+                        <div class="input-group m-2 " v-for="it in resources" :key="it.id">
                             <div class="input-group-text bg-white">
                                 <input type="checkbox" aria-label="Checkbox for following text input">
                                 <span class="ml-2" id="basi1-addon3">{{it.name}}</span>
@@ -37,7 +37,7 @@
                         Locales
                     </button>
                     <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="input-group m-2 " v-for="it in locals">
+                        <div class="input-group m-2 " v-for="it in locals" :key="it.id">
                             <div class="input-group-text bg-white">
                                 <input type="checkbox" aria-label="Checkbox for following text input">
                                 <span class="ml-2" id="basi3-addon3">{{it.name}}</span>
@@ -52,7 +52,7 @@
                         Tipos
                     </button>
                     <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="input-group m-2 " v-for="it in tags">
+                        <div class="input-group m-2 " v-for="it in tags" :key="it.id">
                             <div class="input-group-text bg-white">
                                 <input type="checkbox" aria-label="Checkbox for following text input">
                                 <span class="ml-2" id="basi5-addon3">{{it.text}}</span>
@@ -67,7 +67,7 @@
                         Grupos
                     </button>
                     <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="input-group m-2 " v-for="it in groups">
+                        <div class="input-group m-2 " v-for="it in groups" :key="it.id">
                             <div class="input-group-text bg-white">
                                 <input type="checkbox" aria-label="Checkbox for following text input">
                                 <span class="ml-2" id="basi7-addon3">{{it.name}}</span>
@@ -76,18 +76,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col">
+                <button class="btn btn-outline-dark" @click="makeQuery">
+                    Consultar Horario
+                </button>
+            </div>
         </div>
-        <div class="row">
-            <button class="btn btn-primary" @click="makeQuery">
-                Consultar Horario
-            </button>
-        </div>
+        <full-calendar :events="events"></full-calendar>
     </div>
 </template>
 
 <script>
+    import { FullCalendar } from 'vue-full-calendar';
+    import 'fullcalendar/dist/fullcalendar.css';
+
     export default {
         name: "Home",
+        components: {
+            FullCalendar
+        },
         data () {
             return {
                 courses: [],
@@ -95,7 +102,23 @@
                 locals: [],
                 tags: [],
                 groups: [],
-                query_results: {}
+                query_results: {},
+                events: [
+                    {
+                        title  : 'event1',
+                        start  : '2019-03-16',
+                    },
+                    {
+                        title  : 'dasd',
+                        start  : '2019-03-16',
+                        end    : '2019-03-17',
+                    },
+                    {
+                        title  : 'event3',
+                        start  : '2019-03-16T12:30:00',
+                        allDay : false,
+                    },
+                ]
             }
         },
         methods: {

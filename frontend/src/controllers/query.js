@@ -19,7 +19,8 @@ export default {
     },
     makeQuery(token, courses, groups, locals, tags, resources, users) {
         Petitions.clearHeaders();
-        return Petitions.get( Endpoints.query_events, {
+        Petitions.set_JSONHeaders(token, '');
+        return Petitions.post( Endpoints.query_events, {
             courses: courses,
             locals: locals,
             tags: tags,
