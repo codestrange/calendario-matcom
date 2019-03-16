@@ -87,13 +87,20 @@
             checkEmail() {
                 // Check better if possible
                 let pos = this.newUserInfo.email.indexOf('@');
-                let len = this.newUserInfo.email.length;
-                return (pos !== -1 && pos < len);
+                let len = this.newUserInfo.email.length - 1;
+                return (pos !== -1 && pos < len && pos !== 0);
             },
             registerUser() {
                 if (this.newUserInfo.password1 === this.newUserInfo.password2) {
                     if (this.checkEmail() === false) {
                         this.error.message = 'La dirección de correo es invalida.';
+                        this.error.showError = true;
+                        setTimeout(() => {
+                            this.error.showError = false;
+                        }, 2000);
+                    }
+                    else if (this.newUserInfo.username === '') {
+                        this.error.message = 'El nombre de usuario no puede ser vacío.';
                         this.error.showError = true;
                         setTimeout(() => {
                             this.error.showError = false;
