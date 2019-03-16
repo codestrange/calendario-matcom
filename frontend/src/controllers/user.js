@@ -1,6 +1,5 @@
-import Resources from './resource';
+import Petitions from './petitions';
 import Endpoints from '../endpoints/endpoints';
-import {encode, decode} from '../utils/base64';
 
 const data_key = 'calendario-matcom-user';
 
@@ -53,9 +52,9 @@ export default {
         this.user_data.remember = Boolean(remember);
     },
     getAuthJson(username, password) {
-        Resources.clearHeaders();
-        Resources.set_JSONHeaders(username, password);
-        return Resources.get(Endpoints.token_endpoint).then(response => response.json(), response => console.log('Error getting the response.'));
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(username, password);
+        return Petitions.get(Endpoints.token).then(response => response.json(), response => console.log('Error getting the response.'));
     },
     authenticateUser(username, password, remember) {
         return this.getAuthJson(username, password)
@@ -72,9 +71,9 @@ export default {
     },
     getUserData() {
         this.loadMinData();
-        Resources.clearHeaders();
-        Resources.set_JSONHeaders(this.user_data.token, '');
-        return Resources.get(Endpoints.profile_data).then(
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(this.user_data.token, '');
+        return Petitions.get(Endpoints.profile_data).then(
             response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
                 if(json.hasOwnProperty('email') && json.hasOwnProperty('username') && json.hasOwnProperty('id')) {
@@ -85,9 +84,9 @@ export default {
             });
     },
     getUsersData() {
-        Resources.clearHeaders();
-        Resources.set_JSONHeaders(this.user_data.token, '');
-        return Resources.get(Endpoints.users_data).then(response => response.json(), response => console.log('Error getting the response.'))
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(this.user_data.token, '');
+        return Petitions.get(Endpoints.users_data).then(response => response.json(), response => console.log('Error getting the response.'))
             .then( json => {
                 if (json !== null) {
                     return json;
@@ -96,9 +95,9 @@ export default {
             });
     },
     createUser(username, email, password) {
-        Resources.clearHeaders();
-        Resources.set_JSONHeaders();
-        return Resources.post(Endpoints.create_user, {
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders();
+        return Petitions.post(Endpoints.create_user, {
             username: username,
             email: email,
             password: password
