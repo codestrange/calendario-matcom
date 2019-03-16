@@ -36,9 +36,9 @@ def check_date(event, json):
     return left and right
 
 
-@api.route('/events')
+@api.route('/events', methods=['POST'])
 @auth_token.login_required
-def get_events():
+def query_events():
     json = json_load(request.json)
     check_json(json, ['courses', 'groups', 'locals', 'resources', 'tags', 'users'])
     all_events = Event.query.all()

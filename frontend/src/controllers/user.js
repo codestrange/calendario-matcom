@@ -13,6 +13,29 @@ export default {
         token:'',
         remember:''
     },
+    //Getters
+    getId () {
+        return this.user_data.id;
+    },
+    getUsername () {
+        return this.user_data.username;
+    },
+    getFullname () {
+        return this.user_data.fullname;
+    },
+    getEmail () {
+        return this.user_data.email;
+    },
+    getYear () {
+        return this.user_data.year;
+    },
+    getToken () {
+        return this.user_data.token;
+    },
+    getRemember () {
+        return this.user_data.remember;
+    },
+    //Getters
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify({
             token: String(this.user_data.token),

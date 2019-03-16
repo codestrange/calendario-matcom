@@ -9,6 +9,12 @@ export default {
         });
     },
     post(url, body) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'post',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
             method: 'post',
             headers: this.headers,
@@ -16,6 +22,12 @@ export default {
         });
     },
     put(url, body) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'put',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
             method: 'put',
             headers: this.headers,
@@ -23,8 +35,14 @@ export default {
         });
     },
     delete(url) {
+        if(body === null) {
+            return fetch(url,{
+                method: 'delete',
+                headers: this.headers
+            });
+        }
         return fetch(url,{
-            method: 'post',
+            method: 'delete',
             headers: this.headers
         });
     },

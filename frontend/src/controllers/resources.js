@@ -20,8 +20,8 @@ export default {
         localStorage.removeItem(data_key);
     },
     getResourcesData(token) {
-        Resources.clearHeaders();
-        Resources.set_JSONHeaders(token, '');
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(token, '');
         return Petitions.get(Endpoints.resources_data).then(response => response.json(), response => console.log('Error getting the response.')).then(
             json => {
                 if (json !== null && !json.hasOwnProperty('error')) {
