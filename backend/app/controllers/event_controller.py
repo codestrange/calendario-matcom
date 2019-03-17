@@ -59,3 +59,26 @@ def query_events():
         'start': event.start,
         'end': event.end
     } for event in events if check_date(event, json)])
+
+
+@api.route('/events/<int:id>')
+@auth_token.login_required
+def get_event(id):
+    event = Event.query.get_or_404(id)
+    event_courses = [{'id': course.id, 'name': course.name} for course in event.courses]
+    event_groups = [{'id': group.id, 'name': group.name} for group in event.groups]
+    event_locals = [{'id': local.id, 'name': local.name} for local in event.locals]
+    event_resources = [{'id': resource.id, 'name': resource.name} for resource in event.resources]
+    event_tags = [{'id': tag.id, 'text': tag.text} for tag in event.tags]
+    return jsonify({
+        'id': event.id,
+        'title': event.title,
+        'description': event.description,
+        'start': event.start,
+        'end': event.end,
+        'courses': event_courses,
+        'groups': event_groups,
+        'locals': event_locals,
+        'resources': event_resources,
+        'tags': event_tags
+    })
