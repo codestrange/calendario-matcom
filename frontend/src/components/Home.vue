@@ -77,22 +77,40 @@
                 </div>
             </div>
             <div class="col">
-                <button class="btn btn-outline-dark" @click="makeQuery">
-                    Consultar Horario
+                <div class="dropdown mb-4 ">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="fecha_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Fecha
+                    </button>
+                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <div class="card-body" @click.stop>
+                            <div class="row">
+                                <div class="col">
+                                    <h1 class="h5 text-dark">Desde:</h1>
+                                    <datetime class="" type="datetime" v-model="datetime" ></datetime>
+                                </div>
+                                <div class="col">
+                                    <h1 class="h5 text-dark">Hasta:</h1>
+                                    <datetime class="" type="datetime" v-model="datetime"></datetime>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <button class="btn btn-block btn-outline-dark" @click="makeQuery">
+                    Filtrar
                 </button>
             </div>
-        </div>
-        <div class="row">
-            <div class="col text-center">
-                <datetime class="align-items-center" type="datetime" v-model="datetime"></datetime>
+            <!--<div class="col">
+                <datetime class="" type="datetime" v-model="datetime"></datetime>
             </div>
+            <div class="col">
+                <datetime class="" type="datetime" v-model="datetime"></datetime>
+            </div>-->
         </div>
-        <div class="row">
-            <div class="col text-center">
-                <datetime class="align-items-center" type="datetime" v-model="datetime"></datetime>
-            </div>
-        </div>
-        <full-calendar :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
+        <hr>
+        <full-calendar  class="" :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
 </template>
 
