@@ -89,13 +89,13 @@
                         <h1 class="h5 text-dark mt-1">Desde:</h1>
                     </div>
                     <div class="col-5">
-                        <datetime  type="datetime" v-model="datetime" ></datetime>
+                        <datetime  type="datetime" :phrases="phrases" v-model="datetimeStart" ></datetime>
                     </div>
                     <div class="col-1">
                         <h1 class="h5 text-dark mt-1 ">Hasta:</h1>
                     </div>
                     <div class="col-5">
-                        <datetime type="datetime" @phrases="phrases" v-model="datetime"></datetime>
+                        <datetime type="datetime" :phrases="phrases" v-model="datetimeEnd"></datetime>
                     </div>
                 </div>
             </div>
@@ -149,9 +149,9 @@
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     }
                 },
-                datetime: '2018-05-12T20:19:06.151Z',
-                phrases: {ok: 'Aceptar',cancel: 'Cancelar'}
-                },
+                datetimeStart: '',
+                datetimeEnd: '',
+                phrases: {ok: 'Aceptar',cancel: 'Cancelar'},
                 eventSelected: {}
             }
         },
@@ -200,12 +200,20 @@
                 let toSendGroups = [];
                 let toSendLocals = [];
                 let toSendResources = [];
+                let toSendStartDate = null;
+                let toSendEndDate = null;
                 this.courses.forEach(this.getMarkedData(toSendCourses));
                 this.tags.forEach(this.getMarkedData(toSendTags));
                 this.groups.forEach(this.getMarkedData(toSendGroups));
                 this.locals.forEach(this.getMarkedData(toSendLocals));
                 this.resources.forEach(this.getMarkedData(toSendResources));
-                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
+                if (this.datetimeStart !== '') {
+                    toSendStartDate = this.datetimeStart;
+                }
+                if (this.datetimeEnd !== '') {
+                    toSendEndDate = this.datetimeEnd;
+                }
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [], toSendStartDate, toSendEndDate)
                     .then( result => {
                         if (result === true) {
                             this.events = this.$store.state.query.query_data;
@@ -218,7 +226,6 @@
                     });
             },
             eventSelect(event, jsEvent, view) {
-                // Hacer request del evento
                 this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.events.getEventData(token, event.id).then(result => {

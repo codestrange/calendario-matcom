@@ -17,17 +17,24 @@ export default {
     removeMinData() {
         localStorage.removeItem(data_key);
     },
-    makeQuery(token, courses, groups, locals, tags, resources, users) {
+    makeQuery(token, courses, groups, locals, tags, resources, users, start, end) {
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
-        return Petitions.post( Endpoints.query_events, {
+        let body = {
             courses: courses,
             locals: locals,
             tags: tags,
             resources: resources,
             groups: groups,
             users: users
-        }).then(response => response.json(), response => console.log('Error getting the response!', response)).then(json => {
+        };
+        if (start !== null) {
+            body.start = new Date(start);
+        }
+        if (end !== null) {
+            body.end = new Date(end);
+        }
+        return Petitions.post( Endpoints.query_events, body).then(response => response.json(), response => console.log('Error getting the response!', response)).then(json => {
             if (json !== null && !json.hasOwnProperty('error')) {
                 this.query_data = json;
                 this.saveMinData();
