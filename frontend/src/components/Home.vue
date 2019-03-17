@@ -84,7 +84,12 @@
         </div>
         <div class="row">
             <div class="col text-center">
-                <datetime type="datetime" v-model="datetime"></datetime>
+                <datetime class="align-items-center" type="datetime" v-model="datetime"></datetime>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <datetime class="align-items-center" type="datetime" v-model="datetime"></datetime>
             </div>
         </div>
         <full-calendar :events="events"></full-calendar>
@@ -126,7 +131,8 @@
                         start  : '2019-03-16T12:30:00',
                         allDay : false,
                     },
-                ]
+                ],
+                datetime: '2018-05-12T20:19:06.151Z'
             }
         },
         methods: {
