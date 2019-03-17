@@ -82,13 +82,13 @@
                 </button>
             </div>
         </div>
-        <full-calendar :events="events" :config="config"></full-calendar>
+        <full-calendar :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
 </template>
 
 <script>
     import { FullCalendar } from 'vue-full-calendar';
-    import 'fullcalendar/dist/locale/es.js';
+    import 'fullcalendar/dist/locale/es';
 
     export default {
         name: "Home",
@@ -107,10 +107,13 @@
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                     defaultView: 'month',
                     locale: 'es',
+                    editable: false,
+                    selectable: false,
+                    navLinks: true,
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay,list'
+                        right: 'month,agendaWeek,agendaDay,listWeek'
                     }
                 }
             }
@@ -195,9 +198,16 @@
                     .then( result => {
                         if (result === true) {
                             this.events = this.$store.state.query.query_data;
+                            this.events.forEach(event => {
+                                event.color = '#428bca';
+                                event.textColor = '#ffffff';
+                            });
                         }
                         this.loadAll();
                     });
+            },
+            eventSelected(event, jsEvent, view) {
+                // Hacer request del evento
             }
         },
         created() {
@@ -207,5 +217,13 @@
 </script>
 
 <style>
-@import '~fullcalendar/dist/fullcalendar.css';
+@import '~fullcalendar/dist/fullcalendar.min.css';
+
+.fc-event {
+    cursor: pointer;
+}
+
+.fc-list-item {
+    cursor: pointer;
+}
 </style>
