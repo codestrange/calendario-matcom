@@ -82,12 +82,13 @@
                 </button>
             </div>
         </div>
-        <full-calendar :events="events"></full-calendar>
+        <full-calendar :events="events" :config="config"></full-calendar>
     </div>
 </template>
 
 <script>
     import { FullCalendar } from 'vue-full-calendar';
+    import 'fullcalendar/dist/locale/es.js';
 
     export default {
         name: "Home",
@@ -104,6 +105,13 @@
                 events: [],
                 config: {
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                    defaultView: 'month',
+                    locale: 'es',
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay,list'
+                    }
                 }
             }
         },
