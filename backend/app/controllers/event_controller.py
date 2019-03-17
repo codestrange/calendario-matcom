@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from datetime import datetime, timedelta
 from . import api
 from ..auth import auth_token
 from ..database import Event, User
@@ -18,6 +19,16 @@ def query(items, events, attr):
     return result
 
 
+def get_date(str_date):
+    year = int(str_date.split('-')[0])
+    month = int(str_date.split('-')[1])
+    day = int(str_date.split('-')[2].split('T')[0])
+    hour = int(str_date.split('T')[1].split(':')[0])
+    minute = int(str_date.split('T')[1].split(':')[1])
+    second = int(str_date.split('T')[1].split(':')[2].split('.')[0])
+    return datetime(year, month, day, hour, minute, second) - timedelta(hours=4)
+
+
 def merge(left, right):
     result = []
     ids = [item.id for item in right]
@@ -30,9 +41,9 @@ def merge(left, right):
 def check_date(event, json):
     left = right = True
     if 'start' in json:
-        left = json.start <= event.start
+        left = get_date(json.start) <= event.start
     if 'end' in json:
-        right = event.end <= json.end
+        right = event.end <= get_date(json.end)
     return left and right
 
 

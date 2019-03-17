@@ -29,10 +29,10 @@ export default {
             users: users
         };
         if (start !== null) {
-            body.start = new Date(start);
+            body.start = start;
         }
         if (end !== null) {
-            body.end = new Date(end);
+            body.end = end;
         }
         return Petitions.post( Endpoints.query_events, body).then(response => response.json(), response => console.log('Error getting the response!', response)).then(json => {
             if (json !== null && !json.hasOwnProperty('error')) {
