@@ -82,6 +82,11 @@
                 </button>
             </div>
         </div>
+        <div class="row">
+            <div class="col text-center">
+                <datetime type="datetime" v-model="datetime"></datetime>
+            </div>
+        </div>
         <full-calendar :events="events"></full-calendar>
     </div>
 </template>
@@ -89,11 +94,14 @@
 <script>
     import { FullCalendar } from 'vue-full-calendar';
     import 'fullcalendar/dist/fullcalendar.css';
+    import { Datetime } from 'vue-datetime';
+    import 'vue-datetime/dist/vue-datetime.css';
 
     export default {
         name: "Home",
         components: {
-            FullCalendar
+            FullCalendar,
+            Datetime
         },
         data () {
             return {

@@ -54,6 +54,7 @@
         methods: {
             toogleEdit: function() {
                 if (this.is_edit) {
+
                     // Hacer request
                 }
                 this.is_edit = !this.is_edit;
