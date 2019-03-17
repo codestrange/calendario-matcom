@@ -76,15 +76,15 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
                                     <!-- Counter - Alerts -->
-                                    <span class="badge badge-danger badge-counter">2</span>
+                                    <!-- <span class="badge badge-danger badge-counter">2</span> -->
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="alertsDropdown">
-                                    <h6 class="dropdown-header">
+                                    <h6 class="dropdown-header text-center">
                                         Notificaciones
                                     </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                                         <div class="mr-3">
                                             <div class="icon-circle bg-primary">
                                                 <i class="fas fa-file-alt text-white"></i>
@@ -105,7 +105,8 @@
                                             <div class="small text-gray-500">7 de diciembre del 2019</div>
                                             290.29 dolares han sido depositados en su cuenta.
                                         </div>
-                                    </a>
+                                    </a> -->
+                                    <span class="dropdown-item text-center text-dark">No hay notificaciones nuevas</span>
                                     <a class="dropdown-item text-center small text-gray-500" href="#">Ver todas las notificaciones</a>
                                 </div>
                             </li>
