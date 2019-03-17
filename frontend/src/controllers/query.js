@@ -18,7 +18,6 @@ export default {
         localStorage.removeItem(data_key);
     },
     makeQuery(token, courses, groups, locals, tags, resources, users) {
-        console.log(courses, groups, locals, tags, resources, users);
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
         return Petitions.post( Endpoints.query_events, {
