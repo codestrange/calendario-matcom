@@ -126,39 +126,33 @@
                 this.loadTags();
                 this.loadResources();
             },
-            loadCourses () {
+            loadFrom(froms, loader, to) {
                 this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
-                this.$store.state.courses.getCourcesData(token).then(result => {
-                    this.courses = this.$store.state.courses.data.courses;
+                this.$store.state[froms][loader](token).then(result => {
+                    this[to] = this.$store.state[froms].data[froms];
                 });
+            },
+            loadCourses () {
+                this.loadFrom('courses', 'getCourcesData', 'courses');
             },
             loadResources () {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.resources.getResourcesData(token).then(result => {
-                    this.resources = this.$store.state.resources.data.resources;
-                });
+                this.loadFrom('resources', 'getResourcesData', 'resources');
             },
             loadLocals () {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.locals.getLocalsData(token).then(result => {
-                    this.locals = this.$store.state.locals.data.locals;
-                });
+                this.loadFrom('locals', 'getLocalsData', 'locals');
             },
             loadTags () {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.tags.getTagsData(token).then(result => {
-                    this.tags = this.$store.state.tags.data.tags;
-                });
+                this.loadFrom('tags', 'getTagsData', 'tags');
             },
             loadGroups () {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.groups.getGroupsData(token).then(result => {
-                    this.groups = this.$store.state.groups.data.groups;
+                this.loadFrom('groups', 'getGroupsData', 'groups');
+            },
+            getMarkedData(to) {
+                return (item => {
+                    if (item.hasOwnProperty('isMarked') && item.isMarked) {
+                        to.push(item.id);
+                    }
                 });
             },
             makeQuery() {
@@ -169,31 +163,11 @@
                 let toSendGroups = [];
                 let toSendLocals = [];
                 let toSendResources = [];
-                this.courses.forEach(course => {
-                    if (course.hasOwnProperty('isMarked') && course.isMarked) {
-                        toSendCourses.push(course.id);
-                    }
-                });
-                this.tags.forEach(tag => {
-                    if (tag.hasOwnProperty('isMarked') && tag.isMarked) {
-                        toSendTags.push(tag.id);
-                    }
-                });
-                this.groups.forEach(group => {
-                    if (group.hasOwnProperty('isMarked') && group.isMarked) {
-                        toSendGroups.push(group.id);
-                    }
-                });
-                this.locals.forEach(local => {
-                    if (local.hasOwnProperty('isMarked') && local.isMarked) {
-                        toSendLocals.push(local.id);
-                    }
-                });
-                this.resources.forEach(resource => {
-                    if (resource.hasOwnProperty('isMarked') && resource.isMarked) {
-                        toSendResources.push(resource.id);
-                    }
-                });
+                this.courses.forEach(this.getMarkedData(toSendCourses));
+                this.tags.forEach(this.getMarkedData(toSendTags));
+                this.groups.forEach(this.getMarkedData(toSendGroups));
+                this.locals.forEach(this.getMarkedData(toSendLocals));
+                this.resources.forEach(this.getMarkedData(toSendResources));
                 this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
                     .then( result => {
                         if (result === true) {
