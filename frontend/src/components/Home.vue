@@ -2,7 +2,7 @@
     <div id="home">
         <div class="row">
             <div class="col">
-                <div class="dropdown mb-4">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="asignaturas_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Asignaturas
                     </button>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="grupos_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Grupos
                     </button>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="locales_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Locales
                     </button>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="resources_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Recursos
                     </button>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="tipos_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Tipos
                     </button>
@@ -77,9 +77,27 @@
                 </div>
             </div>
             <div class="col">
-                <button class="btn btn-outline-dark" @click="makeQuery">
-                    Consultar Horario
+                <button class="btn btn-block btn-outline-dark" @click="makeQuery">
+                    Filtrar
                 </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-body mt-0" @click.stop style="width: 200px">
+                <div class="row ml-5">
+                    <div class="col-1">
+                        <h1 class="h5 text-dark mt-1">Desde:</h1>
+                    </div>
+                    <div class="col-5">
+                        <datetime  type="datetime" :phrases="phrases" v-model="datetimeStart" ></datetime>
+                    </div>
+                    <div class="col-1">
+                        <h1 class="h5 text-dark mt-1 ">Hasta:</h1>
+                    </div>
+                    <div class="col-5">
+                        <datetime type="datetime" :phrases="phrases" v-model="datetimeEnd"></datetime>
+                    </div>
+                </div>
             </div>
         </div>
         <full-calendar :events="events" :config="config" @event-selected="eventSelect"></full-calendar>
@@ -94,13 +112,21 @@
 <script>
     import EventShower from '../components/EventInfoShower';
     import { FullCalendar } from 'vue-full-calendar';
+    import 'fullcalendar/dist/fullcalendar.css';
     import 'fullcalendar/dist/locale/es';
+    import { Datetime } from 'vue-datetime';
+    import 'vue-datetime/dist/vue-datetime.css';
+    import { Settings } from 'luxon';
+
+
+    Settings.defaultLocale = 'es';
 
     export default {
         name: "Home",
         components: {
-            FullCalendar,
-            EventShower
+            Datetime,
+            EventShower,
+            FullCalendar
         },
         data () {
             return {
@@ -123,6 +149,9 @@
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     }
                 },
+                datetimeStart: '',
+                datetimeEnd: '',
+                phrases: {ok: 'Aceptar',cancel: 'Cancelar'},
                 eventSelected: {}
             }
         },
@@ -171,12 +200,20 @@
                 let toSendGroups = [];
                 let toSendLocals = [];
                 let toSendResources = [];
+                let toSendStartDate = null;
+                let toSendEndDate = null;
                 this.courses.forEach(this.getMarkedData(toSendCourses));
                 this.tags.forEach(this.getMarkedData(toSendTags));
                 this.groups.forEach(this.getMarkedData(toSendGroups));
                 this.locals.forEach(this.getMarkedData(toSendLocals));
                 this.resources.forEach(this.getMarkedData(toSendResources));
-                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
+                if (this.datetimeStart !== '') {
+                    toSendStartDate = this.datetimeStart;
+                }
+                if (this.datetimeEnd !== '') {
+                    toSendEndDate = this.datetimeEnd;
+                }
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [], toSendStartDate, toSendEndDate)
                     .then( result => {
                         if (result === true) {
                             this.events = this.$store.state.query.query_data;
@@ -189,7 +226,6 @@
                     });
             },
             eventSelect(event, jsEvent, view) {
-                // Hacer request del evento
                 this.$store.state.user.loadMinData();
                 let token = this.$store.state.user.getToken();
                 this.$store.state.events.getEventData(token, event.id).then(result => {
