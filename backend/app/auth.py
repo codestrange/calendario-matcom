@@ -46,13 +46,13 @@ def auth_verify_password(username, password):
 @auth.error_handler
 def auth_error_handler():
     user = g.current_user
-    error_message = 'invalid password'
+    error_message = 'Contraseña incorrecta.'
     if user is None:
-        error_message = 'user don\'t exist'
+        error_message = 'El usuario no existe.'
     elif not user.confirmed:
-        error_message = 'user unconfirmed'
+        error_message = 'El usuario no está confirmado.'
     elif not user.activated:
-        error_message = 'user deactivated'
+        error_message = 'El usuario está desactivado.'
     return response_unauthorized(error_message)
 
 
@@ -65,9 +65,9 @@ def auth_simple_verify_password(username, password):
 @auth_simple.error_handler
 def auth_simple_error_handler():
     user = g.current_user
-    error_message = 'invalid password'
+    error_message = 'Contraseña incorrecta.'
     if user is None:
-        error_message = 'user don\'t exist'
+        error_message = 'El usuario no existe.'
     return response_unauthorized(error_message)
 
 
@@ -79,4 +79,4 @@ def auth_token_verify_password(token, unused):
 
 @auth_token.error_handler
 def auth_token_error_handler():
-    return response_unauthorized('please send your authentication token')
+    return response_unauthorized('Por favor, envie su token de autenticación.')

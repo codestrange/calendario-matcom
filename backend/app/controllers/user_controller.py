@@ -31,9 +31,9 @@ def post_register():
     check_json(json, ['username', 'email', 'password'])
     user = User(username=json.username, email=json.email, password=json.password)
     if User.query.filter_by(username=user.username).first():
-        return bad_request('the username is already registered')
+        return bad_request('El nombre de usuario ya está registrado.')
     if User.query.filter_by(email=user.email).first():
-        return bad_request('the email is already registered')
+        return bad_request('El correo electrónico ya está registrado')
     # temporal
     user.confirmed = True
     db.session.add(user)
@@ -41,7 +41,7 @@ def post_register():
     token = generate_confirmation_token(user)
     print(f'\nToken: {token}\n')
     # send email
-    return jsonify({'message': 'user registered without confirmed'}), 201
+    return jsonify({'message': 'Usuario registrado aún sin confirmar.'}), 201
 
 
 @api.route('/confirm', methods=['POST'])
@@ -50,12 +50,12 @@ def post_confirm():
     json = json_load(request.json)
     check_json(json, ['token'])
     if g.current_user.confirmed:
-        return bad_request('user already confirmed')
+        return bad_request('El usuario ya esta confirmado.')
     user = verify_confirmation_token(json.token)
     if user and user.id == g.current_user.id:
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
-        return jsonify({'message': 'user confirmed'}), 201
+        return jsonify({'message': 'Usuario confirmado.'}), 201
     else:
-        return bad_request('the confirmation link is invalid or has expired')
+        return bad_request('El enlace de confirmación es invalido o ha expirado.')

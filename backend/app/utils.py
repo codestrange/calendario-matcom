@@ -14,7 +14,7 @@ class AttributeDict(dict):
 def check_json(json, required):
     for item in required:
         if item not in json:
-            raise ValidationError(f'{item} is required')
+            raise ValidationError(f'{item} es necesario.')
 
 
 def json_load(json):
