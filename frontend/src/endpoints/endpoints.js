@@ -10,5 +10,6 @@ export default {
     locals_data: 'http://localhost:5000/api/locals',
     groups_data: 'http://localhost:5000/api/groups',
     tags_data: 'http://localhost:5000/api/tags',
-    query_events: 'http://localhost:5000/api/events'
+    query_events: 'http://localhost:5000/api/events',
+    event_info: 'http://localhost:5000/api/events/',
 }

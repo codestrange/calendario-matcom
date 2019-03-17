@@ -181,7 +181,6 @@
                     });
             },
             eventSelected(event, jsEvent, view) {
-                // Hacer request del evento
             }
         },
         created() {
