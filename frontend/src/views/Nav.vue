@@ -18,11 +18,11 @@
                         <i class="fas fa-fw fa-home"></i>
                         <span>Inicio</span></router-link>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="blank.html">
                         <i class="fas fa-fw fa-calendar"></i>
                         <span>Mi Calendario</span></a>
-                </li>
+                </li> -->
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->
