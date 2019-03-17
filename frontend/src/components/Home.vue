@@ -82,7 +82,25 @@
                 </button>
             </div>
         </div>
-        <full-calendar :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
+        <full-calendar :events="events" :config="config" @event-selected="eventSelect"></full-calendar>
+        <!-- Event Selected Modal-->
+        <div class="modal fade" id="eventSelectedModal" tabindex="-1" role="dialog" aria-labelledby="eventSelectedModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventSelectedModalLabel">{{ eventSelected.title }}</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span><strong>Descripción:</strong> {{ eventSelected.description }}</span><br>
+                        <span><strong>Desde:</strong> {{ eventSelected.start }} <strong>Hasta:</strong> {{ eventSelected.end }}</span><br>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -115,7 +133,8 @@
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     }
-                }
+                },
+                eventSelected: {}
             }
         },
         methods: {
@@ -180,7 +199,9 @@
                         this.loadAll();
                     });
             },
-            eventSelected(event, jsEvent, view) {
+            eventSelect(event, jsEvent, view) {
+                // Hacer request del evento
+                $('#eventSelectedModal').modal();
             }
         },
         created() {
