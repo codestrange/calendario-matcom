@@ -2,7 +2,7 @@
     <div id="home">
         <div class="row">
             <div class="col">
-                <div class="dropdown mb-4">
+                <div class="dropdown mb-0">
                     <button class="btn btn-light dropdown-toggle" type="button" id="asignaturas_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Asignaturas
                     </button>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0 ">
                     <button class="btn btn-light dropdown-toggle" type="button" id="resources_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Recursos
                     </button>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0 ">
                     <button class="btn btn-light dropdown-toggle" type="button" id="locales_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Locales
                     </button>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0 ">
                     <button class="btn btn-light dropdown-toggle" type="button" id="tipos_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Tipos
                     </button>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
+                <div class="dropdown mb-0 ">
                     <button class="btn btn-light dropdown-toggle" type="button" id="grupos_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Grupos
                     </button>
@@ -77,40 +77,30 @@
                 </div>
             </div>
             <div class="col">
-                <div class="dropdown mb-4 ">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="fecha_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Fecha
-                    </button>
-                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <div class="card-body" @click.stop>
-                            <div class="row">
-                                <div class="col">
-                                    <h1 class="h5 text-dark">Desde:</h1>
-                                    <datetime class="" type="datetime" v-model="datetime" ></datetime>
-                                </div>
-                                <div class="col">
-                                    <h1 class="h5 text-dark">Hasta:</h1>
-                                    <datetime class="" type="datetime" v-model="datetime"></datetime>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
                 <button class="btn btn-block btn-outline-dark" @click="makeQuery">
                     Filtrar
                 </button>
             </div>
-            <!--<div class="col">
-                <datetime class="" type="datetime" v-model="datetime"></datetime>
-            </div>
-            <div class="col">
-                <datetime class="" type="datetime" v-model="datetime"></datetime>
-            </div>-->
         </div>
-        <hr>
-        <full-calendar  class="" :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
+        <div class="row">
+            <div class="card-body mt-0" @click.stop style="width: 200px">
+                <div class="row ml-5">
+                    <div class="col-1">
+                        <h1 class="h5 text-dark mt-1">Desde:</h1>
+                    </div>
+                    <div class="col-5">
+                        <datetime  type="datetime" v-model="datetime" ></datetime>
+                    </div>
+                    <div class="col-1">
+                        <h1 class="h5 text-dark mt-1 ">Hasta:</h1>
+                    </div>
+                    <div class="col-5">
+                        <datetime type="datetime" @phrases="phrases" v-model="datetime"></datetime>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <full-calendar :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
 </template>
 
@@ -120,6 +110,10 @@
     import 'fullcalendar/dist/locale/es';
     import { Datetime } from 'vue-datetime';
     import 'vue-datetime/dist/vue-datetime.css';
+    import { Settings } from 'luxon';
+
+
+    Settings.defaultLocale = 'es';
 
     export default {
         name: "Home",
@@ -148,7 +142,8 @@
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     }
                 },
-                datetime: '2018-05-12T20:19:06.151Z'
+                datetime: '2018-05-12T20:19:06.151Z',
+                phrases: {ok: 'Aceptar',cancel: 'Cancelar'}
             }
         },
         methods: {
