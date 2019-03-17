@@ -27,6 +27,15 @@ def merge(left, right):
     return result
 
 
+def check_date(event, json):
+    left = right = True
+    if 'start' in json:
+        left = json.start <= event.start
+    if 'end' in json:
+        right = event.end <= json.end
+    return left and right
+
+
 @api.route('/events', methods=['POST'])
 @auth_token.login_required
 def query_events():
@@ -38,7 +47,6 @@ def query_events():
         for group in user.groups:
             if not group.id in json.groups:
                 json.groups.append(group.id)
-    print(json.groups)
     events = query(json.courses, all_events, lambda x: x.courses)
     events = merge(events, query(json.groups, all_events, lambda x: x.groups))
     events = merge(events, query(json.locals, all_events, lambda x: x.locals))
@@ -50,4 +58,4 @@ def query_events():
         'description': event.description,
         'start': event.start,
         'end': event.end
-    } for event in events])
+    } for event in events if check_date(event, json)])
