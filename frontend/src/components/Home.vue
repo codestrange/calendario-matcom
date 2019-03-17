@@ -88,7 +88,6 @@
 
 <script>
     import { FullCalendar } from 'vue-full-calendar';
-    import 'fullcalendar/dist/fullcalendar.css';
 
     export default {
         name: "Home",
@@ -102,22 +101,10 @@
                 locals: [],
                 tags: [],
                 groups: [],
-                events: [
-                    {
-                        title  : 'event1',
-                        start  : '2019-03-16',
-                    },
-                    {
-                        title  : 'dasd',
-                        start  : '2019-03-16',
-                        end    : '2019-03-17',
-                    },
-                    {
-                        title  : 'event3',
-                        start  : '2019-03-16T12:30:00',
-                        allDay : false,
-                    },
-                ]
+                events: [],
+                config: {
+                    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                }
             }
         },
         methods: {
@@ -240,11 +227,17 @@
                 this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [])
                     .then( result => {
                         if (result === true) {
-                            // this.events = [];
                             this.events = this.$store.state.query.query_data;
                         }
                     });
             }
+        },
+        created() {
+            this.makeQuery();
         }
     }
 </script>
+
+<style>
+@import '~fullcalendar/dist/fullcalendar.css';
+</style>
