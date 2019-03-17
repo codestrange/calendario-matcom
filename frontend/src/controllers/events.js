@@ -8,10 +8,10 @@ export default {
     getEventData(token, id) {
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
-        return Petitions.get(Endpoints.event_info + id + '/').then(response => response.json(), response => console.log('Error getting the response.'))
+        return Petitions.get(Endpoints.event_info + id).then(response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
                 if (json !== null && !json.hasOwnProperty('error')) {
-                    event = json;
+                    this.data.event = json;
                     return true;
                 }
                 return false;

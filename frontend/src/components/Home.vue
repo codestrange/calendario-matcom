@@ -201,7 +201,14 @@
             },
             eventSelect(event, jsEvent, view) {
                 // Hacer request del evento
-                $('#eventSelectedModal').modal();
+                this.$store.state.user.loadMinData();
+                let token = this.$store.state.user.getToken();
+                this.$store.state.events.getEventData(token, event.id).then(result => {
+                    if (result === true) {
+                        this.eventSelected = this.$store.state.events.data.event;
+                        $('#eventSelectedModal').modal();
+                    }
+                });
             }
         },
         created() {
