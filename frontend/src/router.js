@@ -6,8 +6,9 @@ import Store from './store';
 import Register from './views/Register';
 import NotFound from './views/NotFound';
 import Home from './components/Home';
-import UserProfile from './components/UserProfile';
-import GroupInfo from './components/GroupInfo';
+import Profile from './components/Profile';
+import Group from './components/Group';
+import Groups from './components/Groups';
 
 Vue.use(Router);
 
@@ -47,17 +48,25 @@ const router = new Router({
                     }
                 },
                 {
-                    path: '/group/:groupId/',
-                    name: 'groupPage',
-                    component: GroupInfo,
+                    path: '/profile',
+                    name: 'profilePage',
+                    component: Profile,
                     meta: {
                         requiresAuth: true
                     }
                 },
                 {
-                    path: '/user',
-                    name: 'userPage',
-                    component: UserProfile,
+                    path: '/groups/:groupId',
+                    name: 'groupPage',
+                    component: Group,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/groups',
+                    name: 'groupsPage',
+                    component: Groups,
                     meta: {
                         requiresAuth: true
                     }

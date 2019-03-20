@@ -14,9 +14,14 @@
                 <hr class="sidebar-divider my-0">
                 <!-- Nav Item - Inicio -->
                 <li class="nav-item">
-                    <router-link :to="{name: 'homePage'}" class="nav-link" href="">
+                    <router-link :to="{name: 'homePage'}" class="nav-link">
                         <i class="fas fa-fw fa-home"></i>
                         <span>Inicio</span></router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link :to="{name: 'groupsPage'}" class="nav-link">
+                        <i class="fas fa-fw fa-asterisk"></i>
+                        <span>Grupos</span></router-link>
                 </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="blank.html">
@@ -121,7 +126,7 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
-                                    <router-link :to="{name: 'userPage'}" class="dropdown-item">
+                                    <router-link :to="{name: 'profilePage'}" class="dropdown-item">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </router-link>
