@@ -12,3 +12,17 @@ def get_groups():
         'id': group.id,
         'name': group.name
     } for group in groups])
+
+
+@api.route('/groups/<int:id>')
+@auth_token.login_required
+def get_group(id):
+    group = Group.query.get_or_404(id)
+    events = [{'id': event.id, 'title': event.title} for event in group.events]
+    users = [{'id': user.id, 'username': user.username} for user in group.users]
+    return jsonify({
+        'id': group.id,
+        'name': group.name,
+        'events': events,
+        'users': users
+    })
