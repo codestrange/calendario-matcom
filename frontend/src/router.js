@@ -9,13 +9,15 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Group from './components/Group';
 import Groups from './components/Groups';
+import User from './components/User';
+import Users from './components/Users';
 
 Vue.use(Router);
 
 const checkforAuth = (to, from, next) => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
-        Store.state.user.loadMinData();
-        if (Store.state.user.isLogued() === false) {
+        Store.state.profile.loadMinData();
+        if (Store.state.profile.isLogued() === false) {
             next({name: 'loginPage'});
         }
     }
@@ -70,6 +72,22 @@ const router = new Router({
                     meta: {
                         requiresAuth: true
                     }
+                },
+                {
+                    path: '/users/:userId',
+                    name: 'userPage',
+                    component: User,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/users',
+                    name: 'usersPage',
+                    component: Users,
+                    meta: {
+                        requiresAuth: true
+                    }
                 }
             ]
         },
@@ -78,8 +96,8 @@ const router = new Router({
             name: 'loginPage',
             component: Login,
             beforeEnter(to, from, next) {
-                Store.state.user.loadMinData();
-                if (Store.state.user.isLogued() === true) {
+                Store.state.profile.loadMinData();
+                if (Store.state.profile.isLogued() === true) {
                     next({ name: Store.state.routes.getLast() });
                 }
                 next();

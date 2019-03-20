@@ -1,7 +1,7 @@
 import Petitions from './petitions';
 import Endpoints from '../endpoints/endpoints';
 
-const data_key = 'calendario-matcom-locals';
+const data_key = 'calendario-matcom-users';
 
 export default {
     data: [],
@@ -20,7 +20,7 @@ export default {
     getData(token) {
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
-        return Petitions.get(Endpoints.locals).
+        return Petitions.get(Endpoints.users).
             then(response => response.json(), response => console.log('Error getting the response.')).
             then(json => {
                 if (json !== null && !json.hasOwnProperty('error')) {

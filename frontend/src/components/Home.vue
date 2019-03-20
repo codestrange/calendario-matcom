@@ -118,7 +118,6 @@
     import 'vue-datetime/dist/vue-datetime.css';
     import { Settings } from 'luxon';
 
-
     Settings.defaultLocale = 'es';
 
     export default {
@@ -157,33 +156,18 @@
         },
         methods: {
             loadAll () {
-                this.loadGroups();
-                this.loadCourses();
-                this.loadLocals();
-                this.loadTags();
-                this.loadResources();
+                this.loadFrom('courses');
+                this.loadFrom('groups');
+                this.loadFrom('locals');
+                this.loadFrom('resources');
+                this.loadFrom('tags');
             },
-            loadFrom(froms, loader, to) {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state[froms][loader](token).then(result => {
-                    this[to] = this.$store.state[froms].data[froms];
+            loadFrom(arg) {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state[arg].getData(token).then(result => {
+                    this[arg] = this.$store.state[arg].data;
                 });
-            },
-            loadCourses () {
-                this.loadFrom('courses', 'getCourcesData', 'courses');
-            },
-            loadResources () {
-                this.loadFrom('resources', 'getResourcesData', 'resources');
-            },
-            loadLocals () {
-                this.loadFrom('locals', 'getLocalsData', 'locals');
-            },
-            loadTags () {
-                this.loadFrom('tags', 'getTagsData', 'tags');
-            },
-            loadGroups () {
-                this.loadFrom('groups', 'getGroupsData', 'groups');
             },
             getMarkedData(to) {
                 return (item => {
@@ -193,8 +177,8 @@
                 });
             },
             makeQuery() {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
                 let toSendTags = [];
                 let toSendCourses = [];
                 let toSendGroups = [];
@@ -214,9 +198,9 @@
                     toSendEndDate = this.datetimeEnd;
                 }
                 this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [], toSendStartDate, toSendEndDate)
-                    .then( result => {
+                    .then(result => {
                         if (result === true) {
-                            this.events = this.$store.state.query.query_data;
+                            this.events = this.$store.state.query.data;
                             this.events.forEach(event => {
                                 event.color = '#428bca';
                                 event.textColor = '#ffffff';
@@ -226,11 +210,11 @@
                     });
             },
             eventSelect(event, jsEvent, view) {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.events.getEventData(token, event.id).then(result => {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.event.getData(token, event.id).then(result => {
                     if (result === true) {
-                        this.eventSelected = this.$store.state.events.data.event;
+                        this.eventSelected = this.$store.state.event.data;
                         $('#eventSelectedModal').modal();
                     }
                 });

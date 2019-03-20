@@ -54,7 +54,6 @@
         methods: {
             toogleEdit: function() {
                 if (this.is_edit) {
-
                     // Hacer request
                 }
                 this.is_edit = !this.is_edit;
@@ -66,9 +65,9 @@
             }
         },
         created() {
-            this.$store.state.user.getUserData().then(() => {
-                this.user.username = this.$store.state.user.user_data.username;
-                this.user.email = this.$store.state.user.user_data.email;
+            this.$store.state.profile.getData().then(() => {
+                this.user.username = this.$store.state.profile.data.username;
+                this.user.email = this.$store.state.profile.data.email;
             });
         }
     }

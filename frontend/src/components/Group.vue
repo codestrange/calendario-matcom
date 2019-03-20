@@ -59,10 +59,10 @@
         },
         methods: {
             loadGroup() {
-                this.$store.state.user.loadMinData();
-                let token = this.$store.state.user.getToken();
-                this.$store.state.groups.getGroupData(token, this.group.id).then(result => {
-                    this.group = this.$store.state.groups.data.group;
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.group.getData(token, this.group.id).then(result => {
+                    this.group = this.$store.state.group.data;
                 });
             }
         },

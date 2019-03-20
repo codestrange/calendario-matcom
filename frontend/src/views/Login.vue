@@ -79,7 +79,7 @@
                 this.getToken(this.username, this.password, this.remember);
             },
             getToken(username, password, remember) {
-                this.$store.state.user.authenticateUser(username, password, remember)
+                this.$store.state.profile.authenticate(username, password, remember)
                     .then(result => {
                         if(result === false) {
                             this.showError = true;

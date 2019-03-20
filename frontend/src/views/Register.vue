@@ -38,7 +38,7 @@
                                         <div class="card-body">{{error.message}}</div>
                                     </div>
                                 </div>
-                                <a class="btn btn-primary btn-user btn-block text-white" @click="registerUser">
+                                <a class="btn btn-primary btn-user btn-block text-white" @click="register">
                                     Registrarse
                                 </a>
                             </form>
@@ -90,7 +90,7 @@
                 let len = this.newUserInfo.email.length - 1;
                 return (pos !== -1 && pos < len && pos !== 0);
             },
-            registerUser() {
+            register() {
                 if (this.newUserInfo.password1 === this.newUserInfo.password2) {
                     if (this.checkEmail() === false) {
                         this.error.message = 'La dirección de correo es invalida.';
@@ -108,7 +108,8 @@
                     }
                     else {
                         console.log('Handling the registration.');
-                        this.$store.state.user.createUser(this.newUserInfo.username, this.newUserInfo.email, this.newUserInfo.password1).then(result => {
+                        this.$store.state.profile.register(this.newUserInfo.username, this.newUserInfo.email, this.newUserInfo.password1).
+                        then(result => {
                             if (result.hasOwnProperty('error') === false) {
                                 this.$router.push({name: 'loginPage'});
                             }

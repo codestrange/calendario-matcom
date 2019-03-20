@@ -23,6 +23,11 @@
                         <i class="fas fa-fw fa-asterisk"></i>
                         <span>Grupos</span></router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link :to="{name: 'usersPage'}" class="nav-link">
+                        <i class="fas fa-fw fa-asterisk"></i>
+                        <span>Usuarios</span></router-link>
+                </li>
                 <!-- <li class="nav-item">
                     <a class="nav-link" href="blank.html">
                         <i class="fas fa-fw fa-calendar"></i>
@@ -197,12 +202,12 @@
             return {
                 loginOut: false,
                 user_pic_location: './img/default_user_image.jpeg',
-                username: 'Usuario'
+                username: ''
             };
         },
         methods: {
             logoutUser() {
-                this.$store.state.user.logOut();
+                this.$store.state.profile.logOut();
                 this.$router.push({ name: 'loginPage' });
             },
             openNewTab(url) {
@@ -210,8 +215,8 @@
             }
         },
         created() {
-            this.$store.state.user.getUserData().then(() => {
-                this.username = this.$store.state.user.user_data.username;
+            this.$store.state.profile.getData().then(() => {
+                this.username = this.$store.state.profile.data.username;
             });
         }
     }

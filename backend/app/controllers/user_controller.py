@@ -25,6 +25,30 @@ def get_profile():
     })
 
 
+@api.route('/users')
+@auth_token.login_required
+def get_users():
+    users = User.query.all()
+    return jsonify([{
+        'id': user.id,
+        'username': user.username,
+        'is_teacher': not user.teacher is None,
+        'is_student': not user.student is None
+    } for user in users])
+
+
+@api.route('/users/<int:id>')
+@auth_token.login_required
+def get_user(id):
+    user = User.query.get_or_404(id)
+    groups = [{'id': group.id, 'name': group.name} for group in user.groups]
+    return jsonify({
+        'id': user.id,
+        'username': user.username,
+        'groups': groups
+    })
+
+
 @api.route('/register', methods=['POST'])
 def post_register():
     json = json_load(request.json)

@@ -4,28 +4,27 @@ import Endpoints from '../endpoints/endpoints';
 const data_key = 'calendario-matcom-resources';
 
 export default {
-    data: {
-        resources: []
-    },
+    data: [],
     saveMinData() {
-        localStorage.setItem(data_key, JSON.stringify(this.data.resources));
+        localStorage.setItem(data_key, JSON.stringify(this.data));
     },
     loadMinData() {
         let stored = localStorage.getItem(data_key);
         if (stored !== null) {
-            this.data.resources = JSON.parse(stored);
+            this.data = JSON.parse(stored);
         }
     },
     removeMinData() {
         localStorage.removeItem(data_key);
     },
-    getResourcesData(token) {
+    getData(token) {
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
-        return Petitions.get(Endpoints.resources_data).then(response => response.json(), response => console.log('Error getting the response.')).then(
-            json => {
+        return Petitions.get(Endpoints.resources).
+            then(response => response.json(), response => console.log('Error getting the response.')).
+            then(json => {
                 if (json !== null && !json.hasOwnProperty('error')) {
-                    this.data.resources = json;
+                    this.data = json;
                     this.saveMinData();
                     return true;
                 }

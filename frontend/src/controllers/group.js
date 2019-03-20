@@ -1,10 +1,10 @@
 import Petitions from './petitions';
 import Endpoints from '../endpoints/endpoints';
 
-const data_key = 'calendario-matcom-locals';
+const data_key = 'calendario-matcom-group';
 
 export default {
-    data: [],
+    data: {},
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify(this.data));
     },
@@ -17,10 +17,10 @@ export default {
     removeMinData() {
         localStorage.removeItem(data_key);
     },
-    getData(token) {
+    getData(token, id) {
         Petitions.clearHeaders();
         Petitions.set_JSONHeaders(token, '');
-        return Petitions.get(Endpoints.locals).
+        return Petitions.get(Endpoints.groups + '/' + id).
             then(response => response.json(), response => console.log('Error getting the response.')).
             then(json => {
                 if (json !== null && !json.hasOwnProperty('error')) {
