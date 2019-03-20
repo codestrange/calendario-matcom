@@ -100,17 +100,11 @@
                 </div>
             </div>
         </div>
-        <full-calendar :events="events" :config="config" @event-selected="eventSelect"></full-calendar>
-        <!-- Event Selected Modal-->
-        <div class="modal fade" id="eventSelectedModal" tabindex="-1" role="dialog" aria-labelledby="eventSelectedModalLabel"
-             aria-hidden="true">
-            <event-shower :event-selected="eventSelected"/>
-        </div>
+        <full-calendar :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
 </template>
 
 <script>
-    import EventShower from '../components/EventInfoShower';
     import { FullCalendar } from 'vue-full-calendar';
     import 'fullcalendar/dist/fullcalendar.css';
     import 'fullcalendar/dist/locale/es';
@@ -124,7 +118,6 @@
         name: "Home",
         components: {
             Datetime,
-            EventShower,
             FullCalendar
         },
         data () {
@@ -150,8 +143,7 @@
                 },
                 datetimeStart: '',
                 datetimeEnd: '',
-                phrases: {ok: 'Aceptar',cancel: 'Cancelar'},
-                eventSelected: {}
+                phrases: {ok: 'Aceptar',cancel: 'Cancelar'}
             }
         },
         methods: {
@@ -209,15 +201,8 @@
                         this.loadAll();
                     });
             },
-            eventSelect(event, jsEvent, view) {
-                this.$store.state.profile.loadMinData();
-                let token = this.$store.state.profile.data.token;
-                this.$store.state.event.getData(token, event.id).then(result => {
-                    if (result === true) {
-                        this.eventSelected = this.$store.state.event.data;
-                        $('#eventSelectedModal').modal();
-                    }
-                });
+            eventSelected(event, jsEvent, view) {
+                this.$router.push({name: 'eventPage', params: {eventId: event.id}});
             }
         },
         created() {

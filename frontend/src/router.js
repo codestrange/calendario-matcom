@@ -11,6 +11,7 @@ import Group from './components/Group';
 import Groups from './components/Groups';
 import User from './components/User';
 import Users from './components/Users';
+import Event from './components/Event';
 
 Vue.use(Router);
 
@@ -88,7 +89,23 @@ const router = new Router({
                     meta: {
                         requiresAuth: true
                     }
-                }
+                },
+                {
+                    path: '/events/:eventId',
+                    name: 'eventPage',
+                    component: Event,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                // {
+                //     path: '/events',
+                //     name: 'eventsPage',
+                //     component: Users,
+                //     meta: {
+                //         requiresAuth: true
+                //     }
+                // }
             ]
         },
         {
