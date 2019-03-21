@@ -130,7 +130,7 @@
                 events: [],
                 config: {
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                    defaultView: 'month',
+                    defaultView: 'agendaWeek',
                     locale: 'es',
                     editable: false,
                     selectable: false,
@@ -139,7 +139,8 @@
                         left: 'prev,next today',
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
-                    }
+                    },
+                    scrollTime: '08:00:00'
                 },
                 datetimeStart: '',
                 datetimeEnd: '',
