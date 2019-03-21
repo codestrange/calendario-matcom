@@ -1,19 +1,27 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Nav from './views/Nav';
-import Login from './views/Login';
-import Store from './store';
-import Register from './views/Register';
-import NotFound from './views/NotFound';
-import Home from './components/Home';
-import Profile from './components/Profile';
 import Course from './components/Course';
 import Courses from './components/Courses';
+import Event from './components/Event';
+import Events from './components/Events';
 import Group from './components/Group';
 import Groups from './components/Groups';
+import Home from './components/Home';
+import Local from './components/Local';
+import Locals from './components/Locals';
+import Login from './views/Login';
+import Nav from './views/Nav';
+import NotFound from './views/NotFound';
+import Profile from './components/Profile';
+import Register from './views/Register';
+import Resource from './components/Resource';
+import Resources from './components/Resources';
+import Store from './store';
+import Tag from './components/Tag';
+import Tags from './components/Tags';
 import User from './components/User';
 import Users from './components/Users';
-import Event from './components/Event';
+
 
 Vue.use(Router);
 
@@ -53,14 +61,6 @@ const router = new Router({
                     }
                 },
                 {
-                    path: '/profile',
-                    name: 'profilePage',
-                    component: Profile,
-                    meta: {
-                        requiresAuth: true
-                    }
-                },
-                {
                     path: '/courses/:courseId',
                     name: 'coursePage',
                     component: Course,
@@ -72,6 +72,22 @@ const router = new Router({
                     path: '/courses',
                     name: 'coursesPage',
                     component: Courses,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/events/:eventId',
+                    name: 'eventPage',
+                    component: Event,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/events',
+                    name: 'eventsPage',
+                    component: Events,
                     meta: {
                         requiresAuth: true
                     }
@@ -93,6 +109,62 @@ const router = new Router({
                     }
                 },
                 {
+                    path: '/locals/:localId',
+                    name: 'localPage',
+                    component: Local,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/locals',
+                    name: 'localsPage',
+                    component: Locals,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/profile',
+                    name: 'profilePage',
+                    component: Profile,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/resources/:resourceId',
+                    name: 'resourcePage',
+                    component: Resource,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/resources',
+                    name: 'resourcesPage',
+                    component: Resources,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/tags/:tagId',
+                    name: 'tagPage',
+                    component: Tag,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/tags',
+                    name: 'tagsPage',
+                    component: Tags,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
                     path: '/users/:userId',
                     name: 'userPage',
                     component: User,
@@ -107,23 +179,7 @@ const router = new Router({
                     meta: {
                         requiresAuth: true
                     }
-                },
-                {
-                    path: '/events/:eventId',
-                    name: 'eventPage',
-                    component: Event,
-                    meta: {
-                        requiresAuth: true
-                    }
-                },
-                // {
-                //     path: '/events',
-                //     name: 'eventsPage',
-                //     component: Users,
-                //     meta: {
-                //         requiresAuth: true
-                //     }
-                // }
+                }
             ]
         },
         {

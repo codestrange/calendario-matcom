@@ -1,5 +1,5 @@
-from flask import jsonify, request
 from datetime import datetime, timedelta
+from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Event, User
@@ -70,6 +70,16 @@ def query_events():
         'start': event.start,
         'end': event.end
     } for event in events if check_date(event, json)])
+
+
+@api.route('/events')
+@auth_token.login_required
+def get_events():
+    events = Event.query.all()
+    return jsonify([{
+        'id': event.id,
+        'title': event.title
+    } for event in events])
 
 
 @api.route('/events/<int:id>')

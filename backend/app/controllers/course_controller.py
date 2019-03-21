@@ -20,8 +20,8 @@ def get_course(id):
     course = Course.query.get_or_404(id)
     events = [{'id': event.id, 'title': event.title} for event in course.events]
     teachers = [{
-            'id': teacher.user.id,
-            'username': teacher.user.username
+        'id': teacher.user.id,
+        'username': teacher.user.username
     } for teacher in course.teachers]
     return jsonify({
         'id': course.id,

@@ -58,7 +58,7 @@
             };
         },
         methods: {
-            loadCourse() {
+            loadData() {
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.course.getData(token, this.course.id).then(result => {
@@ -71,7 +71,7 @@
             if(isNaN(this.course.id)) {
                 this.$router.push({name:'notFoundPage'});
             }
-            this.loadCourse();
+            this.loadData();
         }
     }
 </script>

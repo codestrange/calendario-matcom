@@ -28,7 +28,7 @@
             };
         },
         methods: {
-            loadGroups() {
+            loadData() {
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.users.getData(token).then(result => {
@@ -37,7 +37,7 @@
             }
         },
         created() {
-            this.loadGroups();
+            this.loadData();
         }
     }
 </script>

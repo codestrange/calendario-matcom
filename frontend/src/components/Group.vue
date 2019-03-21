@@ -58,7 +58,7 @@
             };
         },
         methods: {
-            loadGroup() {
+            loadData() {
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.group.getData(token, this.group.id).then(result => {
@@ -71,7 +71,7 @@
             if(isNaN(this.group.id)) {
                 this.$router.push({name:'notFoundPage'});
             }
-            this.loadGroup();
+            this.loadData();
         }
     }
 </script>

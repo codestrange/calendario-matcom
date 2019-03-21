@@ -12,3 +12,15 @@ def get_tags():
         'id': tag.id,
         'text': tag.text
     } for tag in tags])
+
+
+@api.route('/tags/<int:id>')
+@auth_token.login_required
+def get_tag(id):
+    tag = Tag.query.get_or_404(id)
+    events = [{'id': event.id, 'title': event.title} for event in tag.events]
+    return jsonify({
+        'id': tag.id,
+        'text': tag.text,
+        'events': events
+    })
