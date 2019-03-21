@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="card mb-4 w-100 border-bottom-primary">
                     <div class="card-header py-3 bg-white">
-                        <h5 class="m-0 font-weight-bold text-primary">{{ group.name }}</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Grupo: {{ group.name }}</h5>
                     </div>
                 </div>
             </div>

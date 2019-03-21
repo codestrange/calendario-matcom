@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="card mb-2 w-100 border-bottom-primary">
                     <div class="card-header py-3 bg-white">
-                        <h5 class="m-0 font-weight-bold text-primary">{{ event.title }}</h5>
+                        <h5 class="m-0 font-weight-bold text-primary">Evento: {{ event.title }}</h5>
                     </div>
                 </div>
                 <div class="card mb-2 w-100 border-bottom-grey">
