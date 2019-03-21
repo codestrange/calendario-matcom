@@ -12,7 +12,11 @@
                         {{ render_date(event.start, event.end) }}
                     </div>
                 </div>
-                
+                <div v-if="event.description" class="card mb-2 w-100 border-bottom-grey">
+                    <div class="card-header py-2 bg-white">
+                        <span class="font-weight-bold text-primary">Descripción:</span> {{ event.description }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
