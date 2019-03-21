@@ -9,6 +9,7 @@ import TagsController from './controllers/tags';
 import LocalsController from './controllers/locals';
 import GroupController from './controllers/group';
 import GroupsController from './controllers/groups';
+import CourseController from './controllers/course';
 import CoursesController from './controllers/courses';
 import QueryController from './controllers/query';
 import EventController from './controllers/event';
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
         locals: LocalsController,
         group: GroupController,
         groups: GroupsController,
+        course: CourseController,
         courses: CoursesController,
         query: QueryController,
         event: EventController

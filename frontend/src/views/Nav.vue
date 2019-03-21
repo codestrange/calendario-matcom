@@ -19,6 +19,11 @@
                         <span>Inicio</span></router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link :to="{name: 'coursesPage'}" class="nav-link">
+                        <i class="fas fa-fw fa-asterisk"></i>
+                        <span>Asignaturas</span></router-link>
+                </li>
+                <li class="nav-item">
                     <router-link :to="{name: 'groupsPage'}" class="nav-link">
                         <i class="fas fa-fw fa-asterisk"></i>
                         <span>Grupos</span></router-link>

@@ -2,7 +2,7 @@ export default {
     baseUrl: 'http://localhost:5000/api/',
     token: 'http://localhost:5000/api/token',
     profile: 'http://localhost:5000/api/profile',
-    roles_data: 'http://localhost:5000/api/roles',
+    roles: 'http://localhost:5000/api/roles',
     permissions: 'http://localhost:5000/api/permissions',
     register: 'http://localhost:5000/api/register',
     courses: 'http://localhost:5000/api/courses',

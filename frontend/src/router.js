@@ -7,6 +7,8 @@ import Register from './views/Register';
 import NotFound from './views/NotFound';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import Course from './components/Course';
+import Courses from './components/Courses';
 import Group from './components/Group';
 import Groups from './components/Groups';
 import User from './components/User';
@@ -54,6 +56,22 @@ const router = new Router({
                     path: '/profile',
                     name: 'profilePage',
                     component: Profile,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/courses/:courseId',
+                    name: 'coursePage',
+                    component: Course,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/courses',
+                    name: 'coursesPage',
+                    component: Courses,
                     meta: {
                         requiresAuth: true
                     }
