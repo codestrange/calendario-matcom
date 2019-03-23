@@ -182,7 +182,7 @@ const router = new Router({
                     }
                 },
                 {
-                    path: '/editor',
+                    path: '/editor/:groupId',
                     name: 'editorPage',
                     component: Editor,
                     meta: {

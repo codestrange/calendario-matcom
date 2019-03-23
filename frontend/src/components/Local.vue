@@ -46,7 +46,12 @@
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.local.getData(token, this.local.id).then(result => {
-                    this.local = this.$store.state.local.data;
+                    if (result === true) {
+                        this.local = this.$store.state.local.data;
+                    }
+                    else {
+                        this.$router.push({name:'notFoundPage'});
+                    }
                 });
             }
         },

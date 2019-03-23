@@ -50,9 +50,6 @@
                     maxTime: '18:30:00',
                     allDaySlot: false
                 },
-                datetimeStart: '',
-                datetimeEnd: '',
-                phrases: {ok: 'Aceptar',cancel: 'Cancelar'}
             }
         },
         methods: {
@@ -63,9 +60,23 @@
             },
             prev() {
                 this.$refs.calendar.fireMethod('prev');
+            },
+            loadEvents() {
+
             }
         },
         created() {
+            this.$store.state.user.loadMinData();
+            let token = this.$store.state.profile.data.token;
+            let id = this.$route.params.groupId;
+            this.$store.state.group.getData(token, id).then(result => {
+                if (result === true) {
+                    
+                }
+                else {
+                    this.$router.push({name:'notFoundPage'});
+                }
+            });
         }
     }
 </script>

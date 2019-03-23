@@ -45,8 +45,13 @@
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.groups.getData(token).then(result => {
-                    this.groups = this.$store.state.groups.data;
-                    this.groups = this.groups.sort((a,b) => b.name - a.name )
+                    if (result === true) {
+                        this.groups = this.$store.state.groups.data;
+                        this.groups = this.groups.sort((a,b) => b.name - a.name );
+                    }
+                    else {
+                        this.$router.push({name:'notFoundPage'});
+                    }
                 });
             }
         },
