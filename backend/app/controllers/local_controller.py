@@ -3,41 +3,42 @@ from . import api
 from .event_controller import get_date
 from ..auth import auth_token
 from ..database import Local
-from ..utils import json_load
-
-
-def check_date1(event, json):
-    left = right = True
-    if 'start' in json and not 'end' in json:
-        left = right = event.end <= get_date(json.start)
-    elif 'end' in json and not 'start' in json:
-        left = right = event.start >= get_date(json.end)
-    elif 'start' in json and 'end' in json:
-        left = right = (event.end <= get_date(json.start) or event.start >= get_date(json.end) )             
-    return left and right
+from .. utils import json_load, check_json
 
 
 @api.route('/locals')
 @auth_token.login_required
 def get_locals():
+    locals = Local.query.all()
+    return jsonify([{
+        'id': local.id,
+        'name': local.name
+    } for local in locals])
+
+def check_outside(event, json):   
+    return event.end <= get_date(json.start) or event.start >= get_date(json.end)
+
+
+@api.route('/locals/free')
+@auth_token.login_required
+def get_free_locals():
     json = json_load(request.json)
-    _locals = Local.query.all()
+    check_json(json, ['start', 'end'])
     free_locals = []
+    _locals = Local.query.all()
     for local in _locals:
         valid = True
-        events_at = local.events
-        for event in events_at:
-            if not check_date1(event, json):
+        for event in local.events:
+            if not check_outside(event, json):
                 valid = False
-                break
+                break        
         if valid:
             free_locals.append(local)
     return jsonify([{
-        'id': local.id,
-        'local': local.name,
-        'size': local.size
+        "id": local.id,
+        "name": local.name        
     } for local in free_locals])
-
+        
 
 @api.route('/locals/<int:id>')
 @auth_token.login_required
