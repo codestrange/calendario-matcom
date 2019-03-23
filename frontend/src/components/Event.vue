@@ -83,9 +83,24 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="card mb-1 border-bottom-primary">
-                    <div class="card-header bg-white">
+                <div class="card mb-1 bg-white border-bottom-primary">
+                    <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
                         <h6 class="m-0 font-weight-bold text-primary">Tipos del Evento</h6>
+                    </a>
+                    <div class="collapse show" id="collapseCardExample" style="">
+                        <div class="card-body p-2">
+                            <div class="row justify-content-center">
+                                <form class="form-inline">
+                                    <input type="text" v-model="text" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
