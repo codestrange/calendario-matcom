@@ -11,31 +11,61 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <div class="card mb-1 border-bottom-primary">
-                    <div class="card-header bg-white">
+                <div class="card mb-1 bg-white border-bottom-primary">
+                    <a href="#collapseCardGroupsEvents" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCardGroupsEvents">
                         <h6 class="m-0 font-weight-bold text-primary">Eventos del Grupo</h6>
+                    </a>
+                    <div class="collapse hide" id="collapseCardGroupsEvents" style="">
+                        <div class="card-body p-2">
+                            <div class="row justify-content-center">
+                                <form class="form-inline">
+                                    <input type="text" v-model="group_events" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún evento asignado</button>
-                            <router-link v-for="event in group.events" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
+                            <router-link v-for="event in filterList(group.events, group_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-6">
-                <div class="card mb-1 border-bottom-primary">
-                    <div class="card-header bg-white">
+                <div class="card mb-1 bg-white border-bottom-primary">
+                    <a href="#collapseCardGroupsUsers" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCardGroupsUsers">
                         <h6 class="m-0 font-weight-bold text-primary">Usuarios del Grupo</h6>
+                    </a>
+                    <div class="collapse hide" id="collapseCardGroupsUsers" style="">
+                        <div class="card-body p-2">
+                            <div class="row justify-content-center">
+                                <form class="form-inline">
+                                    <input type="text" v-model="group_users" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.users.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún usuario asignado</button>
-                            <router-link v-for="user in group.users" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
+                            <router-link v-for="user in filterList(group.users, group_users,'username')" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -54,7 +84,9 @@
                     name: '',
                     events: [],
                     users: []
-                }
+                },
+                group_users: '',
+                group_events: ''
             };
         },
         methods: {
@@ -63,6 +95,11 @@
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.group.getData(token, this.group.id).then(result => {
                     this.group = this.$store.state.group.data;
+                })
+            },
+            filterList(list, box, prop){
+                return list.filter(elem => {
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase())
                 });
             }
         },
@@ -72,6 +109,7 @@
                 this.$router.push({name:'notFoundPage'});
             }
             this.loadData();
-        }
+        },
+
     }
 </script>

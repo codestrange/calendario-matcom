@@ -11,16 +11,31 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card mb-1 border-bottom-primary">
-                    <div class="card-header bg-white">
+                <div class="card mb-1 bg-white border-bottom-primary">
+                    <a href="#collapseCardTypesEvents" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCardTypesEvents">
                         <h6 class="m-0 font-weight-bold text-primary">Eventos del Tipo</h6>
+                    </a>
+                    <div class="collapse hide" id="collapseCardTypesEvents" style="">
+                        <div class="card-body p-2">
+                            <div class="row justify-content-center">
+                                <form class="form-inline">
+                                    <input type="text" v-model="type_events" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="tag.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El tipo no tiene ningún evento asignado</button>
-                            <router-link v-for="event in tag.events" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
+                            <router-link v-for="event in filterList(tag.events, type_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -38,7 +53,8 @@
                     id: -1,
                     text: '',
                     events: []
-                }
+                },
+                type_events: ''
             };
         },
         methods: {
@@ -47,6 +63,11 @@
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.tag.getData(token, this.tag.id).then(result => {
                     this.tag = this.$store.state.tag.data;
+                });
+            },
+            filterList(list, box, prop){
+                return list.filter(elem => {
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase())
                 });
             }
         },
