@@ -140,7 +140,8 @@
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     },
-                    scrollTime: '08:00:00'
+                    scrollTime: '08:00:00',
+                    allDaySlot: false
                 },
                 datetimeStart: '',
                 datetimeEnd: '',
