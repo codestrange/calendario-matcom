@@ -11,5 +11,6 @@ export default {
     resources: 'http://localhost:5000/api/resources',
     tags: 'http://localhost:5000/api/tags',
     token: 'http://localhost:5000/api/token',
-    users: 'http://localhost:5000/api/users'
+    users: 'http://localhost:5000/api/users',
+    intervals: 'http://localhost:5000/api/intervals'
 }

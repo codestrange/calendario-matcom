@@ -50,10 +50,12 @@
                     maxTime: '18:30:00',
                     allDaySlot: false
                 },
+                fake_intervals: []
             }
         },
         methods: {
             eventSelected(event, jsEvent, view) {
+                console.log(event);
             },
             next() {
                 this.$refs.calendar.fireMethod('next');
@@ -73,7 +75,6 @@
                 if (parseInt(day) < 10) {
                     day = '0' + day;
                 }
-                console.log(year + '-' + month + '-' + day + 'T00:00:00.000Z');
                 return year + '-' + month + '-' + day + 'T00:00:00.000Z';
             },
             startDate() {
@@ -87,8 +88,21 @@
                 date.setDate(date.getDate() + 6);
                 return this.dateToString(date);
             },
-            addFakeEvents(fixed_events) {
-                return fixed_events;
+            addFakeEvents(used_intervals) {
+                let finals = [];
+                this.fake_intervals.forEach(fake => {
+                    let b = true;
+                    used_intervals.forEach( used => {
+                        b &= this.checkCollition(used, fake);
+                    });
+                    if (b) {
+                        finals.push(fake);
+                    }
+                });
+                used_intervals.forEach(used => {
+                    finals.push(used);
+                });
+                return finals;
             },
             loadEvents() {
                 this.$store.state.profile.loadMinData();
@@ -104,9 +118,45 @@
                 this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
                     .then(result => {
                         if (result === true) {
-                            this.events = this.addFakeEvents(this.$store.state.query.data);
+                            this.$store.state.intervals.getData(token).then( result => {
+                                if (result === true) {
+                                    this.fake_intervals = this.buildAllFakeEvents(this.$store.state.intervals.data);
+                                    this.events = this.addFakeEvents(this.$store.state.query.data);
+                                }
+                            });
                         }
                 });
+            },
+            checkCollition (inter1, inter2) {
+                let s1 = new Date(inter1.start);
+                let e1 = new Date(inter1.end);
+                let s2 = new Date(inter2.start);
+                let e2 = new Date(inter2.end);
+                return (s1.getTime() > e2.getTime() || e1.getTime() < s2.getTime());
+            },
+            buildAllFakeEvents(intervals) {
+                let fakes = [];
+                intervals.forEach( interval => {
+                    for (let i = 0; i < 5; ++i) {
+                        let fakeI = {};
+                        fakeI.isFake = true;
+                        fakeI.title = interval.name;
+                        let s = new Date(this.startDate());
+                        s.setDate(s.getDate() + i);
+                        s.setHours(s.getHours() + parseInt(interval.start[0]+interval.start[1]));
+                        s.setMinutes(s.getMinutes() + parseInt(interval.start[3]+interval.start[4]));
+                        s.setSeconds(s.getSeconds() + parseInt(interval.start[6]+interval.start[7]));
+                        let e = new Date(this.startDate());
+                        e.setDate(e.getDate() + i);
+                        e.setHours(e.getHours() + parseInt(interval.end[0]+interval.end[1]));
+                        e.setMinutes(e.getMinutes() + parseInt(interval.end[3]+interval.end[4]));
+                        e.setSeconds(e.getSeconds() + parseInt(interval.end[6]+interval.end[7]));
+                        fakeI.start = s.toISOString();
+                        fakeI.end = e.toISOString();
+                        fakes.push(fakeI);
+                    }
+                });
+                return fakes;
             }
         },
         created() {
