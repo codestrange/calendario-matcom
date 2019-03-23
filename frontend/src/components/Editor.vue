@@ -50,9 +50,6 @@
                     maxTime: '18:30:00',
                     allDaySlot: false
                 },
-                datetimeStart: '',
-                datetimeEnd: '',
-                phrases: {ok: 'Aceptar',cancel: 'Cancelar'}
             }
         },
         methods: {
@@ -60,12 +57,71 @@
             },
             next() {
                 this.$refs.calendar.fireMethod('next');
+                this.loadEvents();
             },
             prev() {
                 this.$refs.calendar.fireMethod('prev');
+                this.loadEvents();
+            },
+            dateToString(date) {
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                if (parseInt(month) < 10) {
+                    month = '0' + month;
+                }
+                let day = date.getDate() + 1;
+                if (parseInt(day) < 10) {
+                    day = '0' + day;
+                }
+                console.log(year + '-' + month + '-' + day + 'T00:00:00.000Z');
+                return year + '-' + month + '-' + day + 'T00:00:00.000Z';
+            },
+            startDate() {
+                let sdate = this.$refs.calendar.fireMethod('getDate');
+                let date = sdate._d;
+                return this.dateToString(date);
+            },
+            endDate() {
+                let sdate = this.$refs.calendar.fireMethod('getDate');
+                let date = sdate._d;
+                date.setDate(date.getDate() + 6);
+                return this.dateToString(date);
+            },
+            addFakeEvents(fixed_events) {
+                return fixed_events;
+            },
+            loadEvents() {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                let toSendTags = [];
+                let toSendCourses = [];
+                let toSendGroups = [ parseInt(this.$route.params.groupId) ];
+                let toSendLocals = [];
+                let toSendResources = [];
+                let toSendUsers = [];
+                let toSendStartDate = this.startDate();
+                let toSendEndDate = this.endDate();
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
+                    .then(result => {
+                        if (result === true) {
+                            this.events = this.addFakeEvents(this.$store.state.query.data);
+                        }
+                });
             }
         },
         created() {
+            this.$store.state.profile.loadMinData();
+            let token = this.$store.state.profile.data.token;
+            let id = this.$route.params.groupId;
+            this.$store.state.group.getData(token, id).then(result => {
+                if (result === true) {
+                    this.next();
+                    this.prev();
+                }
+                else {
+                    this.$router.push({name:'notFoundPage'});
+                }
+            });
         }
     }
 </script>

@@ -50,7 +50,12 @@
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.courses.getData(token).then(result => {
-                    this.courses = this.$store.state.courses.data;
+                    if (result === true) {
+                        this.courses = this.$store.state.courses.data;
+                    }
+                    else {
+                        this.$router.push({name:'notFoundPage'});
+                    }
                 });
             }
         },
