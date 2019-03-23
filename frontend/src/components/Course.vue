@@ -35,6 +35,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="course.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>La asignatura no tiene ningún evento asignado</button>
+                            <button v-else-if="filterList(course.events, course_events, 'title').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="event in filterList(course.events, course_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
@@ -65,6 +66,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="course.teachers.length === 0" type="button" class="list-group-item list-group-item-action" disabled>La asignatura no tiene ningún profesor asignado</button>
+                            <button v-else-if="filterList(course.teachers, course_teachers, 'username').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="teacher in filterList(course.teachers, course_teachers, 'username')" :key="teacher.id" :to="{name: 'userPage', params: {userId: teacher.id}}" class="list-group-item list-group-item-action">{{ teacher.username }}</router-link>
                         </div>
                     </div>

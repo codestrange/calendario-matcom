@@ -35,6 +35,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="local.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El local no tiene ningún evento asignado</button>
+                            <button v-else-if="filterList(local.events, local_events, 'title').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="event in filterList(local.events, local_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>

@@ -35,6 +35,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún evento asignado</button>
+                            <button v-else-if="filterList(group.events, group_events, 'title').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="event in filterList(group.events, group_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
@@ -65,6 +66,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.users.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún usuario asignado</button>
+                            <button v-else-if="filterList(group.users, group_users,'username').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="user in filterList(group.users, group_users,'username')" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
                         </div>
                     </div>

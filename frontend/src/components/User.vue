@@ -35,6 +35,7 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="user.groups.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El usuario no tiene ningún grupo asignado</button>
+                            <button v-else-if="filterList(user.groups, user_groups, 'name').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
                             <router-link v-for="group in filterList(user.groups, user_groups, 'name')" :key="group.id" :to="{name: 'groupPage', params: {groupId: group.id}}" class="list-group-item list-group-item-action">{{ group.name }}</router-link>
                         </div>
                     </div>
