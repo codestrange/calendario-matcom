@@ -18,15 +18,17 @@
                     <div class="collapse hide" id="collapseCardLocalsEvents" style="">
                         <div class="card-body p-2">
                             <div class="row justify-content-center">
-                                <form class="form-inline">
+                                <div class="col-10">
                                     <input type="text" v-model="local_events" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
-                                    <button class="btn ml-2">
+                                </div>
+                                <div class="col-lg-2">
+                                    <button class="btn ml-4">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
-                                    <button class="btn ml-2">
+                                    <button class="btn ml-4">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

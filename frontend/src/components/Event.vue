@@ -27,16 +27,18 @@
                     </a>
                     <div class="collapse hide" id="collapseCardEventsGroups" style="">
                         <div class="card-body p-2">
-                            <div class="row justify-content-center">
-                                <form class="form-inline">
-                                    <input type="text" v-model="event_groups" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text w-100" v-model="event_groups" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="col-3">
                                     <button class="btn ml-2">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
                                     <button class="btn ml-2">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -58,16 +60,18 @@
                     </a>
                     <div class="collapse hide" id="collapseCardEventsRooms" style="">
                         <div class="card-body p-2">
-                            <div class="row justify-content-center">
-                                <form class="form-inline">
-                                    <input type="text" v-model="event_rooms" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text w-100" v-model="event_rooms" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="col-3">
                                     <button class="btn ml-2">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
                                     <button class="btn ml-2">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
