@@ -175,6 +175,7 @@
                 let toSendGroups = [];
                 let toSendLocals = [];
                 let toSendResources = [];
+                let toSendUsers = [];
                 let toSendStartDate = null;
                 let toSendEndDate = null;
                 this.courses.forEach(this.getMarkedData(toSendCourses));
@@ -188,7 +189,7 @@
                 if (this.datetimeEnd !== '') {
                     toSendEndDate = this.datetimeEnd;
                 }
-                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [], toSendStartDate, toSendEndDate)
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
                     .then(result => {
                         if (result === true) {
                             this.events = this.$store.state.query.data;
