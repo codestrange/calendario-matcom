@@ -106,10 +106,8 @@
 
 <script>
     import { FullCalendar } from 'vue-full-calendar';
-    import 'fullcalendar/dist/fullcalendar.css';
     import 'fullcalendar/dist/locale/es';
     import { Datetime } from 'vue-datetime';
-    import 'vue-datetime/dist/vue-datetime.css';
     import { Settings } from 'luxon';
 
     Settings.defaultLocale = 'es';
@@ -214,6 +212,7 @@
 
 <style>
 @import '~fullcalendar/dist/fullcalendar.min.css';
+@import '~vue-datetime/dist/vue-datetime.css';
 
 .fc-event {
     cursor: pointer;
