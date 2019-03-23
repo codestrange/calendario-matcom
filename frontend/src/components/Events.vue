@@ -25,7 +25,8 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
-                            <router-link v-for="event in filteredList" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
+                            <button v-if="filterList(events, text, 'title').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
+                            <router-link v-for="event in filterList(events, text, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -50,17 +51,15 @@
                 this.$store.state.events.getData(token).then(result => {
                     this.events = this.$store.state.events.data;
                 });
+            },
+            filterList(list, box, prop){
+                return list.filter(elem => {
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase())
+                })
             }
         },
         created() {
             this.loadData();
-        },
-        computed: {
-            filteredList() {
-                return this.events.filter(event => {
-                    return event.title.toString().toLowerCase().includes(this.text.toLowerCase())
-                })
-            }
         }
     }
 </script>
