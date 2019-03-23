@@ -101,7 +101,7 @@
             },
             filterList(list, box, prop){
                 return list.filter(elem => {
-                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase())
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase());
                 });
             }
         },
