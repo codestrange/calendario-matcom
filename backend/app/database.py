@@ -109,6 +109,16 @@ class Group(db.Model):
         return f'{self.name}'
 
 
+class Interval(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    start = db.Column(db.Time, nullable=False)
+    end = db.Column(db.Time, nullable=False)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
 class Local(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
