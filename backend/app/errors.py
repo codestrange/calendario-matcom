@@ -21,3 +21,9 @@ def forbidden(message):
 @api.errorhandler(ValidationError)
 def validation_error(e):
     return bad_request(e.args[0])
+
+
+@api.app_errorhandler(404)
+def page_not_found(e):
+    response = jsonify({'error': 'page not found', 'message': 'page not found'})
+    return response, 404
