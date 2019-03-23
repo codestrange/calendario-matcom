@@ -2,19 +2,23 @@
     <div id="group">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-2 w-100 border-bottom-primary">
-                    <div class="card-header py-3 bg-white">
-                        <div class="row mb-3">
+                <div class="card w-100 border-bottom-primary mb-1">
+                    <div class="card-header py-2 bg-white">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <h5 class="m-0 font-weight-bold text-primary">Locales</h5>
                             </div>
-                        </div>
-                        <div class="row">
-                            <class class="col">
-                                <div class="input-group">
-                                    <input type="text" v-model="text" class="form-control bg-light border-0 small" placeholder="Inserte palabra para buscar..." aria-label="Search" aria-describedby="basic-addon2">
-                                </div>
-                            </class>
+                            <div class="col">
+                                <form class="form-inline justify-content-end">
+                                    <input type="text" v-model="text" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
