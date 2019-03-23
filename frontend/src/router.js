@@ -21,6 +21,7 @@ import Tag from './components/Tag';
 import Tags from './components/Tags';
 import User from './components/User';
 import Users from './components/Users';
+import Editor from './components/Editor';
 
 
 Vue.use(Router);
@@ -176,6 +177,14 @@ const router = new Router({
                     path: '/users',
                     name: 'usersPage',
                     component: Users,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/editor',
+                    name: 'editorPage',
+                    component: Editor,
                     meta: {
                         requiresAuth: true
                     }
