@@ -54,5 +54,17 @@ export default {
             }
             return false;
         });
-    }
+    },
+    deleteEvent(token, id) {
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(token, '');
+        return Petitions.delete(Endpoints.events + '/' + id).
+        then(response => response.json(), response => console.log('Error getting the response.')).
+        then(json => {
+            if (json !== null && !json.hasOwnProperty('error')) {
+                return true;
+            }
+            return false;
+        });
+    },
 }
