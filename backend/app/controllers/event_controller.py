@@ -1,50 +1,8 @@
-from datetime import datetime, timedelta
 from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Event, User
-from ..utils import check_json, json_load
-
-
-def query(items, events, attr):
-    result = []
-    if items:
-        for event in events:
-            for item in attr(event):
-                if item.id in items:
-                    result.append(event)
-                    break
-    else:
-        result = events
-    return result
-
-
-def get_date(str_date):
-    year = int(str_date.split('-')[0])
-    month = int(str_date.split('-')[1])
-    day = int(str_date.split('-')[2].split('T')[0])
-    hour = int(str_date.split('T')[1].split(':')[0])
-    minute = int(str_date.split('T')[1].split(':')[1])
-    second = int(str_date.split('T')[1].split(':')[2].split('.')[0])
-    return datetime(year, month, day, hour, minute, second) - timedelta(hours=4)
-
-
-def merge(left, right):
-    result = []
-    ids = [item.id for item in right]
-    for item in left:
-        if item.id in ids:
-            result.append(item)
-    return result
-
-
-def check_date(event, json):
-    left = right = True
-    if 'start' in json:
-        left = get_date(json.start) <= event.start
-    if 'end' in json:
-        right = event.end <= get_date(json.end)
-    return left and right
+from ..utils import check_json, query, merge, check_date, json_load
 
 
 @api.route('/events/query', methods=['POST'])
@@ -83,7 +41,7 @@ def get_events():
 
 
 @api.route('/events/<int:id>')
-# @auth_token.login_required
+@auth_token.login_required
 def get_event(id):
     event = Event.query.get_or_404(id)
     event_courses = [{'id': course.id, 'name': course.name} for course in event.courses]

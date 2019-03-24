@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from . import api
-from .event_controller import get_date
+from ..utils import get_date
 from ..auth import auth_token
 from ..database import Local
 from .. utils import json_load, check_json
