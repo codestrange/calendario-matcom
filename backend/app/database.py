@@ -80,6 +80,7 @@ class Course(db.Model):
     hour_class = db.Column(db.Integer, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     semester = db.Column(db.Integer, nullable=False)
+    career = db.Column(db.String(64), nullable=True)
     events = db.relationship('Event', secondary=event_course, backref='courses')
 
     def __repr__(self):

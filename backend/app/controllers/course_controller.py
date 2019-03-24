@@ -10,7 +10,10 @@ def get_courses():
     courses = Course.query.all()
     return jsonify([{
         'id': course.id,
-        'name': course.name
+        'name': course.name,
+        'year': course.year,
+        'semester': course.semester,
+        'career': course.career
     } for course in courses])
 
 
@@ -26,6 +29,9 @@ def get_course(id):
     return jsonify({
         'id': course.id,
         'name': course.name,
+        'year': course.year,
+        'semester': course.semester,
+        'career': course.career,
         'events': events,
         'teachers': teachers
     })
