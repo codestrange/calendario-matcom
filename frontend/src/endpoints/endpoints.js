@@ -17,5 +17,5 @@ export default {
     users: baseUrl + 'users',
     intervals: baseUrl + 'intervals',
     free_locals: baseUrl + 'locals/free',
-    free_resources: baseUrl + 'resources/free',
+    free_resources: baseUrl + 'resources/free'
 }

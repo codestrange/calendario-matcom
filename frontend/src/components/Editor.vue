@@ -33,11 +33,11 @@
                     <div class="modal-body">
                         <div class="form-group mb-3 text-dark">
                             <label for="labelInputTitle">Título:</label>
-                            <input type="text" class="form-control" id="labelInputTitle">
+                            <input type="text" class="form-control" id="labelInputTitle" v-model="selectedEvent.title">
                         </div>
                         <div class="form-group mb-3 text-dark">
                             <label for="labelInputDescription">Descripción:</label>
-                            <textarea class="form-control" id="labelInputDescription"></textarea>
+                            <textarea class="form-control" id="labelInputDescription" v-model="selectedEvent.description"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-3">
@@ -102,9 +102,9 @@
                             </div>
                         </div>
                         <div class="row justify-content-center mt-2">
-                            <a class="btn btn-primary text-white">
+                            <button class="btn btn-primary text-white" @click="confirmCreation" data-dismiss="modal">
                                 Confirmar
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -129,6 +129,7 @@
         },
         data () {
             return {
+                selectedEvent: {},
                 courses: [],
                 free_resources: [],
                 free_locals: [],
@@ -170,6 +171,13 @@
                     this[arg] = this.$store.state[arg].data;
                 });
             },
+            getMarkedData(to) {
+                return (item => {
+                    if (item.hasOwnProperty('isMarked') && item.isMarked) {
+                        to.push(item.id);
+                    }
+                });
+            },
             eventSelected(event, jsEvent, view) {
                 let start = event.start;
                 let end = event.end;
@@ -181,6 +189,11 @@
                         this.$store.state.free_resources.getData(token, start, end).then(result => {
                             if (result === true) {
                                 this.free_resources = this.$store.state.free_resources.data;
+                                this.selectedEvent = Object.assign({}, event);
+                                this.selectedEvent.title = '';
+                                this.selectedEvent.description = '';
+                                console.log(this.selectedEvent);
+                                console.log(event);
                                 $('#eventSelectedModal').modal();
                             }
                         });
@@ -286,6 +299,59 @@
                     }
                 });
                 return fakes;
+            },
+            confirmCreation() {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                let toSendTitle = this.selectedEvent.title;
+                let toSendDesc = this.selectedEvent.description;
+                let toSendTags = [];
+                let toSendCourses = [];
+                let toSendGroups = [ parseInt(this.$route.params.groupId) ];
+                let toSendLocals = [];
+                let toSendResources = [];
+                let toSendStartDate = this.selectedEvent.start.toISOString();
+                let toSendEndDate = this.selectedEvent.end.toISOString();
+                this.courses.forEach(this.getMarkedData(toSendCourses));
+                this.tags.forEach(this.getMarkedData(toSendTags));
+                this.free_locals.forEach(this.getMarkedData(toSendLocals));
+                this.free_resources.forEach(this.getMarkedData(toSendResources));
+                if ( this.selectedEvent.isFake === true ) {
+                    this.$store.state.events.createEvent(token, {
+                        title: toSendTitle,
+                        description: toSendDesc,
+                        start: toSendStartDate,
+                        end: toSendEndDate,
+                        resources: toSendResources,
+                        tags: toSendTags,
+                        groups: toSendGroups,
+                        courses: toSendCourses,
+                        locals: toSendLocals
+                    }).then(result => {
+                        if (result === true) {
+                            this.loadEvents();
+                        }
+                    });
+                }
+                else {
+                    let toSendId = parseInt(this.selectedEvent.id);
+                    this.$store.state.events.updateEvent(token, {
+                        id: toSendId,
+                        title: toSendTitle,
+                        description: toSendDesc,
+                        start: toSendStartDate,
+                        end: toSendEndDate,
+                        resources: toSendResources,
+                        tags: toSendTags,
+                        groups: toSendGroups,
+                        courses: toSendCourses,
+                        locals: toSendLocals
+                    }).then(result => {
+                        if (result === true) {
+                            this.loadEvents();
+                        }
+                    });
+                }
             }
         },
         created() {

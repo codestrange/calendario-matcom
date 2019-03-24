@@ -30,5 +30,29 @@ export default {
                 }
                 return false;
             });
+    },
+    createEvent(token, body) {
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(token, '');
+        return Petitions.post(Endpoints.events, body).
+        then(response => response.json(), response => console.log('Error getting the response.')).
+        then(json => {
+            if (json !== null && !json.hasOwnProperty('error')) {
+                return true;
+            }
+            return false;
+        });
+    },
+    updateEvent(token, body) {
+        Petitions.clearHeaders();
+        Petitions.set_JSONHeaders(token, '');
+        return Petitions.put(Endpoints.events, body).
+        then(response => response.json(), response => console.log('Error getting the response.')).
+        then(json => {
+            if (json !== null && !json.hasOwnProperty('error')) {
+                return true;
+            }
+            return false;
+        });
     }
 }
