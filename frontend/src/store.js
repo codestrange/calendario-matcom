@@ -18,6 +18,8 @@ import TagsController from './controllers/tags';
 import UserController from './controllers/user';
 import UsersController from './controllers/users';
 import IntervalsController from './controllers/intervals';
+import FreeLocalsController from './controllers/free_locals';
+import FreeResourcesController from './controllers/free_resources';
 
 Vue.use(Vuex);
 
@@ -40,7 +42,9 @@ const store = new Vuex.Store({
         tags: TagsController,
         user: UserController,
         users: UsersController,
-        intervals: IntervalsController
+        intervals: IntervalsController,
+        free_locals: FreeLocalsController,
+        free_resources: FreeResourcesController
     },
     mutations: {},
     actions: {}

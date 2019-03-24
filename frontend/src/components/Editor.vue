@@ -22,16 +22,90 @@
         </div>
         <div id="eventSelectedModal" class="modal fade" tabindex="-1" role="dialog"
              aria-labelledby="eventSelectedModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="h2">Texto salvaje a aparecido.</h1>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span class="h3 text-dark mb-0">Agregue los Datos del Evento</span>
+                        <button class="close mb-0" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">x</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h1 class="h2">Otro texto salvaje a aparecido.</h1>
+                        <div class="form-group mb-3 text-dark">
+                            <label for="labelInputTitle">Título:</label>
+                            <input type="text" class="form-control" id="labelInputTitle">
+                        </div>
+                        <div class="form-group mb-3 text-dark">
+                            <label for="labelInputDescription">Descripción:</label>
+                            <textarea class="form-control" id="labelInputDescription"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="dropdown mb-0">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="asignaturas_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Asignaturas
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <div class="input-group m-2 " v-for="it in courses" :key="it.id">
+                                            <div class="input-group-text bg-white">
+                                                <input type="checkbox" aria-label="Checkbox for following text input" v-model="it.isMarked">
+                                                <span class="ml-2" id="basic-">{{it.name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="dropdown mb-0">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="locales_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Locales
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <div class="input-group m-2 " v-for="it in free_locals" :key="it.id">
+                                            <div class="input-group-text bg-white">
+                                                <input type="checkbox" aria-label="Checkbox for following text input" v-model="it.isMarked">
+                                                <span class="ml-2" id="basi3-addon3">{{it.name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="dropdown mb-0">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="resources_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Recursos
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <div class="input-group m-2 " v-for="it in free_resources" :key="it.id">
+                                            <div class="input-group-text bg-white">
+                                                <input type="checkbox" aria-label="Checkbox for following text input" v-model="it.isMarked">
+                                                <span class="ml-2" id="basi1-addon3">{{it.name}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="dropdown mb-0">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="tipos_drop_down" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Tipos
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in " aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                        <div class="input-group m-2 " v-for="it in tags" :key="it.id">
+                                            <div class="input-group-text bg-white">
+                                                <input type="checkbox" aria-label="Checkbox for following text input" v-model="it.isMarked">
+                                                <span class="ml-2" id="basi5-addon3">{{it.text}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center mt-2">
+                            <a class="btn btn-primary text-white">
+                                Confirmar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,6 +129,10 @@
         },
         data () {
             return {
+                courses: [],
+                free_resources: [],
+                free_locals: [],
+                tags: [],
                 events: [],
                 selectedGroupData: {},
                 config: {
@@ -81,9 +159,33 @@
             }
         },
         methods: {
+            loadAll () {
+                this.loadFrom('courses');
+                this.loadFrom('tags');
+            },
+            loadFrom(arg) {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state[arg].getData(token).then(result => {
+                    this[arg] = this.$store.state[arg].data;
+                });
+            },
             eventSelected(event, jsEvent, view) {
-                //Obtain all info about for the creation of the event and then raise modal
-                $('#eventSelectedModal').modal();
+                let start = event.start;
+                let end = event.end;
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.free_locals.getData(token, start, end).then(result => {
+                    if (result === true) {
+                        this.free_locals = this.$store.state.free_locals.data;
+                        this.$store.state.free_resources.getData(token, start, end).then(result => {
+                            if (result === true) {
+                                this.free_resources = this.$store.state.free_resources.data;
+                                $('#eventSelectedModal').modal();
+                            }
+                        });
+                    }
+                });
             },
             next() {
                 this.$refs.calendar.fireMethod('next');
@@ -195,6 +297,7 @@
                     this.next();
                     this.prev();
                     this.selectedGroupData = this.$store.state.group.data;
+                    this.loadAll();
                 }
                 else {
                     this.$router.push({name:'notFoundPage'});
