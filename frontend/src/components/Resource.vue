@@ -22,10 +22,10 @@
                                     <input type="text" v-model="resource_events" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
                                 </div>
                                 <div class="col-lg-2">
-                                    <button class="btn ml-4">
+                                    <button class="btn ml-4" @click.prevent="setVal()">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
-                                    <button class="btn ml-4">
+                                    <button class="btn ml-4" @click.prevent="unsetVal()">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
                                 </div>
@@ -57,7 +57,8 @@
                     name: '',
                     events: []
                 },
-                resource_events: ''
+                resource_events: '',
+                val: 1
             };
         },
         methods: {
@@ -74,9 +75,27 @@
                 });
             },
             filterList(list, box, prop){
-                return list.filter(elem => {
+                let tmp = list.sort(this.comparer(prop, this.val));
+                return tmp.filter(elem => {
                     return elem[prop].toString().toLowerCase().includes(box.toLowerCase());
                 });
+            },
+            setVal(){
+                this.val = 1;
+            },
+            unsetVal(){
+                this.val = -1;
+            },
+            comparer(prop, val){
+                return function (a,b) {
+                    if (a[prop] > b[prop]) {
+                        return 1 * val;
+                    } else if (a[prop] < b[prop]) {
+                        return -1 * val;
+                    } else {
+                        return 0;
+                    }
+                }
             }
         },
         created() {
