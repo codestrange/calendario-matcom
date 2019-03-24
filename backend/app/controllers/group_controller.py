@@ -1,7 +1,8 @@
-from flask import jsonify
+from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Group
+from ..utils import json_load, check_json
 
 
 @api.route('/groups')
@@ -26,3 +27,18 @@ def get_group(id):
         'events': events,
         'users': users
     })
+
+# #Dada una lista de ids de grupos y un intervalo de tiempo saber los grupos que estan libres en ese intervalo 
+# @api.route('/groups/free')
+# @auth_token.login_required
+# def get_free_groups():
+#     json = json_load(request.json)
+#     check_json(json, ['groups', 'start', 'end'])
+#     for id in json.groups:
+#         group = Group.query.filter_by(id = id).first()
+#         for 
+    
+
+
+
+

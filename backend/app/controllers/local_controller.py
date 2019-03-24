@@ -1,9 +1,8 @@
 from flask import jsonify, request
 from . import api
-from .event_controller import get_date
 from ..auth import auth_token
 from ..database import Local
-from .. utils import json_load, check_json
+from .. utils import json_load, check_json, check_outside, get_date
 
 
 @api.route('/locals')
@@ -15,12 +14,11 @@ def get_locals():
         'name': local.name
     } for local in locals])
 
-def check_outside(event, json):   
-    return event.end <= get_date(json.start) or event.start >= get_date(json.end)
+
 
 
 @api.route('/locals/free')
-@auth_token.login_required
+#@auth_token.login_required
 def get_free_locals():
     json = json_load(request.json)
     check_json(json, ['start', 'end'])
@@ -31,14 +29,14 @@ def get_free_locals():
         for event in local.events:
             if not check_outside(event, json):
                 valid = False
-                break        
+                break
         if valid:
             free_locals.append(local)
     return jsonify([{
         "id": local.id,
-        "name": local.name        
+        "name": local.name
     } for local in free_locals])
-        
+
 
 @api.route('/locals/<int:id>')
 @auth_token.login_required

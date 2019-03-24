@@ -20,3 +20,8 @@ def check_json(json, required):
 def json_load(json):
     json = loads(json) if isinstance(json, str) else json
     return AttributeDict(json)
+
+
+#Chequea que un evento no colisiona con un intervalo de tiempo
+def check_outside(event, json):
+    return event.end <= get_date(json.start) or event.start >= get_date(json.end)
