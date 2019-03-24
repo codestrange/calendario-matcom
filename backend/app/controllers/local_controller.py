@@ -2,7 +2,7 @@ from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Local
-from .. utils import json_load, check_json, check_outside, get_date
+from .. utils import json_load, check_json, check_outside
 
 
 @api.route('/locals')
