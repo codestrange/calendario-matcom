@@ -101,10 +101,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center mt-2">
+                        <div class="row justify-content-end mr-1 mt-2" v-if="selectedEvent.isFake === true">
                             <button class="btn btn-primary text-white" @click="confirmCreation" data-dismiss="modal">
                                 Confirmar
                             </button>
+                        </div>
+                        <div class="row mt-2" v-else>
+                            <div class="col-6">
+                                <button class="btn btn-dark text-white" v-if="deleteStatus === false" @click.stop="tryDelete">
+                                    Eliminar
+                                </button>
+                                <button class="btn btn-danger text-white" data-dismiss="modal" v-else @click="deleteEvent">
+                                    ¿Seguro?
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <div class="row justify-content-end mr-1">
+                                    <button class="btn btn-primary text-white" @click="confirmCreation" data-dismiss="modal">
+                                        Confirmar
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,6 +146,7 @@
         },
         data () {
             return {
+                deleteStatus: false,
                 selectedEvent: {},
                 courses: [],
                 free_resources: [],
@@ -352,6 +370,21 @@
                         }
                     });
                 }
+            },
+            tryDelete() {
+                this.deleteStatus = true;
+                setTimeout(() => {
+                    this.deleteStatus = false;
+                }, 5000);
+            },
+            deleteEvent() {
+                this.$store.state.profile.loadMinData();
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.events.deleteEvent(token, parseInt(this.selectedEvent.id)).then(result => {
+                    if (result === true) {
+                        this.loadEvents();
+                    }
+                });
             }
         },
         created() {
