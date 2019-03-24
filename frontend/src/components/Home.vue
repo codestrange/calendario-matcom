@@ -106,10 +106,8 @@
 
 <script>
     import { FullCalendar } from 'vue-full-calendar';
-    import 'fullcalendar/dist/fullcalendar.css';
     import 'fullcalendar/dist/locale/es';
     import { Datetime } from 'vue-datetime';
-    import 'vue-datetime/dist/vue-datetime.css';
     import { Settings } from 'luxon';
 
     Settings.defaultLocale = 'es';
@@ -140,7 +138,8 @@
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay,listWeek'
                     },
-                    scrollTime: '08:00:00'
+                    scrollTime: '08:00:00',
+                    allDaySlot: false
                 },
                 datetimeStart: '',
                 datetimeEnd: '',
@@ -177,6 +176,7 @@
                 let toSendGroups = [];
                 let toSendLocals = [];
                 let toSendResources = [];
+                let toSendUsers = [];
                 let toSendStartDate = null;
                 let toSendEndDate = null;
                 this.courses.forEach(this.getMarkedData(toSendCourses));
@@ -190,7 +190,7 @@
                 if (this.datetimeEnd !== '') {
                     toSendEndDate = this.datetimeEnd;
                 }
-                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, [], toSendStartDate, toSendEndDate)
+                this.$store.state.query.makeQuery(token, toSendCourses, toSendGroups, toSendLocals, toSendTags, toSendResources, toSendUsers, toSendStartDate, toSendEndDate)
                     .then(result => {
                         if (result === true) {
                             this.events = this.$store.state.query.data;
@@ -214,6 +214,7 @@
 
 <style>
 @import '~fullcalendar/dist/fullcalendar.min.css';
+@import '~vue-datetime/dist/vue-datetime.css';
 
 .fc-event {
     cursor: pointer;

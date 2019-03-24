@@ -2,18 +2,22 @@
     <div id="group">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-2 w-100 border-bottom-primary">
-                    <div class="card-header py-3 bg-white">
-                        <div class="row mb-3">
+                <div class="card w-100 border-bottom-primary mb-1">
+                    <div class="card-header py-2 bg-white">
+                        <div class="row align-items-center">
                             <div class="col">
                                 <h5 class="m-0 font-weight-bold text-primary">Usuarios</h5>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col">
-                                <div class="input-group">
-                                    <input type="text" v-model="text" class="form-control bg-light border-0 small" placeholder="Inserte palabra para buscar..." aria-label="Search" aria-describedby="basic-addon2">
-                                </div>
+                                <form class="form-inline justify-content-end">
+                                    <input type="text" v-model="text" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <button class="btn ml-2" @click.prevent="setVal()">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-2" @click.prevent="unsetVal()">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -21,7 +25,8 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
-                            <router-link v-for="user in filteredList" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
+                            <button v-if="filterList(users, text, 'username').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
+                            <router-link v-for="user in filterList(users, text, 'username')" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -36,7 +41,8 @@
         data() {
             return {
                 users : [],
-                text: ''
+                text: '',
+                val: 1
             };
         },
         methods: {
@@ -44,19 +50,40 @@
                 this.$store.state.profile.loadMinData();
                 let token = this.$store.state.profile.data.token;
                 this.$store.state.users.getData(token).then(result => {
-                    this.users = this.$store.state.users.data;
+                    if (result === true) {
+                        this.users = this.$store.state.users.data;
+                    }
+                    else {
+                        this.$router.push({name:'notFoundPage'});
+                    }
                 });
+            },
+            filterList(list, box, prop){
+                let tmp = list.sort(this.comparer(prop,this.val));
+                return list.filter(elem => {
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase());
+                });
+            },
+            setVal(){
+                this.val = 1;
+            },
+            unsetVal(){
+                this.val = -1;
+            },
+            comparer(prop, val){
+                return function (a,b) {
+                    if (a[prop] > b[prop]) {
+                        return 1 * val;
+                    } else if (a[prop] < b[prop]) {
+                        return -1 * val;
+                    } else {
+                        return 0;
+                    }
+                }
             }
         },
         created() {
             this.loadData();
-        },
-        computed: {
-            filteredList() {
-                return this.users.filter(user => {
-                    return user.username.toString().toLowerCase().includes(this.text.toLowerCase())
-                })
-            }
         }
     }
 </script>

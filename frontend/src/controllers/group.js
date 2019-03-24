@@ -28,6 +28,7 @@ export default {
                     this.saveMinData();
                     return true;
                 }
+                console.log()
                 return false;
             });
     }

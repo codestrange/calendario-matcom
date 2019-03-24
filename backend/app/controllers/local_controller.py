@@ -15,10 +15,8 @@ def get_locals():
     } for local in locals])
 
 
-
-
 @api.route('/locals/free')
-#@auth_token.login_required
+@auth_token.login_required
 def get_free_locals():
     json = json_load(request.json)
     check_json(json, ['start', 'end'])
