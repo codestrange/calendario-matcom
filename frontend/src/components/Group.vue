@@ -22,10 +22,10 @@
                                     <input type="text w-100" v-model="group_events" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
                                 </div>
                                 <div class="col-3">
-                                    <button class="btn ml-2">
+                                    <button class="btn ml-2" @click.prevent="setVal(2)">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
-                                    <button class="btn ml-2">
+                                    <button class="btn ml-2" @click.prevent="unsetVal(2)">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
                                 </div>
@@ -37,8 +37,8 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.events.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún evento asignado</button>
-                            <button v-else-if="filterList(group.events, group_events, 'title').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
-                            <router-link v-for="event in filterList(group.events, group_events, 'title')" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
+                            <button v-else-if="filterList(group.events, group_events, 'title', event_val).length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
+                            <router-link v-for="event in filterList(group.events, group_events, 'title', event_val)" :key="event.id" :to="{name: 'eventPage', params: {eventId: event.id}}" class="list-group-item list-group-item-action">{{ event.title }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -55,10 +55,10 @@
                                     <input type="text w-100" v-model="group_users" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
                                 </div>
                                 <div class="col-3">
-                                    <button class="btn ml-2">
+                                    <button class="btn ml-2" @click.prevent="setVal(1)">
                                         <i class="fas fa-sort-alpha-down"></i>
                                     </button>
-                                    <button class="btn ml-2">
+                                    <button class="btn ml-2" @click.prevent="unsetVal(1)">
                                         <i class="fas fa-sort-alpha-up"></i>
                                     </button>
                                 </div>
@@ -70,8 +70,8 @@
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="group.users.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El grupo no tiene ningún usuario asignado</button>
-                            <button v-else-if="filterList(group.users, group_users,'username').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
-                            <router-link v-for="user in filterList(group.users, group_users,'username')" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
+                            <button v-else-if="filterList(group.users, group_users,'username', user_val).length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
+                            <router-link v-for="user in filterList(group.users, group_users,'username', user_val)" :key="user.id" :to="{name: 'userPage', params: {userId: user.id}}" class="list-group-item list-group-item-action">{{ user.username }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,9 @@
                     users: []
                 },
                 group_users: '',
-                group_events: ''
+                group_events: '',
+                user_val: 1,
+                event_val: 1
             };
         },
         methods: {
@@ -103,10 +105,38 @@
                     this.group = this.$store.state.group.data;
                 })
             },
-            filterList(list, box, prop){
-                return list.filter(elem => {
+            filterList(list, box, prop, val){
+                let tmp = list.sort(this.comparer(prop,val));
+                return tmp.filter(elem => {
                     return elem[prop].toString().toLowerCase().includes(box.toLowerCase());
                 });
+            },
+            setVal(number){
+                if (number == 1){
+                    this.user_val = 1;
+                }
+                else{
+                    this.event_val = 1;
+                }
+            },
+            unsetVal(number){
+                if (number == 1){
+                    this.user_val = -1;
+                }
+                else{
+                    this.event_val = -1;
+                }
+            },
+            comparer(prop, val){
+                return function (a,b) {
+                    if (a[prop] > b[prop]) {
+                        return 1 * val;
+                    } else if (a[prop] < b[prop]) {
+                        return -1 * val;
+                    } else {
+                        return 0;
+                    }
+                }
             }
         },
         created() {
