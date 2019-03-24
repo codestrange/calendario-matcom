@@ -15,7 +15,8 @@ def get_locals():
         'name': local.name
     } for local in locals])
 
-def check_outside(event, json):   
+
+def check_outside(event, json):
     return event.end <= get_date(json.start) or event.start >= get_date(json.end)
 
 
@@ -31,14 +32,14 @@ def get_free_locals():
         for event in local.events:
             if not check_outside(event, json):
                 valid = False
-                break        
+                break
         if valid:
             free_locals.append(local)
     return jsonify([{
         "id": local.id,
-        "name": local.name        
+        "name": local.name
     } for local in free_locals])
-        
+
 
 @api.route('/locals/<int:id>')
 @auth_token.login_required

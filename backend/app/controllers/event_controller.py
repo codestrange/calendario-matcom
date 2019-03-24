@@ -41,7 +41,6 @@ def merge(left, right):
 def check_date(event, json):
     left = right = True
     if 'start' in json:
-    
         left = get_date(json.start) <= event.start
     if 'end' in json:
         right = event.end <= get_date(json.end)
