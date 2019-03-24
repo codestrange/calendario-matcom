@@ -1,14 +1,24 @@
 <template>
     <div id="class_editor">
-        <div class="row justify-content-end">
-            <form class="form-inline">
-                <button class="btn ml-3" @click.prevent="prev">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <button class="btn ml-3" @click.prevent="next">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="row justify-content-center">
+                    <span class="h5 text-primary mr-0">Editando Horario del Grupo {{this.selectedGroupData.name}}</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row justify-content-end">
+                    <form class="form-inline">
+                        <button class="btn ml-3" @click.prevent="prev">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="btn ml-3" @click.prevent="next">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
         <div id="eventSelectedModal" class="modal fade" tabindex="-1" role="dialog"
              aria-labelledby="eventSelectedModalLabel" aria-hidden="true">
@@ -46,6 +56,7 @@
         data () {
             return {
                 events: [],
+                selectedGroupData: {},
                 config: {
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                     defaultView: 'agendaWeek',
@@ -183,6 +194,7 @@
                 if (result === true) {
                     this.next();
                     this.prev();
+                    this.selectedGroupData = this.$store.state.group.data;
                 }
                 else {
                     this.$router.push({name:'notFoundPage'});

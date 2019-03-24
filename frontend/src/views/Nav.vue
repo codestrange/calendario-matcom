@@ -160,6 +160,10 @@
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </router-link>
+                                    <router-link :to="{name: 'panelPage'}" class="dropdown-item">
+                                        <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Administrar Panel
+                                    </router-link>
                                     <!-- <a class="dropdown-item" href="#">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Configuración
