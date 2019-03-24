@@ -11,16 +11,34 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="card mb-1 border-bottom-primary">
-                    <div class="card-header bg-white">
-                        <h6 class="m-0 font-weight-bold text-primary">Grupos del usuario</h6>
+                <div class="card mb-1 bg-white border-bottom-primary">
+                    <a href="#collapseCardUsersGroups" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCardUsersGroups">
+                        <h6 class="m-0 font-weight-bold text-primary">Grupos del Usuario</h6>
+                    </a>
+                    <div class="collapse hide" id="collapseCardUsersGroups" style="">
+                        <div class="card-body p-2">
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <input type="text" v-model="user_groups" class="form-control bg-light border-0 small" placeholder="Buscar ..." aria-label="Search" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="col-lg-2">
+                                    <button class="btn ml-4">
+                                        <i class="fas fa-sort-alpha-down"></i>
+                                    </button>
+                                    <button class="btn ml-4">
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="list-group">
                             <button v-if="user.groups.length === 0" type="button" class="list-group-item list-group-item-action" disabled>El usuario no tiene ningún grupo asignado</button>
-                            <router-link v-for="group in user.groups" :key="group.id" :to="{name: 'groupPage', params: {groupId: group.id}}" class="list-group-item list-group-item-action">{{ group.name }}</router-link>
+                            <button v-else-if="filterList(user.groups, user_groups, 'name').length === 0" type="button" class="list-group-item list-group-item-action" disabled>No hay resultados para mostrar</button>
+                            <router-link v-for="group in filterList(user.groups, user_groups, 'name')" :key="group.id" :to="{name: 'groupPage', params: {groupId: group.id}}" class="list-group-item list-group-item-action">{{ group.name }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -38,7 +56,8 @@
                     id: -1,
                     username: '',
                     groups: []
-                }
+                },
+                user_groups: ''
             };
         },
         methods: {
@@ -52,6 +71,11 @@
                     else {
                         this.$router.push({name:'notFoundPage'});
                     }
+                });
+            },
+            filterList(list, box, prop){
+                return list.filter(elem => {
+                    return elem[prop].toString().toLowerCase().includes(box.toLowerCase());
                 });
             }
         },
