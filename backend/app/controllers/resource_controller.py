@@ -1,9 +1,8 @@
 from flask import jsonify, request
 from . import api
-from .event_controller import get_date
 from ..auth import auth_token
 from ..database import Resource
-from ..utils import json_load, check_json, check_outside
+from ..utils import json_load, check_json, check_outside, get_date
 
 
 @api.route('/resources')
@@ -17,7 +16,7 @@ def get_resources():
 
 
 @api.route('/resources/free')
-#@auth_token.login_required
+@auth_token.login_required
 def get_free_resources():
     json = json_load(request.json)
     check_json(json, ['start', 'end'])
@@ -36,8 +35,6 @@ def get_free_resources():
         "name": res.name,
         "kind": res.kind
     } for res in free_resources])
-
-
 
 
 @api.route('/resources/<int:id>')

@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from json import loads
 from .exceptions import ValidationError
 
@@ -22,6 +23,46 @@ def json_load(json):
     return AttributeDict(json)
 
 
-#Chequea que un evento no colisiona con un intervalo de tiempo
 def check_outside(event, json):
     return event.end <= get_date(json.start) or event.start >= get_date(json.end)
+
+
+def get_date(str_date):
+    year = int(str_date.split('-')[0])
+    month = int(str_date.split('-')[1])
+    day = int(str_date.split('-')[2].split('T')[0])
+    hour = int(str_date.split('T')[1].split(':')[0])
+    minute = int(str_date.split('T')[1].split(':')[1])
+    second = int(str_date.split('T')[1].split(':')[2].split('.')[0])
+    return datetime(year, month, day, hour, minute, second) - timedelta(hours=4)
+
+
+def merge(left, right):
+    result = []
+    ids = [item.id for item in right]
+    for item in left:
+        if item.id in ids:
+            result.append(item)
+    return result
+
+
+def check_date(event, json):
+    left = right = True
+    if 'start' in json:
+        left = get_date(json.start) <= event.start
+    if 'end' in json:
+        right = event.end <= get_date(json.end)
+    return left and right
+
+
+def query(items, events, attr):
+    result = []
+    if items:
+        for event in events:
+            for item in attr(event):
+                if item.id in items:
+                    result.append(event)
+                    break
+    else:
+        result = events
+    return result
