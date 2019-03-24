@@ -91,7 +91,56 @@ def post_event():
 @api.route('/events', methods=['PUT'])
 @auth_token.login_required
 def put_event():
-    return jsonify({})
+    json = json_load(request.json)
+    check_json(json, ['id', 'title', 'description', 'start', 'end', 'courses', 'groups', 'locals',
+                      'resources', 'tags'])
+    old_event = Event.query.get_or_404(json.id)
+    db.session.delete(old_event)
+    db.session.commit()
+    if Event.query.filter_by(title=json.title).first():
+        return bad_request('Ya existe un evento con el mismo título.')
+    events = Event.query.filter(json.start <= Event.start).filter(Event.end <= json.end).all()
+    ok = True
+    for group_id in json.groups:
+        for event in events:
+            for group in event.groups:
+                if group.id == group_id:
+                    ok = False
+    for local_id in json.locals:
+        for event in events:
+            for local in event.locals:
+                if local.id == local_id:
+                    ok = False
+    for resource_id in json.resources:
+        for event in events:
+            for resource in event.resources:
+                if resource.id == resource_id:
+                    ok = False
+    if ok:
+        event = Event()
+        event.title = json.title
+        event.description = json.description
+        event.start = json.start
+        event.end = json.end
+        for identifier in json.courses:
+            item = Course.query.get_or_404(identifier)
+            event.courses.append(item)
+        for identifier in json.groups:
+            item = Group.query.get_or_404(identifier)
+            event.groups.append(item)
+        for identifier in json.locals:
+            item = Local.query.get_or_404(identifier)
+            event.locals.append(item)
+        for identifier in json.resources:
+            item = Resource.query.get_or_404(identifier)
+            event.resources.append(item)
+        for identifier in json.tags:
+            item = Tag.query.get_or_404(identifier)
+            event.tags.append(item)
+        db.session.add(event)
+        db.session.commit()
+        return jsonify({'message': 'Evento cambiado correctamente.'}), 201
+    return bad_request('No es posible cambiar el evento.')
 
 
 @api.route('/events')
