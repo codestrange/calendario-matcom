@@ -34,7 +34,7 @@ export default {
         if (end !== null) {
             body.end = end;
         }
-        return Petitions.post(Endpoints.events, body).
+        return Petitions.post(Endpoints.query, body).
         then(response => response.json(), response => console.log('Error getting the response!', response)).
         then(json => {
             if (json !== null && !json.hasOwnProperty('error')) {

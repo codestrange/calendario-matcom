@@ -3,6 +3,7 @@ export default {
     courses: 'http://localhost:5000/api/courses',
     groups: 'http://localhost:5000/api/groups',
     events: 'http://localhost:5000/api/events',
+    query: 'http://localhost:5000/api/events/query',
     locals: 'http://localhost:5000/api/locals',
     permissions: 'http://localhost:5000/api/permissions',
     profile: 'http://localhost:5000/api/profile',

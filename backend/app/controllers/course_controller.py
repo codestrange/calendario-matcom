@@ -31,7 +31,7 @@ def get_course(id):
         'name': course.name,
         'year': course.year,
         'semester': course.semester,
-        'career': course.career
+        'career': course.career,
         'events': events,
         'teachers': teachers
     })
