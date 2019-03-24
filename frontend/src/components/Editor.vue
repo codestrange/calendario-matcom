@@ -1,14 +1,40 @@
 <template>
     <div id="class_editor">
-        <div class="row justify-content-end">
-            <form class="form-inline">
-                <button class="btn ml-3" @click.prevent="prev">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <button class="btn ml-3" @click.prevent="next">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="row justify-content-center">
+                    <span class="h5 text-primary mr-0">Editando Horario del Grupo {{this.selectedGroupData.name}}</span>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row justify-content-end">
+                    <form class="form-inline">
+                        <button class="btn ml-3" @click.prevent="prev">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="btn ml-3" @click.prevent="next">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="eventSelectedModal" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="eventSelectedModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="h2">Texto salvaje a aparecido.</h1>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class="h2">Otro texto salvaje a aparecido.</h1>
+                    </div>
+                </div>
+            </div>
         </div>
         <full-calendar ref="calendar" :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
@@ -30,6 +56,7 @@
         data () {
             return {
                 events: [],
+                selectedGroupData: {},
                 config: {
                     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                     defaultView: 'agendaWeek',
@@ -55,7 +82,8 @@
         },
         methods: {
             eventSelected(event, jsEvent, view) {
-                console.log(event);
+                //Obtain all info about for the creation of the event and then raise modal
+                $('#eventSelectedModal').modal();
             },
             next() {
                 this.$refs.calendar.fireMethod('next');
@@ -66,16 +94,7 @@
                 this.loadEvents();
             },
             dateToString(date) {
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                if (parseInt(month) < 10) {
-                    month = '0' + month;
-                }
-                let day = date.getDate() + 1;
-                if (parseInt(day) < 10) {
-                    day = '0' + day;
-                }
-                return year + '-' + month + '-' + day + 'T00:00:00.000Z';
+                return date.toISOString();
             },
             startDate() {
                 let sdate = this.$refs.calendar.fireMethod('getDate');
@@ -175,6 +194,7 @@
                 if (result === true) {
                     this.next();
                     this.prev();
+                    this.selectedGroupData = this.$store.state.group.data;
                 }
                 else {
                     this.$router.push({name:'notFoundPage'});
