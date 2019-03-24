@@ -2,7 +2,7 @@ from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Resource
-from ..utils import json_load, check_json, check_outside, get_date
+from ..utils import json_load, check_json, check_outside
 
 
 @api.route('/resources')
@@ -15,7 +15,7 @@ def get_resources():
     } for resource in resources])
 
 
-@api.route('/resources/free')
+@api.route('/resources/free', methods=['POST'])
 @auth_token.login_required
 def get_free_resources():
     json = json_load(request.json)
