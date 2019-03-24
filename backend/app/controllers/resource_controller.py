@@ -15,7 +15,7 @@ def get_resources():
     } for resource in resources])
 
 
-@api.route('/resources/free')
+@api.route('/resources/free', methods=['POST'])
 @auth_token.login_required
 def get_free_resources():
     json = json_load(request.json)

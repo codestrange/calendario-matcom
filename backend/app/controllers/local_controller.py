@@ -15,7 +15,7 @@ def get_locals():
     } for local in locals])
 
 
-@api.route('/locals/free')
+@api.route('/locals/free', methods=['POST'])
 @auth_token.login_required
 def get_free_locals():
     json = json_load(request.json)

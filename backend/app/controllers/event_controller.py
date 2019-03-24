@@ -1,3 +1,4 @@
+from datetime import timedelta
 from flask import jsonify, request
 from . import api
 from ..auth import auth_token
@@ -21,6 +22,10 @@ def query_events():
     events = merge(events, query(json.locals, all_events, lambda x: x.locals))
     events = merge(events, query(json.resources, all_events, lambda x: x.resources))
     events = merge(events, query(json.tags, all_events, lambda x: x.tags))
+    if 'start' in json:
+        json.start -= timedelta(hours=4)
+    if 'end' in json:
+        json.end -= timedelta(hours=4)
     return jsonify([{
         'id': event.id,
         'title': event.title,

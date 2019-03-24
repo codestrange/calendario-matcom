@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from json import loads
 from .exceptions import ValidationError
 
@@ -18,8 +18,13 @@ def check_json(json, required):
             raise ValidationError(f'{item} es necesario.')
 
 
-def json_load(json):
+def json_load(json, convert_date=True):
     json = loads(json) if isinstance(json, str) else json
+    if convert_date:
+        if 'start' in json:
+            json['start'] = get_date(json['start'])
+        if 'end' in json:
+            json['end'] = get_date(json['end'])
     return AttributeDict(json)
 
 
@@ -39,7 +44,7 @@ def get_date(str_date):
     hour = int(str_date.split('T')[1].split(':')[0])
     minute = int(str_date.split('T')[1].split(':')[1])
     second = int(str_date.split('T')[1].split(':')[2].split('.')[0])
-    return datetime(year, month, day, hour, minute, second) - timedelta(hours=4)
+    return datetime(year, month, day, hour, minute, second)
 
 
 def merge(left, right):
@@ -54,9 +59,9 @@ def merge(left, right):
 def check_date(event, json):
     left = right = True
     if 'start' in json:
-        left = get_date(json.start) <= event.start
+        left = json.start <= event.start
     if 'end' in json:
-        right = event.end <= get_date(json.end)
+        right = event.end <= json.end
     return left and right
 
 
