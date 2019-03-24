@@ -17,6 +17,7 @@ import TagController from './controllers/tag';
 import TagsController from './controllers/tags';
 import UserController from './controllers/user';
 import UsersController from './controllers/users';
+import IntervalsController from './controllers/intervals';
 
 Vue.use(Vuex);
 
@@ -39,6 +40,7 @@ const store = new Vuex.Store({
         tags: TagsController,
         user: UserController,
         users: UsersController,
+        intervals: IntervalsController
     },
     mutations: {},
     actions: {}
