@@ -2,7 +2,7 @@ from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Group
-from ..utils import json_load, check_json, check_outside
+from ..utils import json_load, check_json, check_outside, check_inside
 
 
 @api.route('/groups')
@@ -28,8 +28,6 @@ def get_group(id):
         'users': users
     })
 
-def check_inside(event, json):
-    return event.start >= json.start and event.end <= json.end
 
 #Dada una lista de ids de grupos y un intervalo de tiempo saber los turnos libres que tienen en comun estos grupos
 @api.route('/groups/free')

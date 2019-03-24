@@ -2,7 +2,7 @@ from flask import jsonify, request
 from . import api
 from ..auth import auth_token
 from ..database import Local
-from .. utils import json_load, check_json, check_outside, get_date
+from .. utils import json_load, check_json, check_outside
 
 
 @api.route('/locals')
@@ -16,12 +16,10 @@ def get_locals():
 
 
 @api.route('/locals/free')
-#@auth_token.login_required
+@auth_token.login_required
 def get_free_locals():
     json = json_load(request.json)
     check_json(json, ['start', 'end'])
-    print(get_date(json.start))
-    print(get_date(json.end))
     free_locals = []
     _locals = Local.query.all()
     for local in _locals:

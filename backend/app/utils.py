@@ -24,7 +24,12 @@ def json_load(json):
 
 
 def check_outside(event, json):
-    return event.end <= get_date(json.start) or event.start >= get_date(json.end)
+    return event.end <= json.start or event.start >= json.end
+
+
+def check_inside(event, json):
+    return event.start >= json.start and event.end <= json.end
+
 
 
 def get_date(str_date):
