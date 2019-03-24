@@ -100,9 +100,16 @@
                     }
                 });
                 used_intervals.forEach(used => {
+                    used.isFake = false;
                     finals.push(used);
                 });
                 return finals;
+            },
+            updateVisualStyle() {
+                this.events.forEach(event => {
+                    event.textColor = event.isFake ? '#428bca' : '#ffffff';
+                    event.color = event.isFake ? '#f5f5f0' : '#428bca';
+                });
             },
             loadEvents() {
                 this.$store.state.profile.loadMinData();
@@ -122,6 +129,7 @@
                                 if (result === true) {
                                     this.fake_intervals = this.buildAllFakeEvents(this.$store.state.intervals.data);
                                     this.events = this.addFakeEvents(this.$store.state.query.data);
+                                    this.updateVisualStyle();
                                 }
                             });
                         }
