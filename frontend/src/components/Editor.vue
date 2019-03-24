@@ -10,6 +10,22 @@
                 </button>
             </form>
         </div>
+        <div id="eventSelectedModal" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="eventSelectedModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="h2">Texto salvaje a aparecido.</h1>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class="h2">Otro texto salvaje a aparecido.</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
         <full-calendar ref="calendar" :events="events" :config="config" @event-selected="eventSelected"></full-calendar>
     </div>
 </template>
@@ -55,7 +71,8 @@
         },
         methods: {
             eventSelected(event, jsEvent, view) {
-                console.log(event);
+                //Obtain all info about for the creation of the event and then raise modal
+                $('#eventSelectedModal').modal();
             },
             next() {
                 this.$refs.calendar.fireMethod('next');
@@ -66,16 +83,7 @@
                 this.loadEvents();
             },
             dateToString(date) {
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                if (parseInt(month) < 10) {
-                    month = '0' + month;
-                }
-                let day = date.getDate() + 1;
-                if (parseInt(day) < 10) {
-                    day = '0' + day;
-                }
-                return year + '-' + month + '-' + day + 'T00:00:00.000Z';
+                return date.toISOString();
             },
             startDate() {
                 let sdate = this.$refs.calendar.fireMethod('getDate');
