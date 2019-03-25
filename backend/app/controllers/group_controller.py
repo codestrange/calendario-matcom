@@ -40,8 +40,8 @@ def get_free_classes():
         group = Group.query.filter_by(id=group_id).first()
         for event in group.events:
             if check_inside(event, json):
-                times.append((event.start, "start"))
-                times.append((event.end, "end"))
+                times.append((max(event.start, json.start), "start"))
+                times.append((min(event.end, json.end), "end"))
     times.append((json.start, "start"))
     times.append((json.end, "end"))
     times.sort(key=lambda j: j[0])

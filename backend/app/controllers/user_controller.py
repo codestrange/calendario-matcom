@@ -25,6 +25,49 @@ def get_profile():
     })
 
 
+@api.route('/profile/edit', methods=['PUT'])
+@auth_token.login_required
+def edit_profil():
+    json = json_load(request.json)
+    user = User.query.get(g.current_user.id)
+
+    if 'username' in json:
+        equal_name = User.query.filter_by(username=json.username).filter(User.id != user.id).first()
+        if equal_name is None:
+            user.username = json.username
+            db.session.add(user)
+            db.session.commit()
+        else:
+            return bad_request('Ya existe un usuario con ese nombre')
+
+    if 'password' in json:
+        user.password = json.password
+        db.session.add(user)
+        db.session.commit()
+
+    if 'email' in json:
+        equal_email = User.query.filter_by(email=json.email).filter(User.id != user.id).first()
+        if equal_email is None:
+            user.email = json.email
+            db.session.add(user)
+            db.session.commit()
+        else:
+            return bad_request('Ya existe un usuario con ese correo')
+
+    # if 'first_name' in json:
+    #     user.first_name = json.first_name
+    #     db.session.add(user)
+    #     db.session.commit()
+
+    # if 'last_name' in json:
+    #     user.last_name = json.last_name
+    #     db.session.add(user)
+    #     db.session.commit()
+
+    return jsonify({
+        'message': 'Su perfil se ha editado correctamente'
+    }), 201
+
 @api.route('/users')
 @auth_token.login_required
 def get_users():

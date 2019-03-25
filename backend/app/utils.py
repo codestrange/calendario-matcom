@@ -33,7 +33,7 @@ def check_outside(event, json):
 
 
 def check_inside(event, json):
-    return event.start >= json.start and event.end <= json.end
+    return event.start >= json.start or event.end <= json.end
 
 
 
