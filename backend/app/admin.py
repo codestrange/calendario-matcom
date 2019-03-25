@@ -7,7 +7,7 @@ admin = Admin(name='Calendario MatCom', template_mode='bootstrap3')
 
 
 class ModelView(_ModelView):
-    can_delete = False
+    can_delete = True
     can_view_details = True
     column_display_pk = True
 

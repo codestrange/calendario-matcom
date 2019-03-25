@@ -34,7 +34,7 @@ export default {
             body: JSON.stringify(body)
         });
     },
-    delete(url) {
+    delete(url, body) {
         if(body === null) {
             return fetch(url,{
                 method: 'delete',
@@ -43,7 +43,8 @@ export default {
         }
         return fetch(url,{
             method: 'delete',
-            headers: this.headers
+            headers: this.headers,
+            body: body
         });
     },
     set_JSONHeaders(username, password) {
