@@ -143,6 +143,15 @@ def put_event():
     return bad_request('No es posible cambiar el evento.')
 
 
+@api.route('/events/<int:id>', methods=['DELETE'])
+@auth_token.login_required
+def delete_event(id):
+    event = Event.query.get_or_404(id)
+    db.session.delete(event)
+    db.session.commit()
+    return jsonify({'message': 'Evento eliminado correctamente.'}), 201
+
+
 @api.route('/events')
 @auth_token.login_required
 def get_events():
