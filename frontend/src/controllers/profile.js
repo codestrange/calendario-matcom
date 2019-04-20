@@ -11,7 +11,8 @@ export default {
         email:'',
         year:'',
         token:'',
-        remember:''    
+        remember:'',
+        role: 0b0
     },
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify({
@@ -81,5 +82,8 @@ export default {
             email: email,
             password: password
         }).then(response => response.json(), response => console.log('Error getting the response.'));
+    },
+    hasRole(role) {
+        return ((this.isLogued() === true) && ((this.data.role & role) === role));
     }
 }
