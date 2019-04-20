@@ -1,11 +1,9 @@
 from flask import jsonify
 from . import api
-from ..auth import auth_token
 from ..database import Course
 
 
 @api.route('/courses')
-@auth_token.login_required
 def get_courses():
     courses = Course.query.all()
     return jsonify([{
@@ -18,7 +16,6 @@ def get_courses():
 
 
 @api.route('/courses/<int:id>')
-@auth_token.login_required
 def get_course(id):
     course = Course.query.get_or_404(id)
     events = [{'id': event.id, 'title': event.title} for event in course.events]

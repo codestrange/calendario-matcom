@@ -12,7 +12,7 @@ export default {
         year:'',
         token:'',
         remember:'',
-        role: 0b0
+        role: 0
     },
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify({

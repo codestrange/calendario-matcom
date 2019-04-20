@@ -26,7 +26,6 @@ def create_app(config_name):
     admin.add_view(ModelView(Local, db.session))
     admin.add_view(ModelView(Notification, db.session))
     admin.add_view(ModelView(Option, db.session))
-    admin.add_view(ModelView(Permission, db.session))
     admin.add_view(ModelView(Resource, db.session))
     admin.add_view(ModelView(Role, db.session))
     admin.add_view(ModelView(Student, db.session))

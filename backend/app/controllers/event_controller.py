@@ -2,13 +2,13 @@ from datetime import timedelta
 from flask import jsonify, request
 from . import api
 from ..auth import auth_token
-from ..database import Event, User, Course, Group, Local, Resource, Tag, db
+from ..database import Event, User, Course, Group, Local, Resource, Tag, db, Permission
+from ..decorators import permission_required
 from ..errors import bad_request
 from ..utils import check_json, query, merge, check_date, json_load
 
 
 @api.route('/events/query', methods=['POST'])
-@auth_token.login_required
 def query_events():
     json = json_load(request.json)
     check_json(json, ['courses', 'groups', 'locals', 'resources', 'tags', 'users'])
@@ -38,6 +38,7 @@ def query_events():
 
 @api.route('/events', methods=['POST'])
 @auth_token.login_required
+@permission_required(Permission.CREATE_EVENT)
 def post_event():
     json = json_load(request.json)
     check_json(json, ['title', 'description', 'start', 'end', 'courses', 'groups', 'locals',
@@ -90,6 +91,7 @@ def post_event():
 
 @api.route('/events', methods=['PUT'])
 @auth_token.login_required
+@permission_required(Permission.UPDATE_EVENT)
 def put_event():
     json = json_load(request.json)
     check_json(json, ['id', 'title', 'description', 'start', 'end', 'courses', 'groups', 'locals',
@@ -145,6 +147,7 @@ def put_event():
 
 @api.route('/events/<int:id>', methods=['DELETE'])
 @auth_token.login_required
+@permission_required(Permission.DELETE_EVENT)
 def delete_event(id):
     event = Event.query.get_or_404(id)
     db.session.delete(event)
@@ -153,7 +156,6 @@ def delete_event(id):
 
 
 @api.route('/events')
-@auth_token.login_required
 def get_events():
     events = Event.query.all()
     return jsonify([{
@@ -163,7 +165,6 @@ def get_events():
 
 
 @api.route('/events/<int:id>')
-@auth_token.login_required
 def get_event(id):
     event = Event.query.get_or_404(id)
     event_courses = [{'id': course.id, 'name': course.name} for course in event.courses]
