@@ -71,6 +71,8 @@ export default {
                     this.data.email = json.email;
                     this.data.username = json.username;
                     this.data.id = json.id;
+                    this.data.role = json.role;
+                    this.saveMinData();
                 }
             });
     },

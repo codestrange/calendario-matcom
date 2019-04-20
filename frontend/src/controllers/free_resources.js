@@ -1,7 +1,7 @@
 import Petitions from './petitions';
 import Endpoints from '../endpoints/endpoints';
 
-const data_key = 'calendario-matcom-free_locals';
+const data_key = 'calendario-matcom-free-resources';
 
 export default {
     data: [],
