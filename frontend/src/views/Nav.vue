@@ -160,9 +160,9 @@
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Perfil
                                     </router-link>
-                                    <router-link :to="{name: 'panelPage'}" class="dropdown-item">
+                                    <router-link v-if="viewPanel()" :to="{name: 'panelPage'}" class="dropdown-item">
                                         <i class="fas fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Administrar Panel
+                                        Administrar
                                     </router-link>
                                     <!-- <a class="dropdown-item" href="#">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -225,6 +225,8 @@
 </template>
 
 <script>
+    import Fixed_Roles from '@/utils/fixed_roles';
+
     export default {
         name: "Home",
         data() {
@@ -241,6 +243,9 @@
             },
             openNewTab(url) {
                 window.open(url, '_blank');
+            },
+            viewPanel() {
+                return this.$store.state.profile.hasRole(Fixed_Roles.VIEW_PANEL);
             }
         },
         created() {
