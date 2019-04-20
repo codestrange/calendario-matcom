@@ -1,12 +1,10 @@
 from flask import jsonify, request
 from . import api
-from ..auth import auth_token
 from ..database import Local
 from .. utils import json_load, check_json, check_outside
 
 
 @api.route('/locals')
-@auth_token.login_required
 def get_locals():
     locals = Local.query.all()
     return jsonify([{
@@ -16,7 +14,6 @@ def get_locals():
 
 
 @api.route('/locals/free', methods=['POST'])
-@auth_token.login_required
 def get_free_locals():
     json = json_load(request.json)
     check_json(json, ['start', 'end'])
@@ -37,7 +34,6 @@ def get_free_locals():
 
 
 @api.route('/locals/<int:id>')
-@auth_token.login_required
 def get_local(id):
     local = Local.query.get_or_404(id)
     events = [{'id': event.id, 'title': event.title} for event in local.events]

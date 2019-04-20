@@ -21,7 +21,8 @@ def get_profile():
         'username': g.current_user.username,
         'email': g.current_user.email,
         'confirmed': g.current_user.confirmed,
-        'activated': g.current_user.activated
+        'activated': g.current_user.activated,
+        'role': g.current_user.role.permissions
     })
 
 
@@ -63,7 +64,6 @@ def edit_profil():
 
 
 @api.route('/users')
-@auth_token.login_required
 def get_users():
     users = User.query.all()
     return jsonify([{
@@ -75,7 +75,6 @@ def get_users():
 
 
 @api.route('/users/<int:id>')
-@auth_token.login_required
 def get_user(id):
     user = User.query.get_or_404(id)
     groups = [{'id': group.id, 'name': group.name} for group in user.groups]
