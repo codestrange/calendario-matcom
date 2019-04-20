@@ -1,14 +1,18 @@
+from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
 db = SQLAlchemy()
 
-user_role = db.Table('user_role',
-                     db.Column('user_id',
-                               db.Integer, db.ForeignKey('user.id'), primary_key=True),
-                     db.Column('role_id',
-                               db.Integer, db.ForeignKey('role.id'), primary_key=True))
+
+class Permission(object):
+    VIEW_PANEL = 0b00000000000000000000000000000001
+    CREATE_EVENT = 0b00000000000000000000000000000010
+    UPDATE_EVENT = 0b00000000000000000000000000000100
+    DELETE_EVENT = 0b00000000000000000000000000001000
+    ADMINISTER = 0b11111111111111111111111111111111
+
 
 user_group = db.Table('user_group',
                       db.Column('user_id',
@@ -21,12 +25,6 @@ user_option = db.Table('user_option',
                                  db.Integer, db.ForeignKey('user.id'), primary_key=True),
                        db.Column('option_id',
                                  db.Integer, db.ForeignKey('option.id'), primary_key=True))
-
-role_permission = db.Table('role_permission',
-                           db.Column('role_id',
-                                     db.Integer, db.ForeignKey('role.id'), primary_key=True),
-                           db.Column('permission_id',
-                                     db.Integer, db.ForeignKey('permission.id'), primary_key=True))
 
 event_course = db.Table('event_course',
                         db.Column('event_id',
@@ -116,6 +114,29 @@ class Interval(db.Model):
     start = db.Column(db.Time, nullable=False)
     end = db.Column(db.Time, nullable=False)
 
+    @staticmethod
+    def insert():
+        intervals = Interval.query.all()
+        for interval in intervals:
+            db.session.delete(interval)
+        db.session.commit()
+        intervals = []
+        for i in range(1, 7):
+            interval = Interval()
+            interval.name = f'Turno {i}'
+            intervals.append(interval)
+        datetimes = [datetime(1, 1, 1, 8)] + [None] * 11
+        length_event = timedelta(minutes=95)
+        length_change = timedelta(minutes=10)
+        for i in range(1, 12):
+            datetimes[i] = datetimes[i - 1] + (length_event if i % 2 else length_change)
+        for i in range(0, 12, 2):
+            intervals[i // 2].start = datetimes[i].time()
+            intervals[i // 2].end = datetimes[i + 1].time()
+        for interval in intervals:
+            db.session.add(interval)
+        db.session.commit()
+
     def __repr__(self):
         return f'{self.name}'
 
@@ -153,15 +174,6 @@ class Option(db.Model):
         return f'{self.text}'
 
 
-class Permission(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, nullable=False)
-    roles = db.relationship('Role', secondary=role_permission, backref='permissions')
-
-    def __repr__(self):
-        return f'{self.name}'
-
-
 class Resource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
@@ -175,7 +187,28 @@ class Resource(db.Model):
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    users = db.relationship('User', secondary=user_role, backref='roles')
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    users = db.relationship('User', backref='role', lazy='dynamic')
+
+    @staticmethod
+    def insert():
+        roles = Role.query.all()
+        for r in roles:
+            db.session.delete(r)
+        db.session.commit()
+        roles = [
+            ('user', 0, True),
+            ('moderator', Permission.VIEW_PANEL | Permission.CREATE_EVENT | 
+             Permission.UPDATE_EVENT | Permission.DELETE_EVENT, False),
+            ('administrator', Permission.ADMINISTER, False)
+        ]
+        for r in roles:
+            role = Role(name=r[0])
+            role.permissions = r[1]
+            role.default = r[2]
+            db.session.add(role)
+        db.session.commit()
 
     def __repr__(self):
         return f'{self.name}'
@@ -216,6 +249,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     confirmed = db.Column(db.Boolean, default=False)
     activated = db.Column(db.Boolean, default=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     student = db.relationship('Student', backref='user', uselist=False)
     teacher = db.relationship('Teacher', backref='user', uselist=False)
     notifications = db.relationship('UserGroupNotification',
@@ -229,8 +263,16 @@ class User(db.Model):
     def password(self, password):
         self.password_hash = generate_password_hash(password)
 
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            self.role = Role.query.filter_by(default=True).first()
+
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def can(self, permissions):
+        return self.role is not None and (self.role.permissions & permissions) == permissions
 
     def __repr__(self):
         return f'{self.username}'
