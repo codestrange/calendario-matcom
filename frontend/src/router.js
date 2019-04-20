@@ -23,6 +23,8 @@ import User from './components/User';
 import Users from './components/Users';
 import Editor from './components/Editor';
 import Panel from './components/Panel';
+import Forbbiden from './views/Forbbiden';
+import Fixed_Roles from './utils/fixed_roles';
 
 
 Vue.use(Router);
@@ -32,6 +34,19 @@ const checkforAuth = (to, from, next) => {
         Store.state.profile.loadMinData();
         if (Store.state.profile.isLogued() === false) {
             next({name: 'loginPage'});
+        }
+    }
+};
+
+const checkRoles = (to, from, next) => {
+    if (to.matched.some(route => route.meta.requireRoles)) {
+        Store.state.profile.loadMinData();
+        let haveAccess = true;
+        to.meta.requireRoles.forEach((role) => {
+            haveAccess = haveAccess & Store.state.profile.hasRole(role);
+        });
+        if (haveAccess === 0) {
+            next({name: 'forbbidenPage'})
         }
     }
 };
@@ -187,7 +202,11 @@ const router = new Router({
                     name: 'editorPage',
                     component: Editor,
                     meta: {
-                        requiresAuth: true
+                        requiresAuth: true,
+                        requireRoles: [
+                            Fixed_Roles.VIEW_PANEL,
+                            Fixed_Roles.CREATE_EVENTS
+                        ]
                     }
                 },
                 {
@@ -195,7 +214,10 @@ const router = new Router({
                     name: 'panelPage',
                     component: Panel,
                     meta: {
-                        requiresAuth: true
+                        requiresAuth: true,
+                        requireRoles: [
+                            Fixed_Roles.VIEW_PANEL
+                        ]
                     }
                 }
             ]
@@ -218,6 +240,11 @@ const router = new Router({
             component: Register
         },
         {
+            path: '/forbbiden',
+            name: 'forbbidenPage',
+            component: Forbbiden
+        },
+        {
             path: '*',
             name: 'notFoundPage',
             component: NotFound
@@ -227,6 +254,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     checkforAuth(to, from, next);
+    checkRoles(to, from, next);
     next();
 });
 
