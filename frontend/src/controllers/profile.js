@@ -12,7 +12,7 @@ export default {
         year:'',
         token:'',
         remember:'',
-        role: 0b0
+        role: 0
     },
     saveMinData() {
         localStorage.setItem(data_key, JSON.stringify({
@@ -68,9 +68,7 @@ export default {
             response => response.json(), response => console.log('Error getting the response.'))
             .then(json => {
                 if(json.hasOwnProperty('email') && json.hasOwnProperty('username') && json.hasOwnProperty('id')) {
-                    this.data.email = json.email;
-                    this.data.username = json.username;
-                    this.data.id = json.id;
+                    this.data = json;
                 }
             });
     },

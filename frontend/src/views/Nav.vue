@@ -225,7 +225,7 @@
 </template>
 
 <script>
-    import Fixed_Roles from '@/utils/fixed_roles';
+    import Permission from '@/utils/permission';
 
     export default {
         name: "Home",
@@ -245,7 +245,7 @@
                 window.open(url, '_blank');
             },
             viewPanel() {
-                return this.$store.state.profile.hasRole(Fixed_Roles.VIEW_PANEL);
+                return this.$store.state.profile.hasRole(Permission.VIEW_PANEL);
             }
         },
         created() {
