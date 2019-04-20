@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 532e901eaf24
+Revision ID: 8601074f975f
 Revises: 
-Create Date: 2019-03-14 07:04:16.197670
+Create Date: 2019-04-20 16:12:39.106953
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '532e901eaf24'
+revision = '8601074f975f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,6 +24,7 @@ def upgrade():
     sa.Column('hour_class', sa.Integer(), nullable=False),
     sa.Column('year', sa.Integer(), nullable=False),
     sa.Column('semester', sa.Integer(), nullable=False),
+    sa.Column('career', sa.String(length=64), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
@@ -42,6 +43,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+    op.create_table('interval',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=64), nullable=False),
+    sa.Column('start', sa.Time(), nullable=False),
+    sa.Column('end', sa.Time(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name')
+    )
     op.create_table('local',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
@@ -56,12 +65,6 @@ def upgrade():
     sa.Column('date', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('permission',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=64), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
-    )
     op.create_table('resource',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
@@ -72,23 +75,17 @@ def upgrade():
     op.create_table('role',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
+    sa.Column('default', sa.Boolean(), nullable=True),
+    sa.Column('permissions', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+    op.create_index(op.f('ix_role_default'), 'role', ['default'], unique=False)
     op.create_table('tag',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(length=64), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('text')
-    )
-    op.create_table('user',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('username', sa.String(length=64), nullable=False),
-    sa.Column('email', sa.String(length=64), nullable=False),
-    sa.Column('password_hash', sa.String(length=128), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('username')
     )
     op.create_table('vote',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -138,12 +135,18 @@ def upgrade():
     sa.ForeignKeyConstraint(['vote_id'], ['vote.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('role_permission',
-    sa.Column('role_id', sa.Integer(), nullable=False),
-    sa.Column('permission_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['permission_id'], ['permission.id'], ),
+    op.create_table('user',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=64), nullable=False),
+    sa.Column('email', sa.String(length=64), nullable=False),
+    sa.Column('password_hash', sa.String(length=128), nullable=False),
+    sa.Column('confirmed', sa.Boolean(), nullable=True),
+    sa.Column('activated', sa.Boolean(), nullable=True),
+    sa.Column('role_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
-    sa.PrimaryKeyConstraint('role_id', 'permission_id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('username')
     )
     op.create_table('student',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -175,12 +178,12 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('user_id', 'group_id', 'notification_id')
     )
-    op.create_table('user_role',
+    op.create_table('user_option',
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('role_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
+    sa.Column('option_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['option_id'], ['option.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('user_id', 'role_id')
+    sa.PrimaryKeyConstraint('user_id', 'option_id')
     )
     op.create_table('teacher_course',
     sa.Column('teacher_id', sa.Integer(), nullable=False),
@@ -189,26 +192,18 @@ def upgrade():
     sa.ForeignKeyConstraint(['teacher_id'], ['teacher.id'], ),
     sa.PrimaryKeyConstraint('teacher_id', 'course_id')
     )
-    op.create_table('user_option',
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('option_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['option_id'], ['option.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('user_id', 'option_id')
-    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('user_option')
     op.drop_table('teacher_course')
-    op.drop_table('user_role')
+    op.drop_table('user_option')
     op.drop_table('user_group_notification')
     op.drop_table('user_group')
     op.drop_table('teacher')
     op.drop_table('student')
-    op.drop_table('role_permission')
+    op.drop_table('user')
     op.drop_table('option')
     op.drop_table('event_tag')
     op.drop_table('event_resource')
@@ -216,13 +211,13 @@ def downgrade():
     op.drop_table('event_group')
     op.drop_table('event_course')
     op.drop_table('vote')
-    op.drop_table('user')
     op.drop_table('tag')
+    op.drop_index(op.f('ix_role_default'), table_name='role')
     op.drop_table('role')
     op.drop_table('resource')
-    op.drop_table('permission')
     op.drop_table('notification')
     op.drop_table('local')
+    op.drop_table('interval')
     op.drop_table('group')
     op.drop_table('event')
     op.drop_table('course')
