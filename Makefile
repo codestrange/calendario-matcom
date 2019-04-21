@@ -39,10 +39,13 @@ backend_db_upgrade:
 	flask db upgrade
 
 backend_db_delete:
-	@sudo rm -r  backend/migrations &&\
+	@sudo rm -r backend/migrations &&\
 	sudo rm backend/app/data_dev.sqlite
 
 backend_db_start: backend_db_init backend_db_migrate backend_db_upgrade ;
+	@export FLASK_APP=run.py &&\
+	cd backend &&\
+	flask init
 
 backend_db_restart: backend_db_delete backend_db_start ;
 

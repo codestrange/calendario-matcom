@@ -12,3 +12,16 @@ def make_shell_context():
                 Local=Local, Notification=Notification, Option=Option, Permission=Permission,
                 Resource=Resource, Role=Role, Student=Student, Tag=Tag, Teacher=Teacher,
                 User=User, Vote=Vote, UserGroupNotification=UserGroupNotification)
+
+
+@app.cli.command()
+def init():
+    insert(Role, 'roles')
+    insert(Interval, 'intervals')
+    insert(Group, 'groups')
+
+
+def insert(model, name):
+    print(f'Inserting {name} ...')
+    model.insert()
+    print(f'Inserted {name} - OK')

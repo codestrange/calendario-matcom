@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"autoflush": False})
 
 
 class Permission(object):
@@ -99,10 +99,23 @@ class Event(db.Model):
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
+    default = db.Column(db.Boolean, default=False, index=True)
     users = db.relationship('User', secondary=user_group, backref=db.backref('groups'))
     events = db.relationship('Event', secondary=event_group, backref=db.backref('groups'))
     notifications = db.relationship('UserGroupNotification',
                                     foreign_keys=[UserGroupNotification.group_id], backref='group')
+
+    @staticmethod
+    def insert():
+        groups = Group.query.all()
+        for group in groups:
+            db.session.delete(group)
+        db.session.commit()
+        group_all = Group()
+        group_all.name = 'all'
+        group_all.default = True
+        db.session.add(group_all)
+        db.session.commit()
 
     def __repr__(self):
         return f'{self.name}'
@@ -265,8 +278,10 @@ class User(db.Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
-        if self.role is None:
-            self.role = Role.query.filter_by(default=True).first()
+        role = Role.query.filter_by(default=True).first()
+        role.users.append(self)
+        group = Group.query.filter_by(default=True).first()
+        group.users.append(self)
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)

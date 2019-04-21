@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8601074f975f
+Revision ID: 57228b25e892
 Revises: 
-Create Date: 2019-04-20 16:12:39.106953
+Create Date: 2019-04-21 16:05:06.206504
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8601074f975f'
+revision = '57228b25e892'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,9 +40,11 @@ def upgrade():
     op.create_table('group',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
+    sa.Column('default', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
+    op.create_index(op.f('ix_group_default'), 'group', ['default'], unique=False)
     op.create_table('interval',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
@@ -218,6 +220,7 @@ def downgrade():
     op.drop_table('notification')
     op.drop_table('local')
     op.drop_table('interval')
+    op.drop_index(op.f('ix_group_default'), table_name='group')
     op.drop_table('group')
     op.drop_table('event')
     op.drop_table('course')
