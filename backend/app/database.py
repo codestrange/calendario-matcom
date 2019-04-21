@@ -67,6 +67,7 @@ class UserGroupNotification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
     notification_id = db.Column(db.Integer, db.ForeignKey('notification.id'), primary_key=True)
+    seened = db.Column(db.Boolean, default=False, index=True)
 
     def __repr__(self):
         return f'{self.user.username, self.group.name, self.notification.title}'
