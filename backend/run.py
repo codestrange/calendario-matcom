@@ -19,6 +19,7 @@ def init():
     insert(Role, 'roles')
     insert(Interval, 'intervals')
     insert(Group, 'groups')
+    insert(User, 'users')
 
 
 def insert(model, name):

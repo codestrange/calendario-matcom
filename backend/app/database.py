@@ -284,6 +284,18 @@ class User(db.Model):
         group = Group.query.filter_by(default=True).first()
         group.users.append(self)
 
+    @staticmethod
+    def insert():
+        role_admin = Role.query.filter_by(name='administrator').first()
+        user_admin = User()
+        role_admin.users.append(user_admin)
+        user_admin.username = 'admin'
+        user_admin.email = 'admin@gmail.com'
+        user_admin.confirmed = True
+        user_admin.password = '1234'
+        db.session.add(user_admin)
+        db.session.commit()
+
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
