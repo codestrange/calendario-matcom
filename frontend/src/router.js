@@ -16,6 +16,7 @@ import Profile from './components/Profile';
 import Register from './views/Register';
 import Resource from './components/Resource';
 import Resources from './components/Resources';
+import Notifications from './components/Notifications';
 import Store from './store';
 import Tag from './components/Tag';
 import Tags from './components/Tags';
@@ -185,6 +186,14 @@ const router = new Router({
                     path: '/users/:userId',
                     name: 'userPage',
                     component: User,
+                    meta: {
+                        requiresAuth: true
+                    }
+                },
+                {
+                    path: '/notifications',
+                    name: 'notificationsPage',
+                    component: Notifications,
                     meta: {
                         requiresAuth: true
                     }

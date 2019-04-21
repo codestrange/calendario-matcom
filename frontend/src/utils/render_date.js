@@ -1,5 +1,8 @@
 export const renderPresentation = function (_start, _end) {
     let start = new Date(_start);
+    if (_end === null) {
+        return renderTime(start) + ' ' + renderDate(start);
+    }
     let end = new Date(_end);
     start.setHours(start.getHours() + 4);
     end.setHours(end.getHours() + 4);

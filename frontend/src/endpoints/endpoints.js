@@ -12,6 +12,7 @@ export default {
     register: baseUrl + 'register',
     roles: baseUrl + 'roles',
     resources: baseUrl + 'resources',
+    notifications: baseUrl + 'notifications',
     tags: baseUrl + 'tags',
     token: baseUrl + 'token',
     users: baseUrl + 'users',

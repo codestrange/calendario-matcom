@@ -12,6 +12,7 @@ import ProfileController from './controllers/profile';
 import QueryController from './controllers/query';
 import ResourceController from './controllers/resource';
 import ResourcesController from './controllers/resources';
+import NotificationsController from './controllers/notifications';
 import RoutesController from './controllers/routes';
 import TagController from './controllers/tag';
 import TagsController from './controllers/tags';
@@ -37,6 +38,7 @@ const store = new Vuex.Store({
         query: QueryController,
         resource: ResourceController,
         resources: ResourcesController,
+        notifications: NotificationsController,
         routes: RoutesController,
         tag: TagController,
         tags: TagsController,

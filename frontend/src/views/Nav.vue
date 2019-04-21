@@ -111,7 +111,7 @@
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bell fa-fw"></i>
                                     <!-- Counter - Alerts -->
-                                    <!-- <span class="badge badge-danger badge-counter">2</span> -->
+                                    <span v-if="notifications_unseened" class="badge badge-danger badge-counter">{{ notifications_unseened }}</span>
                                 </a>
                                 <!-- Dropdown - Alerts -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -128,6 +128,7 @@
                                         <div>
                                             <div class="small text-gray-500">12 de diciembre del 2019</div>
                                             <span class="font-weight-bold">Un nuevo reporte esta listo para ser descargado</span>
+                                            <div class="small text-gray-500">Grupo(s): C322</div>
                                         </div>
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="#">
@@ -141,8 +142,16 @@
                                             290.29 dolares han sido depositados en su cuenta.
                                         </div>
                                     </a> -->
-                                    <span class="dropdown-item text-center text-dark">No hay notificaciones nuevas</span>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Ver todas las notificaciones</a>
+                                    <a v-for="(noti, index) in notifications" :key="noti.id" class="dropdown-item d-flex align-items-center" href="" @click.prevent="seen(noti.id, index)">
+                                        <div>
+                                            <div class="small text-gray-500">{{ render_date(noti.date) }}</div>
+                                            <h6 :class="noti.seened ? '': 'font-weight-bold'" class="mb-0">{{ noti.title }}</h6>
+                                            <div :class="noti.seened ? '': 'font-weight-bold'" class="mb-0">{{ noti.body }}</div>
+                                            <div v-if="noti.groups.lenght > 0" class="small text-gray-500">Grupo(s): {{ noti.groups }}</div>
+                                        </div>
+                                    </a>
+                                    <router-link v-if="notifications.lenght > 0" :to="{name: 'notificationsPage'}" class="dropdown-item text-center small text-gray-500">Ver todas las notificaciones</router-link>
+                                    <span v-else class="dropdown-item text-center text-dark">No hay notificaciones para mostrar</span>
                                 </div>
                             </li>
                             <div class="topbar-divider d-none d-sm-block"></div>
@@ -226,6 +235,7 @@
 
 <script>
     import Permission from '@/utils/permission';
+    import { renderPresentation } from '../utils/render_date';
 
     export default {
         name: "Home",
@@ -233,7 +243,9 @@
             return {
                 loginOut: false,
                 user_pic_location: './img/default_user_image.jpeg',
-                username: ''
+                username: '',
+                notifications: [],
+                notifications_unseened: 0
             };
         },
         methods: {
@@ -246,12 +258,36 @@
             },
             viewPanel() {
                 return this.$store.state.profile.hasRole(Permission.VIEW_PANEL);
+            },
+            render_date(start) {
+                return renderPresentation(start, null);
+            },
+            seen(id, index) {
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.notifications.setSeened(token, id).then(status => {
+                    if(status)
+                        this.notifications[index].seened = true;
+                });
+                this.$store.state.notifications.update();
+            },
+            loadData() {
+                let token = this.$store.state.profile.data.token;
+                this.$store.state.notifications.getData(token).then(() => {
+                    this.notifications = this.$store.state.notifications.data;
+                    this.notifications_unseened = 0;
+                    this.notifications.forEach(noti => {
+                        this.notifications_unseened += noti.seened ? 0 : 1;
+                    });
+                    this.notifications = this.notifications.slice(0, 5);
+                });
             }
         },
         created() {
             this.$store.state.profile.getData().then(() => {
                 this.username = this.$store.state.profile.data.username;
             });
+            this.$store.state.notifications.addUpdate('nav', this.loadData);
+            this.$store.state.notifications.update();
         }
     }
 </script>
