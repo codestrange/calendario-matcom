@@ -14,6 +14,7 @@ flask-httpauth = "*"
 flask-shell-ipython = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
+jinja2 = "*"
 
 [requires]
 python_version = "3.6"
