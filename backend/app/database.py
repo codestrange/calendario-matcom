@@ -106,18 +106,6 @@ class Group(db.Model):
     notifications = db.relationship('UserGroupNotification',
                                     foreign_keys=[UserGroupNotification.group_id], backref='group')
 
-    @staticmethod
-    def insert():
-        groups = Group.query.all()
-        for group in groups:
-            db.session.delete(group)
-        db.session.commit()
-        group_all = Group()
-        group_all.name = 'all'
-        group_all.default = True
-        db.session.add(group_all)
-        db.session.commit()
-
     def __repr__(self):
         return f'{self.name}'
 
@@ -281,20 +269,9 @@ class User(db.Model):
         super(User, self).__init__(**kwargs)
         role = Role.query.filter_by(default=True).first()
         role.users.append(self)
-        group = Group.query.filter_by(default=True).first()
-        group.users.append(self)
-
-    @staticmethod
-    def insert():
-        role_admin = Role.query.filter_by(name='administrator').first()
-        user_admin = User()
-        role_admin.users.append(user_admin)
-        user_admin.username = 'admin'
-        user_admin.email = 'admin@gmail.com'
-        user_admin.confirmed = True
-        user_admin.password = '1234'
-        db.session.add(user_admin)
-        db.session.commit()
+        groups = Group.query.filter_by(default=True).all()
+        for group in groups:
+            group.users.append(self)
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)

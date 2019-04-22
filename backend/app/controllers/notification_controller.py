@@ -27,7 +27,7 @@ def get_notifications():
             'body': noti.body,
             'date': noti.date,
             'seened': item.seened,
-            'groups': [{'id': group.id, 'name': group.name}] if group.name != 'all' else []
+            'groups': [{'id': group.id, 'name': group.name}]
         })
     result.reverse()
     return jsonify(result)
