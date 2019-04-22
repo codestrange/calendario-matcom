@@ -147,10 +147,10 @@
                                             <div class="small text-gray-500">{{ render_date(noti.date) }}</div>
                                             <h6 :class="noti.seened ? '': 'font-weight-bold'" class="mb-0">{{ noti.title }}</h6>
                                             <div :class="noti.seened ? '': 'font-weight-bold'" class="mb-0">{{ noti.body }}</div>
-                                            <div v-if="noti.groups.lenght > 0" class="small text-gray-500">Grupo(s): {{ noti.groups }}</div>
+                                            <div v-if="noti.groups.length > 0" class="small text-gray-500">Grupo(s): {{ parseGroupsToStr(noti.groups) }}</div>
                                         </div>
                                     </a>
-                                    <router-link v-if="notifications.lenght > 0" :to="{name: 'notificationsPage'}" class="dropdown-item text-center small text-gray-500">Ver todas las notificaciones</router-link>
+                                    <router-link v-if="notifications.length > 0" :to="{name: 'notificationsPage'}" class="dropdown-item text-center small text-gray-500">Ver todas las notificaciones</router-link>
                                     <span v-else class="dropdown-item text-center text-dark">No hay notificaciones para mostrar</span>
                                 </div>
                             </li>
@@ -236,6 +236,7 @@
 <script>
     import Permission from '@/utils/permission';
     import { renderPresentation } from '../utils/render_date';
+    import { convertGroupsToStr } from '../utils/utils';
 
     export default {
         name: "Home",
@@ -261,6 +262,9 @@
             },
             render_date(start) {
                 return renderPresentation(start, null);
+            },
+            parseGroupsToStr(groups) {
+                return convertGroupsToStr(groups);
             },
             seen(id, index) {
                 let token = this.$store.state.profile.data.token;

@@ -14,7 +14,7 @@
                 <div v-for="(noti, index) in notifications" :key="noti.id" class="card mb-2" :class="noti.seened ? '' : 'text-white bg-primary'">
                     <div class="card-body">
                         <h5 class="card-title"><strong>{{ noti.title }}</strong></h5>
-                        <h6 class="card-subtitle text-muted" v-if="noti.groups.length > 0">{{ noti.groups }}</h6>
+                        <h6 class="card-subtitle mb-1" :class="noti.seened ? 'text-muted' : 'text-white'" v-if="noti.groups.length > 0">Grupo(s): {{ parseGroupsToStr(noti.groups) }}</h6>
                         <p class="card-text">{{ noti.body }}</p>
                         <a href="" class="card-link stretched-link" :class="noti.seened ? 'text-muted' : 'text-white'" @click.prevent="seen(noti.id, index)">Fecha: {{ render_date(noti.date) }}</a>
                     </div>
@@ -26,6 +26,7 @@
 
 <script>
     import { renderPresentation } from '../utils/render_date';
+    import { convertGroupsToStr } from '../utils/utils';
 
     export default {
         name: "Notifications",
@@ -45,6 +46,9 @@
                         this.notifications[index].seened = true;
                 });
                 this.$store.state.notifications.update();
+            },
+            parseGroupsToStr(groups) {
+                return convertGroupsToStr(groups);
             },
             loadData() {
                 let token = this.$store.state.profile.data.token;

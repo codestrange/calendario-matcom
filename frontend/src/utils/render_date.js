@@ -20,7 +20,7 @@ export const renderPresentation = function (_start, _end) {
         result += renderPrefix(end) + ' ' + renderTime(end) + '.';
     }
     return result;
-}
+};
 
 function renderPrefix(datetime) {
     var result = 'la';
